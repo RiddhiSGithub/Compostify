@@ -17,6 +17,28 @@
             app:title="@string/app_name"
             app:titleTextColor="@color/secondary"
             app:buttonGravity="center_vertical"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical">
+
+            <!-- About Us Button -->
+            <ImageView
+                android:id="@+id/aboutUsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_info_outline_24"
+                android:contentDescription="@string/about_us"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="right"/>
+
+            <!-- My Cart Button -->
+<!--            <ImageView-->
+<!--                android:id="@+id/myCartButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/baseline_add_shopping_cart_24"-->
+<!--                android:contentDescription="@string/my_cart"-->
+<!--                android:layout_marginEnd="16dp"/>-->
+
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 </RelativeLayout>
