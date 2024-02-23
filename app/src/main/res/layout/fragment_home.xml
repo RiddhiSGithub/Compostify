@@ -35,14 +35,14 @@
         android:id="@+id/MessageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome to ShareWaste. Thank you for being part of our community."
+        android:text="Welcome to Compostify. Thank you for being part of our community."
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <!-- Edit Profile button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editProfileButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Edit Profile"
@@ -52,13 +52,12 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/requestPickupButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="16sp"
         android:padding="15sp"
-        android:textColor="@color/secondary"
         android:text="Request a pickup from your local host"
-        app:cornerRadius="0sp"
-        />
+        android:textColor="@color/secondary"
+        app:cornerRadius="0sp" />
 
     <!-- Recent activity header -->
     <com.google.android.material.textview.MaterialTextView

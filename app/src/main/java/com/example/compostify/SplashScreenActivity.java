@@ -21,7 +21,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // Load animation
         Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_animation);
-
         // Set animation to ImageView
         logoImageView.startAnimation(fadeInAnimation);
 
