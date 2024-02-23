@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/secondary"
+    android:padding="16sp">
+
+    <!-- Header: Title and Dropdown -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/find_waste_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <!-- Location Dropdown -->
+    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+        android:id="@+id/location_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:layout_marginEnd="8sp"
+        android:layout_marginStart="8sp"
+        android:textSize="20sp"
+        android:hint="@string/location_prompt"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_max="300sp" />
+
+    <!-- Waste Type Dropdown -->
+    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+        android:id="@+id/waste_type_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:layout_marginEnd="8sp"
+        android:layout_marginStart="8sp"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/location_dropdown"
+        android:hint="Waste Type"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_max="300sp"/>
+
+    <!-- Distance Slider -->
+    <com.google.android.material.slider.Slider
+        android:id="@+id/distance_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:contentDescription="Select distance in kilometers" />
+
+    <!-- Distance Label -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/distance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:text="@string/distance_0_km"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/distance_slider" />
+
+    <!-- Search Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:text="Search"
+        />
+
+</LinearLayout>
