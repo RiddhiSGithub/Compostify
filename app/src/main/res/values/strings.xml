@@ -20,5 +20,16 @@
     <string name="province">Province</string>
     <string name="PostalCode">Postal Code</string>
     <string name="Building_Name_Number">Building Number and Name</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="reset_filter">Reset Filter</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="waste_type">Waste Type</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="more_filters">More Filters</string>
+    <string name="empty_waste_msg">Sorry! No waste available as of now!</string>
+    <string name="title">Title</string>
+    <string name="address">Address</string>
+    <string name="see_more">See More</string>
 
 </resources>
