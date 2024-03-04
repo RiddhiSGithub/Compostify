@@ -32,4 +32,8 @@
     <string name="address">Address</string>
     <string name="see_more">See More</string>
 
+    <string name="search_title">Search</string>
+    <string name="publish_title">Publish</string>
+    <string name="profile_title">Profile</string>
+
 </resources>
