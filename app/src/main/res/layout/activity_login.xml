@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="@color/primary"
-            android:text="@string/donot_have_account"
+            android:text="@string/dont_have_account"
             android:textColor="@color/secondary"
             android:textSize="15sp"
             android:layout_marginLeft="10dp"
