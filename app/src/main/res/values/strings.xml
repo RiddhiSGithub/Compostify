@@ -1,6 +1,26 @@
 <resources>
     <string name="app_name">Compostify</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="about_us">About Us</string>
+    <string name="my_cart">My Cart</string>
+    <string name="profile">Profile</string>
+    <string name="post">Post</string>
+    <string name="list">List</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="location_prompt">Location</string>
+    <string name="distance_0_km">Distance: 0 km</string>
+    <string name="type_of_waste">Type of waste</string>
+    <string name="quantity">Quality</string>
+    <string name="weight">Weight</string>
+    <string name="other_details">Other Detais</string>
+    <string name="Address">Address</string>
+    <string name="Building_Name_Number">Bulding Number</string>
+    <string name="City">City</string>
+    <string name="province">Province</string>
+    <string name="PostalCode">Postal Code</string>
+    <string name="Add_Image">Add Images</string>
+    <string name="upload">UPLOAD</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="log_in">Log-In</string>
     <string name="email">User Email</string>
