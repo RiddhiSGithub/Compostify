@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity">
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/secondary">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondary"
+            android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -69,6 +71,62 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtLayBusinessName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/BusinessName"
+            android:textColorHint="@color/primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtBusinessName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/type_of_user"
+            android:textColorHint="@color/primary"
+            app:boxStrokeColor="@color/primary"
+            android:paddingStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/edtTypeOfWaste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtLayBusinessPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/BusinessPhoneNumber"
+            android:textColorHint="@color/primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtBusinessPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtLayPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,6 +174,8 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,4 +30,7 @@
     <string name="search_title">Search</string>
     <string name="publish_title">Publish</string>
     <string name="profile_title">Profile</string>
+    <string name="BusinessName">Business Name</string>
+    <string name="BusinessPhoneNumber">Business Phone Number</string>
+    <string name="type_of_user">Type Of User</string>
 </resources>
