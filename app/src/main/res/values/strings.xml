@@ -35,5 +35,13 @@
     <string name="search_title">Search</string>
     <string name="publish_title">Publish</string>
     <string name="profile_title">Profile</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="email">Email</string>
+    <string name="BusinessName">Business Name</string>
+    <string name="type_of_user">Type Of User</string>
+    <string name="BusinessPhoneNumber">Business Phone Number</string>
+    <string name="_address">Address</string>
+    <string name="street_address">Street Address</string>
+    <string name="city">City</string>
 
 </resources>
