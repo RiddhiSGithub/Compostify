@@ -17,6 +17,7 @@
         android:background="@color/secondary"
         android:backgroundTint="@color/secondary"
         android:cropToPadding="true"
+        android:tint="@color/primary"
         android:layout_marginBottom="10sp"
         app:shapeAppearanceOverlay="@drawable/round_border"
         android:src="@drawable/baseline_account_circle_24"></com.google.android.material.imageview.ShapeableImageView>
@@ -25,7 +26,7 @@
         android:id="@+id/welcomeUserTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hi, Lily!"
+        android:text="@string/hi_lily"
 
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -35,7 +36,7 @@
         android:id="@+id/MessageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome to Compostify. Thank you for being part of our community."
+        android:text="@string/welcome_to_compostify_thank_you_for_being_part_of_our_community"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -45,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Edit Profile"
+        android:text="@string/edit_profile"
         android:layout_marginTop="16sp" />
 
     <!-- Request a pickup button -->
@@ -55,7 +56,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="16sp"
         android:padding="15sp"
-        android:text="Request a pickup from your local host"
+        android:text="@string/request_a_pickup_from_your_local_host"
         android:textColor="@color/secondary"
         app:cornerRadius="0sp" />
 
@@ -64,7 +65,7 @@
         android:id="@+id/recentActivityHeaderTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recent activity"
+        android:text="@string/recent_activity"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="16sp" />
@@ -75,5 +76,4 @@
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_weight="1" />
-
 </LinearLayout>

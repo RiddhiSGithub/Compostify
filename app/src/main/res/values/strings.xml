@@ -43,5 +43,12 @@
     <string name="_address">Address</string>
     <string name="street_address">Street Address</string>
     <string name="city">City</string>
+    <string name="hi_lily">Hi, Lily!</string>
+    <string name="welcome_to_compostify_thank_you_for_being_part_of_our_community">Welcome to Compostify. Thank you for being part of our community.</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="request_a_pickup_from_your_local_host">Request a pickup from your local host</string>
+    <string name="recent_activity">Recent activity</string>
+    <string name="date">Date</string>
+    <string name="sold_bought">Sold/Bought</string>
 
 </resources>
