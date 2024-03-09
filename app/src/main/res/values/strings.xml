@@ -50,5 +50,6 @@
     <string name="recent_activity">Recent activity</string>
     <string name="date">Date</string>
     <string name="sold_bought">Sold/Bought</string>
+    <string name="log_out">Log Out</string>
 
 </resources>
