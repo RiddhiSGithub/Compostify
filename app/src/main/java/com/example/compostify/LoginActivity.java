@@ -47,22 +47,24 @@ public class LoginActivity extends AppCompatActivity
             startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
             finish();
         } else if (binding.btnLogIn.getId() == v.getId()) {
-
-            if (hasFieldError())
-                email = String.valueOf(binding.edtUserEmail.getText());
+            email = String.valueOf(binding.edtUserEmail.getText());
             password = String.valueOf(binding.edtPassword.getText());
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Logged In Successfully", Toast.LENGTH_SHORT);
-                        startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Invalid email or password", Toast.LENGTH_SHORT);
+            if (hasFieldError()) {
+
+                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Logged In Successfully", Toast.LENGTH_SHORT);
+                            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Invalid email or password", Toast.LENGTH_SHORT);
+                        }
                     }
-                }
-            });
+                });
+            }
+
         }
     }
 
