@@ -24,6 +24,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="log_in">Log-In</string>
     <string name="email">User Email</string>
+    <string name="business_email">Business Email</string>
     <string name="password"> Password</string>
     <string name="forgot_password">Forgot password</string>
     <string name="dont_have_account">Don\'t have an account? Register here</string>
@@ -33,4 +34,6 @@
     <string name="BusinessName">Business Name</string>
     <string name="BusinessPhoneNumber">Business Phone Number</string>
     <string name="type_of_user">Type Of User</string>
+    <string name="street">Street</string>
+    <string name="unit_number">Apt/Unit No.</string>
 </resources>
