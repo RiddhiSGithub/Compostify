@@ -49,16 +49,6 @@
         android:text="@string/edit_profile"
         android:layout_marginTop="16sp" />
 
-    <!-- Request a pickup button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/requestPickupButton"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="16sp"
-        android:padding="15sp"
-        android:text="@string/request_a_pickup_from_your_local_host"
-        android:textColor="@color/secondary"
-        app:cornerRadius="0sp" />
 
     <!-- Recent activity header -->
     <com.google.android.material.textview.MaterialTextView

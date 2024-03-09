@@ -125,7 +125,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:gravity="center_horizontal"
-                    android:text="@string/_address"
+                    android:text="@string/Address"
                     android:textColor="@color/primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -137,7 +137,7 @@
                     android:paddingLeft="5dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
-                    android:hint="@string/street_address"
+                    android:hint="@string/street"
                     android:textColorHint="@color/primary">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -161,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_weight="1"
-                        android:hint="@string/city"
+                        android:hint="@string/City"
                         android:textColorHint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -199,7 +199,7 @@
                     android:paddingLeft="5dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
-                    android:hint="@string/postal_code"
+                    android:hint="@string/PostalCode"
                     android:textColorHint="@color/primary">
 
                     <com.google.android.material.textfield.TextInputEditText
