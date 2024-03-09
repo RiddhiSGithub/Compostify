@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "928858193776",
+    "project_id": "compostify-a5e7a",
+    "storage_bucket": "compostify-a5e7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928858193776:android:34bf26439601c1165d19b5",
+        "android_client_info": {
+          "package_name": "com.example.compostify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvd1bM-bE0n6rcbY4Ngv_ntGj22r4GQCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
