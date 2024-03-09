@@ -2,76 +2,75 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/secondary"
     android:padding="16sp">
 
-    <!-- Header: Title and Dropdown -->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/find_waste_title"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/search"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:layout_height="wrap_content">
 
-    <!-- Location Dropdown -->
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/location_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8sp"
-        android:layout_marginEnd="8sp"
-        android:layout_marginStart="8sp"
-        android:textSize="20sp"
-        android:hint="@string/location_prompt"
-        app:layout_constraintWidth_default="wrap"
-        app:layout_constraintWidth_max="300sp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPostalCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/postal_code" />
 
-    <!-- Waste Type Dropdown -->
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/waste_type_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8sp"
-        android:layout_marginEnd="8sp"
-        android:layout_marginStart="8sp"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/location_dropdown"
-        android:hint="Waste Type"
-        app:layout_constraintWidth_default="wrap"
-        app:layout_constraintWidth_max="300sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Distance Slider -->
-    <com.google.android.material.slider.Slider
-        android:id="@+id/distance_slider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8sp"
-        android:contentDescription="Select distance in kilometers" />
-
-    <!-- Distance Label -->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/distance_label"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMoreFilters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8sp"
-        android:text="@string/distance_0_km"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/distance_slider" />
+        android:layout_gravity="end"
+        android:text="@string/more_filters" />
 
-    <!-- Search Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/searchButton"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
-        android:text="Search"
-        />
+        android:layout_height="1dp"
+        android:background="@color/primary"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWasteList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_waste_list_modal" />
+
+    <FrameLayout
+        android:id="@+id/layoutListLoader"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layoutEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/empty_waste_msg" />
+
+    </FrameLayout>
 
 </LinearLayout>

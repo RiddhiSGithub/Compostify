@@ -16,17 +16,6 @@
             android:background="@color/secondary"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/post"
-                android:textColor="@color/primary"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgProfilePic"
                 android:layout_width="match_parent"
