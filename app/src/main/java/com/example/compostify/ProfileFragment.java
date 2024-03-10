@@ -2,6 +2,7 @@ package com.example.compostify;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -117,6 +118,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             // Show confirmation dialog
 
+        } else if (v.getId() == binding.btnLogOut.getId()) {
+            firebaseAuth.signOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
         }
     }
 
