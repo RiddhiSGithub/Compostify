@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         binding.btnSaveChanges.setOnClickListener(this);
+        binding.btnLogOut.setOnClickListener(this);
         fillData();
 
 
