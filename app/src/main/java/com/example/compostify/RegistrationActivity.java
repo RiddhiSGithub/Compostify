@@ -176,36 +176,62 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         if (task.isSuccessful()) {
 
                             userID = firebaseAuth.getCurrentUser().getUid();
-                            DocumentReference documentReference = firebaseFireStore.collection("users").document(userID);
-                            Map<String, Object> newUser = new HashMap<>();
-                            newUser.put("userName", name);
-                            newUser.put("userEmail", email);
-                            newUser.put("businessName", businessName);
-                            newUser.put("businessEmail", businessEmail);
-                            newUser.put("businessContactNumber", contactNumber);
-                            newUser.put("street", street);
-                            newUser.put("unitNo", unitNo);
-                            newUser.put("city", city);
-                            newUser.put("province", province);
-                            newUser.put("postalCode", postalCode);
-                            documentReference.set(newUser)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Toast.makeText(context, "You are registered Successfully", Toast.LENGTH_LONG).show();
-                                            clearAll();
-                                            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-                                            finish();
-                                        }
-                                    });
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            binding.progressBar.setVisibility(View.GONE);
-                            Log.w("createUser", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(context, "Registration failed: " + task.getException().getCause(), Toast.LENGTH_SHORT).show();
+
+                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Email verification link has been sent", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Incorrect Email address", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            firebaseAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                }
+                            });
+
+                            firebaseAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                 
+                                    if (task.isSuccessful()) {
+
+                                        DocumentReference documentReference = firebaseFireStore.collection("users").document(userID);
+                                        Map<String, Object> newUser = new HashMap<>();
+                                        newUser.put("userName", name);
+                                        newUser.put("userEmail", email);
+                                        newUser.put("businessName", businessName);
+                                        newUser.put("businessEmail", businessEmail);
+                                        newUser.put("businessContactNumber", contactNumber);
+                                        newUser.put("street", street);
+                                        newUser.put("unitNo", unitNo);
+                                        newUser.put("city", city);
+                                        newUser.put("province", province);
+                                        newUser.put("postalCode", postalCode);
+                                        documentReference.set(newUser)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Toast.makeText(context, "You are registered Successfully", Toast.LENGTH_LONG).show();
+                                                        clearAll();
+                                                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                                                        finish();
+                                                    }
+                                                });
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        binding.progressBar.setVisibility(View.GONE);
+                                        Log.w("createUser", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(context, "Registration failed: " + task.getException().getCause(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         }
                     }
+
                 });
+
 
     }
 }
