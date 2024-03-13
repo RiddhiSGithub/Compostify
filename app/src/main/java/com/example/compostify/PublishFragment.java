@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.compostify.databinding.FragmentPublishBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,14 +23,21 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PublishFragment extends Fragment {
 
+    private String userId;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+    private FragmentPublishBinding binding;
     private AutoCompleteTextView edtTypeOfUser;
     private AutoCompleteTextView edtTypeOfWaste;
     private TextInputEditText edtQuantity;
@@ -55,31 +64,32 @@ public class PublishFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_publish, container, false);
+        binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
-        edtTypeOfUser = view.findViewById(R.id.edtTypeOfUser);
-        edtTypeOfWaste = view.findViewById(R.id.edtTypeOfWaste);
-        edtQuantity = view.findViewById(R.id.edtQuantity);
-        edtWeight = view.findViewById(R.id.edtWeight);
-        edtPrice = view.findViewById(R.id.edtPrice);
-        edtOtherDetails = view.findViewById(R.id.edtOtherDetails);
-//        edtPostDate = view.findViewById(R.id.edtPostDate);
-        edtBuilding = view.findViewById(R.id.edtBuilding);
-        edtCity = view.findViewById(R.id.edtCity);
-        edtProvince = view.findViewById(R.id.edtProvince);
-        edtPostalCode = view.findViewById(R.id.edtPostalCode);
+        edtTypeOfUser = binding.edtTypeOfUser;
+        edtTypeOfWaste = binding.edtTypeOfWaste;
+        edtQuantity = binding.edtQuantity;
+        edtWeight = binding.edtWeight;
+        edtPrice = binding.edtPrice;
+        edtOtherDetails = binding.edtOtherDetails;
+        edtBuilding = binding.edtBuilding;
+        edtCity = binding.edtCity;
+        edtProvince = binding.edtProvince;
+        edtPostalCode = binding.edtPostalCode;
 
-        txtLayQuantity = view.findViewById(R.id.txtLayQuantity);
-        txtLayWeight = view.findViewById(R.id.txtLayWeight);
-        txtLayPrice = view.findViewById(R.id.txtLayPrice);
-        txtLayBuilding = view.findViewById(R.id.txtLayBuilding);
-        txtLayCity = view.findViewById(R.id.txtLayCity);
-        txtLayProvince = view.findViewById(R.id.txtLayProvince);
-        txtLayPostalCode = view.findViewById(R.id.txtLayPostalCode);
+        txtLayQuantity = binding.txtLayQuantity;
+        txtLayWeight = binding.txtLayWeight;
+        txtLayPrice = binding.txtLayPrice;
+        txtLayBuilding = binding.txtLayBuilding;
+        txtLayCity = binding.txtLayCity;
+        txtLayProvince = binding.txtLayProvince;
+        txtLayPostalCode = binding.txtLayPostalCode;
 
-        //Price
+        //Price will only show when type of user will be Seller
         txtLayPrice.setVisibility(View.GONE);
 
+        //Fill data which were needed
+        fillData();
         // Set up AutoCompleteTextView with predefined options
         ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
                 requireContext(),
@@ -122,7 +132,7 @@ public class PublishFragment extends Fragment {
             }
         });
 
-        Button btnPublish = view.findViewById(R.id.btnPost);
+        Button btnPublish = binding.btnPost;
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +196,21 @@ public class PublishFragment extends Fragment {
             }
         });
 
-        return view;
+        return binding.getRoot();  // Make sure to return the root view
+    }
+
+    private void fillData() {
+        userId = firebaseAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                binding.edtBuilding.setText(value.getString("street"));
+                binding.edtBuilding.setText(value.getString("unitNo"));
+                binding.edtCity.setText(value.getString("city"));
+                binding.edtPostalCode.setText(value.getString("postalCode"));
+            }
+        });
     }
 
 
