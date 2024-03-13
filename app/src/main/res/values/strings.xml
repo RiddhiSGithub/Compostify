@@ -58,5 +58,6 @@
     <string name="street">Street</string>
     <string name="unit_number">Apt/Unit No.</string>
     <string name="log_out">Log Out</string>
+    <string name="post_date">Post Date</string>
 
 </resources>
