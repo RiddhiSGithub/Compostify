@@ -6,14 +6,14 @@
         android:icon="@drawable/baseline_bungalow_24"/>
     <item
         android:id="@+id/Search"
-        android:title="@string/search"
+        android:title="@string/search_title"
         android:icon="@drawable/search"/>
     <item
         android:id="@+id/publish"
-        android:title="@string/post"
+        android:title="@string/publish_title"
         android:icon="@drawable/baseline_add_24"/>
     <item
         android:id="@+id/profile"
-        android:title="@string/profile"
+        android:title="@string/profile_title"
         android:icon="@drawable/baseline_account_circle_24"/>
 </menu>

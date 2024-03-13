@@ -1,15 +1,20 @@
 <resources>
     <string name="app_name">Compostify</string>
+<!--    Pages And Navigation-->
     <string name="about_us">About Us</string>
     <string name="my_cart">My Cart</string>
-    <string name="profile">Profile</string>
-    <string name="post">Post</string>
-    <string name="list">List</string>
-    <string name="search">Search</string>
+    <string name="search_title">Search</string>
+    <string name="publish_title">Publish</string>
+    <string name="profile_title">Profile</string>
     <string name="home">Home</string>
+<!--    Filter-->
     <string name="location_prompt">Location</string>
     <string name="distance_0_km">Distance: 0 km</string>
     <string name="type_of_waste">Type Of Waste</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="reset_filter">Reset Filter</string>
+    <string name="more_filters">More Filters</string>
+<!--    Post -->
     <string name="quantity">Quantity of Bags</string>
     <string name="weight">Total Weight</string>
     <string name="Add_Image">Add Image</string>
@@ -20,21 +25,15 @@
     <string name="province">Province</string>
     <string name="PostalCode">Postal Code</string>
     <string name="Building_Name_Number">Building Number and Name</string>
-    <string name="apply_filter">Apply Filter</string>
-    <string name="reset_filter">Reset Filter</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="waste_type">Waste Type</string>
     <string name="postal_code">Postal Code</string>
-    <string name="more_filters">More Filters</string>
     <string name="empty_waste_msg">Sorry! No waste available as of now!</string>
     <string name="title">Title</string>
     <string name="address">Address</string>
     <string name="see_more">See More</string>
 
-    <string name="search_title">Search</string>
-    <string name="publish_title">Publish</string>
-    <string name="profile_title">Profile</string>
+
     <string name="save_changes">Save Changes</string>
     <string name="email">Email</string>
     <string name="BusinessName">Business Name</string>
