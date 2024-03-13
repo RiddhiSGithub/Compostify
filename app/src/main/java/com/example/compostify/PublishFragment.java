@@ -44,7 +44,8 @@ public class PublishFragment extends Fragment {
     private TextInputEditText edtWeight;
     private TextInputEditText edtPrice;
     private TextInputEditText edtOtherDetails;
-    private TextInputEditText edtBuilding;
+    private TextInputEditText edtBuildingNumber;
+    private TextInputEditText edtBuildingName;
     private TextInputEditText edtCity;
     private TextInputEditText edtProvince;
     private TextInputEditText edtPostalCode;
@@ -52,7 +53,8 @@ public class PublishFragment extends Fragment {
     private TextInputLayout txtLayQuantity;
     private TextInputLayout txtLayWeight;
     private TextInputLayout txtLayPrice;
-    private TextInputLayout txtLayBuilding;
+    private TextInputLayout txtLayBuildingNumber;
+    private TextInputLayout txtLayBuildingName;
     private TextInputLayout txtLayCity;
     private TextInputLayout txtLayProvince;
     private TextInputLayout txtLayPostalCode;
@@ -66,13 +68,19 @@ public class PublishFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
+
+        firebaseAuth = FirebaseAuth.getInstance(); //Initialize firebaseAuth
+        firebaseFirestore = FirebaseFirestore.getInstance(); //Initialize firebaseFirestore
+
+
         edtTypeOfUser = binding.edtTypeOfUser;
         edtTypeOfWaste = binding.edtTypeOfWaste;
         edtQuantity = binding.edtQuantity;
         edtWeight = binding.edtWeight;
         edtPrice = binding.edtPrice;
         edtOtherDetails = binding.edtOtherDetails;
-        edtBuilding = binding.edtBuilding;
+        edtBuildingNumber = binding.edtBuildingNumber;
+        edtBuildingName = binding.edtBuildingName;
         edtCity = binding.edtCity;
         edtProvince = binding.edtProvince;
         edtPostalCode = binding.edtPostalCode;
@@ -80,10 +88,13 @@ public class PublishFragment extends Fragment {
         txtLayQuantity = binding.txtLayQuantity;
         txtLayWeight = binding.txtLayWeight;
         txtLayPrice = binding.txtLayPrice;
-        txtLayBuilding = binding.txtLayBuilding;
+        txtLayBuildingNumber = binding.txtLayBuildingNumber;
+        txtLayBuildingNumber = binding.txtLayBuildingName;
         txtLayCity = binding.txtLayCity;
         txtLayProvince = binding.txtLayProvince;
         txtLayPostalCode = binding.txtLayPostalCode;
+
+
 
         //Price will only show when type of user will be Seller
         txtLayPrice.setVisibility(View.GONE);
@@ -152,7 +163,8 @@ public class PublishFragment extends Fragment {
                         String quantity = edtQuantity.getText().toString();
                         String weight = edtWeight.getText().toString();
                         String otherDetails = edtOtherDetails.getText().toString();
-                        String building = edtBuilding.getText().toString();
+                        String buildingNumber = edtBuildingNumber.getText().toString();
+                        String buildingName = edtBuildingName.getText().toString();
                         String city = edtCity.getText().toString();
                         String province = edtProvince.getText().toString();
                         String postalCode = edtPostalCode.getText().toString();
@@ -166,7 +178,8 @@ public class PublishFragment extends Fragment {
                         postDetails.put("quantity", quantity);
                         postDetails.put("weight", weight);
                         postDetails.put("otherDetails", otherDetails);
-                        postDetails.put("building", building);
+                        postDetails.put("building No,", buildingNumber);
+                        postDetails.put("building Name,", buildingName);
                         postDetails.put("city", city);
                         postDetails.put("province", province);
                         postDetails.put("postalCode", postalCode);
@@ -205,9 +218,10 @@ public class PublishFragment extends Fragment {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.edtBuilding.setText(value.getString("street"));
-                binding.edtBuilding.setText(value.getString("unitNo"));
+                binding.edtBuildingName.setText(value.getString("street"));
+                binding.edtBuildingNumber.setText(value.getString("unitNo"));
                 binding.edtCity.setText(value.getString("city"));
+                binding.edtProvince.setText(value.getString("province"));
                 binding.edtPostalCode.setText(value.getString("postalCode"));
             }
         });
@@ -259,12 +273,20 @@ public class PublishFragment extends Fragment {
             }
         }
 
-        // Validation for Building
-        if (edtBuilding.getText().toString().isEmpty()) {
-            txtLayBuilding.setError("Building is required");
+        // Validation for Building Number
+        if (edtBuildingNumber.getText().toString().isEmpty()) {
+            txtLayBuildingNumber.setError("Building is required");
             isValid = false;
         } else {
-            txtLayBuilding.setError(null);
+            txtLayBuildingNumber.setError(null);
+        }
+
+        // Validation for Building Name
+        if (edtBuildingName.getText().toString().isEmpty()) {
+            txtLayBuildingName.setError("Building is required");
+            isValid = false;
+        } else {
+            txtLayBuildingName.setError(null);
         }
 
         // Validation for City
@@ -301,9 +323,5 @@ public class PublishFragment extends Fragment {
         edtWeight.setText("");
         edtPrice.setText("");
         edtOtherDetails.setText("");
-        edtBuilding.setText("");
-        edtCity.setText("");
-        edtProvince.setText("");
-        edtPostalCode.setText("");
     }
 }

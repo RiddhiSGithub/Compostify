@@ -139,24 +139,6 @@
                     android:lines="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingStart="5dp"-->
-<!--                android:layout_marginTop="15dp"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                android:textColorHint="@color/primary">-->
-
-<!--                <com.google.android.material.textfield.TextInputEditText-->
-<!--                    android:id="@+id/edtPostDate"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:clickable="false"-->
-<!--                    android:focusable="false"-->
-<!--                    android:textColor="@color/primary"-->
-<!--                    android:hint="@string/post_date" />-->
-
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -169,17 +151,35 @@
                 android:textStyle="bold"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayBuilding"
+                android:id="@+id/txtLayBuildingNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/Building_Name_Number"
+                android:hint="@string/Building_Number"
                 android:textColorHint="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtBuilding"
+                    android:id="@+id/edtBuildingNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLayBuildingName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/Building_Name"
+                android:textColorHint="@color/primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtBuildingName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary"

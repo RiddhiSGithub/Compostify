@@ -19,7 +19,8 @@
     <string name="City">City</string>
     <string name="province">Province</string>
     <string name="PostalCode">Postal Code</string>
-    <string name="Building_Name_Number">Building Number and Name</string>
+    <string name="Building_Number">Building Number</string>
+    <string name="Building_Name">Building Name</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="reset_filter">Reset Filter</string>
     <!-- TODO: Remove or change this placeholder text -->
