@@ -59,5 +59,6 @@
     <string name="log_out">Log Out</string>
     <string name="post_date">Post Date</string>
     <string name="price">Price</string>
+    <string name="post">Post</string>
 
 </resources>
