@@ -51,5 +51,6 @@
     <string name="date">Date</string>
     <string name="sold_bought">Sold/Bought</string>
     <string name="log_out">Log Out</string>
+    <string name="post_date">Post Date</string>
 
 </resources>
