@@ -1,5 +1,9 @@
 package com.example.compostify;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,15 +32,23 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PublishFragment extends Fragment {
 
     private String userId;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+    private static final int REQUEST_IMAGE_PICK = 1;
+
     private FragmentPublishBinding binding;
     private AutoCompleteTextView edtTypeOfUser;
     private AutoCompleteTextView edtTypeOfWaste;
@@ -49,6 +61,7 @@ public class PublishFragment extends Fragment {
     private TextInputEditText edtCity;
     private TextInputEditText edtProvince;
     private TextInputEditText edtPostalCode;
+    private String imageUrl; // Declare imageUrl variable
 
     private TextInputLayout txtLayQuantity;
     private TextInputLayout txtLayWeight;
@@ -71,6 +84,8 @@ public class PublishFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance(); //Initialize firebaseAuth
         firebaseFirestore = FirebaseFirestore.getInstance(); //Initialize firebaseFirestore
+        storage = FirebaseStorage.getInstance(); // Initialize FirebaseStorage
+        storageReference = storage.getReference(); // Initialize storageReference
 
 
         edtTypeOfUser = binding.edtTypeOfUser;
@@ -143,73 +158,124 @@ public class PublishFragment extends Fragment {
             }
         });
 
+        Button btnUploadPhotos = binding.btnUploadPhotos;
+        btnUploadPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch intent to select an image
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_PICK);
+            }
+        });
+
         Button btnPublish = binding.btnPost;
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs()) {
-                    // Get logged-in user details
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                    if (currentUser != null) {
-                        // Get user ID and email
-                        String userId = currentUser.getUid();
-                        String userEmail = currentUser.getEmail();
-
-                        // Retrieve other details from EditText fields
-                        String typeOfUser = edtTypeOfUser.getText().toString();
-                        String typeOfWaste = edtTypeOfWaste.getText().toString();
-                        String quantity = edtQuantity.getText().toString();
-                        String weight = edtWeight.getText().toString();
-                        String otherDetails = edtOtherDetails.getText().toString();
-                        String buildingNumber = edtBuildingNumber.getText().toString();
-                        String buildingName = edtBuildingName.getText().toString();
-                        String city = edtCity.getText().toString();
-                        String province = edtProvince.getText().toString();
-                        String postalCode = edtPostalCode.getText().toString();
-
-                        // Create a map to store post details
-                        Map<String, Object> postDetails = new HashMap<>();
-                        postDetails.put("userId", userId);
-                        postDetails.put("userEmail", userEmail);
-                        postDetails.put("typeOfUser", typeOfUser);
-                        postDetails.put("typeOfWaste", typeOfWaste);
-                        postDetails.put("quantity", quantity);
-                        postDetails.put("weight", weight);
-                        postDetails.put("otherDetails", otherDetails);
-                        postDetails.put("building No,", buildingNumber);
-                        postDetails.put("building Name,", buildingName);
-                        postDetails.put("city", city);
-                        postDetails.put("province", province);
-                        postDetails.put("postalCode", postalCode);
-
-                        // Add current date and time
-                        postDetails.put("postDateTime", FieldValue.serverTimestamp());
-
-                        // Now, you can add this postDetails map to your Firebase Database or Firestore
-                        // For example, assuming you have a "posts" collection in Firestore
-                        FirebaseFirestore.getInstance().collection("Publish")
-                                .add(postDetails)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
-                                        clearFormFields();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(requireContext(), "Failed to publish post", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                }
+                uploadPostDetailsToFirestore(imageUrl);
             }
         });
 
         return binding.getRoot();  // Make sure to return the root view
+    }
+
+    // Override onActivityResult() method to handle image selection result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Inside onActivityResult()
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            // Upload the selected image to Firebase Storage
+            uploadImageToFirebase(selectedImageUri);
+        }
+    }
+
+    // Inside PublishFragment class
+    private void uploadImageToFirebase(Uri imageUri) {
+        if (imageUri != null) {
+            StorageReference photoRef = storageReference.child("images/" + UUID.randomUUID().toString());
+            photoRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Image uploaded successfully
+                        // Get the download URL
+                        photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Handle the download URL
+                            imageUrl = uri.toString(); // Assign the download URL to imageUrl variable
+                            // After obtaining the download URL, call the method to upload post details to Firestore
+                            uploadPostDetailsToFirestore(imageUrl);
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle unsuccessful upload
+                        Toast.makeText(requireContext(), "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+    // Upload other post details along with image URL to Firestore
+    private void uploadPostDetailsToFirestore(String imageUrl) {
+        if (validateInputs()) {
+            // Get logged-in user details
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (currentUser != null) {
+                // Get user ID and email
+                String userId = currentUser.getUid();
+                String userEmail = currentUser.getEmail();
+
+                // Retrieve other details from EditText fields
+                String typeOfUser = edtTypeOfUser.getText().toString();
+                String typeOfWaste = edtTypeOfWaste.getText().toString();
+                String quantity = edtQuantity.getText().toString();
+                String weight = edtWeight.getText().toString();
+                String otherDetails = edtOtherDetails.getText().toString();
+                String buildingNumber = edtBuildingNumber.getText().toString();
+                String buildingName = edtBuildingName.getText().toString();
+                String city = edtCity.getText().toString();
+                String province = edtProvince.getText().toString();
+                String postalCode = edtPostalCode.getText().toString();
+
+                // Create a map to store post details
+                Map<String, Object> postDetails = new HashMap<>();
+                postDetails.put("userId", userId);
+                postDetails.put("userEmail", userEmail);
+                postDetails.put("typeOfUser", typeOfUser);
+                postDetails.put("typeOfWaste", typeOfWaste);
+                postDetails.put("quantity", quantity);
+                postDetails.put("weight", weight);
+                postDetails.put("otherDetails", otherDetails);
+                postDetails.put("building No,", buildingNumber);
+                postDetails.put("building Name,", buildingName);
+                postDetails.put("city", city);
+                postDetails.put("province", province);
+                postDetails.put("postalCode", postalCode);
+                postDetails.put("imageUrl", imageUrl); // Add image URL to post details
+
+                // Add current date and time
+                postDetails.put("postDateTime", FieldValue.serverTimestamp());
+
+                // Now, you can add this postDetails map to your Firebase Firestore
+                // For example, assuming you have a "posts" collection in Firestore
+                FirebaseFirestore.getInstance().collection("Publish")
+                        .add(postDetails)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
+                                clearFormFields();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(requireContext(), "Failed to publish post", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }
     }
 
     private void fillData() {
