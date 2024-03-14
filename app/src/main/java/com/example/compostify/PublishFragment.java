@@ -1,9 +1,5 @@
 package com.example.compostify;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,7 +58,6 @@ public class PublishFragment extends Fragment {
     private TextInputLayout txtLayCity;
     private TextInputLayout txtLayProvince;
     private TextInputLayout txtLayPostalCode;
-    private static final int PICK_IMAGE_REQUEST = 1;
 
     public PublishFragment() {
         // Required empty public constructor
@@ -148,15 +143,6 @@ public class PublishFragment extends Fragment {
             }
         });
 
-        // Upload photos button click listener
-        Button btnUploadPhotos = binding.btnUploadPhotos;
-        btnUploadPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadPhotos();
-            }
-        });
-
         Button btnPublish = binding.btnPost;
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,33 +210,6 @@ public class PublishFragment extends Fragment {
         });
 
         return binding.getRoot();  // Make sure to return the root view
-    }
-
-    private void uploadPhotos() {
-        // Intent to pick images from gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-    // Override onActivityResult to handle the selected images
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            if (data.getClipData() != null) {
-                int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    // Now you have the imageUri, you can upload it to Firebase Storage
-                    // Once uploaded, you can store the download URL in Firestore along with other data
-                }
-            } else if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                // Handle single image upload similarly
-            }
-        }
     }
 
     private void fillData() {
