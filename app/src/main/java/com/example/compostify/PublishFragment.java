@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -73,7 +74,7 @@ public class PublishFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
-
+        
         firebaseAuth = FirebaseAuth.getInstance(); //Initialize firebaseAuth
         firebaseFirestore = FirebaseFirestore.getInstance(); //Initialize firebaseFirestore
 
@@ -98,7 +99,6 @@ public class PublishFragment extends Fragment {
         txtLayCity = binding.txtLayCity;
         txtLayProvince = binding.txtLayProvince;
         txtLayPostalCode = binding.txtLayPostalCode;
-
 
 
         //Price will only show when type of user will be Seller
@@ -234,6 +234,7 @@ public class PublishFragment extends Fragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
     // Override onActivityResult to handle the selected images
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
