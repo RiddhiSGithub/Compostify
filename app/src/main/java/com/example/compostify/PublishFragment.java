@@ -1,9 +1,5 @@
 package com.example.compostify;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,9 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -40,12 +34,12 @@ import java.util.Map;
 public class PublishFragment extends Fragment {
 
     private String userId;
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth firebaseAuth;
     private FragmentPublishBinding binding;
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private AutoCompleteTextView edtTypeOfUser;
     private AutoCompleteTextView edtTypeOfWaste;
-    private TextInputEditText edtQuantity;
     private TextInputEditText edtWeight;
     private TextInputEditText edtPrice;
     private TextInputEditText edtOtherDetails;
@@ -55,7 +49,6 @@ public class PublishFragment extends Fragment {
     private TextInputEditText edtProvince;
     private TextInputEditText edtPostalCode;
 
-    private TextInputLayout txtLayQuantity;
     private TextInputLayout txtLayWeight;
     private TextInputLayout txtLayPrice;
     private TextInputLayout txtLayBuildingNumber;
@@ -63,7 +56,6 @@ public class PublishFragment extends Fragment {
     private TextInputLayout txtLayCity;
     private TextInputLayout txtLayProvince;
     private TextInputLayout txtLayPostalCode;
-    private static final int PICK_IMAGE_REQUEST = 1;
 
     public PublishFragment() {
         // Required empty public constructor
@@ -74,14 +66,13 @@ public class PublishFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
-        
+        db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance(); //Initialize firebaseAuth
         firebaseFirestore = FirebaseFirestore.getInstance(); //Initialize firebaseFirestore
 
 
         edtTypeOfUser = binding.edtTypeOfUser;
         edtTypeOfWaste = binding.edtTypeOfWaste;
-        edtQuantity = binding.edtQuantity;
         edtWeight = binding.edtWeight;
         edtPrice = binding.edtPrice;
         edtOtherDetails = binding.edtOtherDetails;
@@ -91,11 +82,10 @@ public class PublishFragment extends Fragment {
         edtProvince = binding.edtProvince;
         edtPostalCode = binding.edtPostalCode;
 
-        txtLayQuantity = binding.txtLayQuantity;
         txtLayWeight = binding.txtLayWeight;
         txtLayPrice = binding.txtLayPrice;
         txtLayBuildingNumber = binding.txtLayBuildingNumber;
-        txtLayBuildingNumber = binding.txtLayBuildingName;
+        txtLayBuildingName = binding.txtLayBuildingName;
         txtLayCity = binding.txtLayCity;
         txtLayProvince = binding.txtLayProvince;
         txtLayPostalCode = binding.txtLayPostalCode;
@@ -148,14 +138,6 @@ public class PublishFragment extends Fragment {
             }
         });
 
-        // Upload photos button click listener
-        Button btnUploadPhotos = binding.btnUploadPhotos;
-        btnUploadPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadPhotos();
-            }
-        });
 
         Button btnPublish = binding.btnPost;
         btnPublish.setOnClickListener(new View.OnClickListener() {
@@ -163,18 +145,17 @@ public class PublishFragment extends Fragment {
             public void onClick(View v) {
                 if (validateInputs()) {
                     // Get logged-in user details
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                    if (currentUser != null) {
-                        // Get user ID and email
-                        String userId = currentUser.getUid();
-                        String userEmail = currentUser.getEmail();
+//                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//
+//
+//                    if (currentUser != null) {
+//                        // Get user ID and email
+//                        String userId = currentUser.getUid();
+//                        String userEmail = currentUser.getEmail();
 
                         // Retrieve other details from EditText fields
                         String typeOfUser = edtTypeOfUser.getText().toString();
                         String typeOfWaste = edtTypeOfWaste.getText().toString();
-                        String quantity = edtQuantity.getText().toString();
                         String weight = edtWeight.getText().toString();
                         String otherDetails = edtOtherDetails.getText().toString();
                         String buildingNumber = edtBuildingNumber.getText().toString();
@@ -185,11 +166,10 @@ public class PublishFragment extends Fragment {
 
                         // Create a map to store post details
                         Map<String, Object> postDetails = new HashMap<>();
-                        postDetails.put("userId", userId);
-                        postDetails.put("userEmail", userEmail);
+//                        postDetails.put("userId", userId);
+//                        postDetails.put("userEmail", userEmail);
                         postDetails.put("typeOfUser", typeOfUser);
                         postDetails.put("typeOfWaste", typeOfWaste);
-                        postDetails.put("quantity", quantity);
                         postDetails.put("weight", weight);
                         postDetails.put("otherDetails", otherDetails);
                         postDetails.put("building No,", buildingNumber);
@@ -203,7 +183,7 @@ public class PublishFragment extends Fragment {
 
                         // Now, you can add this postDetails map to your Firebase Database or Firestore
                         // For example, assuming you have a "posts" collection in Firestore
-                        FirebaseFirestore.getInstance().collection("Publish")
+                        db.collection("Publish")
                                 .add(postDetails)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
@@ -219,40 +199,13 @@ public class PublishFragment extends Fragment {
                                     }
                                 });
                     }
-                }
+//                }
             }
         });
 
         return binding.getRoot();  // Make sure to return the root view
     }
 
-    private void uploadPhotos() {
-        // Intent to pick images from gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    // Override onActivityResult to handle the selected images
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            if (data.getClipData() != null) {
-                int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    // Now you have the imageUri, you can upload it to Firebase Storage
-                    // Once uploaded, you can store the download URL in Firestore along with other data
-                }
-            } else if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                // Handle single image upload similarly
-            }
-        }
-    }
 
     private void fillData() {
         userId = firebaseAuth.getCurrentUser().getUid();
@@ -285,15 +238,6 @@ public class PublishFragment extends Fragment {
             isValid = false;
         }
 
-        // Validation for Quantity
-        String quantity = edtQuantity.getText().toString();
-        if (quantity.isEmpty()) {
-            txtLayQuantity.setError("Quantity is required");
-            isValid = false;
-        } else {
-            txtLayQuantity.setError(null);
-        }
-
         // Validation for Weight
         String weight = edtWeight.getText().toString();
         if (weight.isEmpty()) {
@@ -317,7 +261,7 @@ public class PublishFragment extends Fragment {
 
         // Validation for Building Number
         if (edtBuildingNumber.getText().toString().isEmpty()) {
-            txtLayBuildingNumber.setError("Building is required");
+            txtLayBuildingNumber.setError("Building Number is required");
             isValid = false;
         } else {
             txtLayBuildingNumber.setError(null);
@@ -325,7 +269,7 @@ public class PublishFragment extends Fragment {
 
         // Validation for Building Name
         if (edtBuildingName.getText().toString().isEmpty()) {
-            txtLayBuildingName.setError("Building is required");
+            txtLayBuildingName.setError("Building Name is required");
             isValid = false;
         } else {
             txtLayBuildingName.setError(null);
@@ -357,11 +301,9 @@ public class PublishFragment extends Fragment {
 
         return isValid;
     }
-
     private void clearFormFields() {
         edtTypeOfUser.setText("");
         edtTypeOfWaste.setText("");
-        edtQuantity.setText("");
         edtWeight.setText("");
         edtPrice.setText("");
         edtOtherDetails.setText("");
