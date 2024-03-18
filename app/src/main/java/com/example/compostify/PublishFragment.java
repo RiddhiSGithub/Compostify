@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.compostify.databinding.FragmentPublishBinding;
@@ -22,11 +21,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +91,7 @@ public class PublishFragment extends Fragment {
         txtLayPrice.setVisibility(View.GONE);
 
         //Fill data which were needed
-        fillData();
+//        fillData();
         // Set up AutoCompleteTextView with predefined options
         ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
                 requireContext(),
@@ -198,29 +194,29 @@ public class PublishFragment extends Fragment {
                                         Toast.makeText(requireContext(), "Failed to publish post", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    }
-//                }
-            }
-        });
+//                        }if(current user)
+                } //if(valid inputs)
+            } // on click
+        }); //set on click listener
 
         return binding.getRoot();  // Make sure to return the root view
     }
 
 
-    private void fillData() {
-        userId = firebaseAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.edtBuildingName.setText(value.getString("street"));
-                binding.edtBuildingNumber.setText(value.getString("unitNo"));
-                binding.edtCity.setText(value.getString("city"));
-                binding.edtProvince.setText(value.getString("province"));
-                binding.edtPostalCode.setText(value.getString("postalCode"));
-            }
-        });
-    }
+//    private void fillData() {
+//        userId = firebaseAuth.getCurrentUser().getUid();
+//        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+//        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                binding.edtBuildingName.setText(value.getString("street"));
+//                binding.edtBuildingNumber.setText(value.getString("unitNo"));
+//                binding.edtCity.setText(value.getString("city"));
+//                binding.edtProvince.setText(value.getString("province"));
+//                binding.edtPostalCode.setText(value.getString("postalCode"));
+//            }
+//        });
+//    }
 
 
     private boolean validateInputs() {
