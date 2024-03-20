@@ -1,39 +1,39 @@
 package com.example.compostify;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.compostify.databinding.ActivityRegistrationBinding;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.io.Console;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -60,10 +60,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     String street;
     String unitNo;
 
+    LatLng latLng;
+
+    Uri logoURI;
+
     private FirebaseAuth firebaseAuth;
     private String userID;
-    private DocumentReference documentReference;
+
     private FirebaseFirestore firebaseFireStore;
+
+    private final int PICK_IMAGE_REQUEST = 1;
+    private String address;
+    private String downloadUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
         setListeners();
+
+
     }
+
 
     private void applyAutoComplete() {
         binding.edtStreetAddress.setFocusable(false);
@@ -92,43 +103,43 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         binding.btnRegistration.setOnClickListener(this);
         binding.edtBusinessPhoneNumber.addTextChangedListener(new CanadianPhoneNumberTextWatcher(binding.edtBusinessPhoneNumber));
         binding.edtStreetAddress.setOnClickListener(this);
+        binding.btnSelectImage.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (binding.btnRegistration.getId() == v.getId()) {
-
-
             getUserInput();
-            name = "Jay Patl";
-            email = "jupatel1104@gmail.com";
-            businessEmail = "kfc@dukestkitchener.ca";
-            businessName = "kfc";
-            contactNumber = "+1 (437) 599-2300";
-            street = "55 duke sTreet";
-            unitNo = null;
-
-            password = "123";
-            confirmPassword = "123";
 
 
-            if (hasFieldError())
+            if (hasFieldError()) {
                 if (password.equals(confirmPassword)) {
                     binding.progressBar.setVisibility(View.VISIBLE);
-                    createUser(getApplicationContext());
+                    uploadImage(logoURI);
+
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Password and Confirm Password dosen't Match", Toast.LENGTH_LONG).show();
 
                 }
+            }
+
 
         } else if (binding.edtStreetAddress.getId() == v.getId()) {
             List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
             Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(RegistrationActivity.this);
             startActivityForResult(intent, 100);
-
+        } else if (binding.btnSelectImage.getId() == v.getId()) {
+            openImageChooser();
 
         }
+
+    }
+
+    private void openImageChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Logo"), PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -138,26 +149,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (requestCode == 100 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             binding.edtStreetAddress.setText(place.getAddress());
+            address = place.getAddress();
+            latLng = place.getLatLng();
 
-            if (place.getAddressComponents() != null) {
-                for (AddressComponent component : place.getAddressComponents().asList()) {
-                    for (String type : component.getTypes()) {
-                        switch (type) {
-                            case "locality":
-                                binding.edtCity.setText(component.getName());
-                                break;
-                            case "administrative_area_level_1":
-                                binding.edtProvince.setText(component.getName());
-                                break;
-                            case "postal_code":
-                                binding.edtPostalCode.setText(component.getName());
-                                break;
-                        }
-                    }
-                }
-            }
+
+        } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            logoURI = data.getData();
+            Glide.with(this).load(logoURI).into(binding.imgLogo);
         }
     }
+
 
     private boolean hasFieldError() {
         if (TextUtils.isEmpty(name)) {
@@ -197,9 +198,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         binding.edtPassword.setText(null);
         binding.edtCPassword.setText(null);
         binding.edtBusinessPhoneNumber.setText(null);
-        binding.edtPostalCode.setText(null);
-        binding.edtProvince.setText(null);
-        binding.edtCity.setText(null);
+
         binding.edtStreetAddress.setText(null);
         binding.edtUnitNumber.setText(null);
     }
@@ -216,6 +215,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         password = String.valueOf(binding.edtPassword.getText());
         confirmPassword = String.valueOf(binding.edtCPassword.getText());
     }
+
+    //Adding image button
+
 
     public void createUser(Context context) {
 
@@ -235,6 +237,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                                     if (task.isSuccessful()) {
 
+
                                         DocumentReference documentReference = firebaseFireStore.collection("users").document(userID);
                                         Map<String, Object> newUser = new HashMap<>();
                                         newUser.put("userName", name);
@@ -242,9 +245,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         newUser.put("businessName", businessName);
                                         newUser.put("businessEmail", businessEmail);
                                         newUser.put("businessContactNumber", contactNumber);
-                                        newUser.put("street", street);
+                                        newUser.put("address", address);
                                         newUser.put("unitNo", unitNo);
-
+                                        newUser.put("latLng", latLng);
+                                        newUser.put("downloadUrl", downloadUrl);
                                         documentReference.set(newUser)
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -271,5 +275,25 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 });
 
 
+    }
+
+    private void uploadImage(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        int len = logoURI.getLastPathSegment().split("/").length;
+        String imageName = logoURI.getLastPathSegment().split("/")[len - 1];
+
+        StorageReference imagesRef = storageRef.child("LogoImages/" + imageName);
+
+        UploadTask uploadTask = imagesRef.putFile(imageUri);
+
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                downloadUrl = uri.toString();
+                Toast.makeText(RegistrationActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                createUser(getApplicationContext());
+            });
+        }).addOnFailureListener(e ->
+                Toast.makeText(RegistrationActivity.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

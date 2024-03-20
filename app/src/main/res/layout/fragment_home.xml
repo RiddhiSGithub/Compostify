@@ -10,33 +10,41 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgProfilePic"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="left"
         android:layout_marginTop="15sp"
-        android:background="@color/secondary"
-        android:backgroundTint="@color/secondary"
+
+
         android:cropToPadding="true"
-        android:tint="@color/primary"
+
         android:layout_marginBottom="10sp"
         app:shapeAppearanceOverlay="@drawable/round_border"
         android:src="@drawable/baseline_account_circle_24"></com.google.android.material.imageview.ShapeableImageView>
     <!-- Welcome message -->
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/welcomeUserTextView"
+        android:id="@+id/txtBusinessName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hi_lily"
+        android:text="@string/BusinessName"
         android:textColor="@color/primary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <!-- Welcome message -->
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/MessageTextView"
+        android:id="@+id/txtUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_to_compostify_thank_you_for_being_part_of_our_community"
+        android:text="@string/user_name"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_name"
         android:textSize="20sp"
         android:textStyle="bold" />
 

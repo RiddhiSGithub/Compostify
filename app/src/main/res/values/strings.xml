@@ -1,20 +1,20 @@
 <resources>
     <string name="app_name">Compostify</string>
-<!--    Pages And Navigation-->
+    <!--    Pages And Navigation-->
     <string name="about_us">About Us</string>
     <string name="my_cart">My Cart</string>
     <string name="search_title">Search</string>
     <string name="publish_title">Publish</string>
     <string name="profile_title">Profile</string>
     <string name="home">Home</string>
-<!--    Filter-->
+    <!--    Filter-->
     <string name="location_prompt">Location</string>
     <string name="distance_0_km">Distance: 0 km</string>
     <string name="type_of_waste">Type Of Waste</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="reset_filter">Reset Filter</string>
     <string name="more_filters">More Filters</string>
-<!--    Post -->
+    <!--    Post -->
     <string name="quantity">Quantity of Bags</string>
     <string name="weight">Total Weight</string>
     <string name="Add_Image">Add Image</string>
@@ -64,5 +64,8 @@
     <string name="Building_Number">Building Number</string>
     <string name="Building_Name">Building Name</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_logo">Upload your logo</string>
+    <string name="upload_logo">Select logo</string>
+    <string name="user_name">User Name</string>
 
 </resources>

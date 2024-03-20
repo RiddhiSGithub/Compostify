@@ -1,15 +1,15 @@
 package com.example.compostify;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
+import com.bumptech.glide.Glide;
 import com.example.compostify.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,6 +23,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     String userId;
+    String imageURL;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -48,8 +49,11 @@ public class HomeFragment extends Fragment {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.welcomeUserTextView.setText(value.getString("userName"));
-
+                binding.txtBusinessName.setText(value.getString("businessName"));
+                binding.txtAddress.setText(value.getString("address"));
+                binding.txtUserName.setText(value.getString("userName"));
+                Glide.with(getActivity()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
+                Log.e("download url", value.getString("downloadUrl"));
             }
         });
 
