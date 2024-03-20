@@ -59,9 +59,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     String street;
     String unitNo;
-    String city;
-    String province;
-    String postalCode;
+
     private FirebaseAuth firebaseAuth;
     private String userID;
     private DocumentReference documentReference;
@@ -109,9 +107,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             contactNumber = "+1 (437) 599-2300";
             street = "55 duke sTreet";
             unitNo = null;
-            city = "Kitchener";
-            postalCode = "N2H 0C9";
-            province = "ON";
+
             password = "123";
             confirmPassword = "123";
 
@@ -185,15 +181,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else if (TextUtils.isEmpty(street)) {
             binding.edtStreetAddress.setError("Street Name Cannot be empty");
             return false;
-        } else if (TextUtils.isEmpty(city)) {
-            binding.edtCity.setError("City Cannot be empty");
-            return false;
-        } else if (TextUtils.isEmpty(province)) {
-            binding.edtProvince.setError("Province Cannot be empty");
-            return false;
-        } else if (TextUtils.isEmpty(city)) {
-            binding.edtPostalCode.setError("Postal Code Cannot be empty");
-            return false;
         }
 
 
@@ -225,9 +212,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         contactNumber = String.valueOf(binding.edtBusinessPhoneNumber.getText());
         street = String.valueOf(binding.edtStreetAddress.getText());
         unitNo = String.valueOf(binding.edtUnitNumber.getText());
-        city = String.valueOf(binding.edtCity.getText());
-        postalCode = String.valueOf(binding.edtPostalCode.getText());
-        province = String.valueOf(binding.edtProvince.getText());
+
         password = String.valueOf(binding.edtPassword.getText());
         confirmPassword = String.valueOf(binding.edtCPassword.getText());
     }
@@ -259,9 +244,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         newUser.put("businessContactNumber", contactNumber);
                                         newUser.put("street", street);
                                         newUser.put("unitNo", unitNo);
-                                        newUser.put("city", city);
-                                        newUser.put("province", province);
-                                        newUser.put("postalCode", postalCode);
+
                                         documentReference.set(newUser)
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -273,7 +256,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                                     }
                                                 });
 
-                                        
+
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         binding.progressBar.setVisibility(View.GONE);

@@ -165,59 +165,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/City"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtProvince"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/province"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtProvince"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtPostalCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/PostalCode"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPostalCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtLayPassword"
