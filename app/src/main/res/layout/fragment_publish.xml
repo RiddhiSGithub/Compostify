@@ -222,6 +222,44 @@
                     android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/photos" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUploadPhotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/upload" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWastePhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                style="@style/Animation.Design.BottomSheetDialog"
+                tools:listitem="@layout/item_photo" />
+
             <Button
                 android:id="@+id/btnPost"
                 android:layout_width="match_parent"

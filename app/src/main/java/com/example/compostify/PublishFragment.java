@@ -1,6 +1,9 @@
 package com.example.compostify;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,19 +15,27 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.FragmentPublishBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PublishFragment extends Fragment {
@@ -32,8 +43,6 @@ public class PublishFragment extends Fragment {
     private String userId;
     private FragmentPublishBinding binding;
     private FirebaseFirestore db;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
     private AutoCompleteTextView edtTypeOfUser;
     private AutoCompleteTextView edtTypeOfWaste;
     private TextInputEditText edtWeight;
@@ -53,6 +62,9 @@ public class PublishFragment extends Fragment {
     private TextInputLayout txtLayProvince;
     private TextInputLayout txtLayPostalCode;
 
+    //
+    private List<String> uploadedImageUrls = new ArrayList<>();
+
     public PublishFragment() {
         // Required empty public constructor
     }
@@ -63,9 +75,6 @@ public class PublishFragment extends Fragment {
         binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
         db = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance(); //Initialize firebaseAuth
-        firebaseFirestore = FirebaseFirestore.getInstance(); //Initialize firebaseFirestore
-
 
         edtTypeOfUser = binding.edtTypeOfUser;
         edtTypeOfWaste = binding.edtTypeOfWaste;
@@ -135,73 +144,117 @@ public class PublishFragment extends Fragment {
         });
 
 
+        //Adding image button
+        Button btnUploadPhotos = binding.btnUploadPhotos;
+        btnUploadPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImage();
+            }
+        });
+
         Button btnPublish = binding.btnPost;
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs()) {
-                    // Get logged-in user details
-//                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//
-//
-//                    if (currentUser != null) {
-//                        // Get user ID and email
-//                        String userId = currentUser.getUid();
-//                        String userEmail = currentUser.getEmail();
-
-                        // Retrieve other details from EditText fields
-                        String typeOfUser = edtTypeOfUser.getText().toString();
-                        String typeOfWaste = edtTypeOfWaste.getText().toString();
-                        String weight = edtWeight.getText().toString();
-                        String otherDetails = edtOtherDetails.getText().toString();
-                        String buildingNumber = edtBuildingNumber.getText().toString();
-                        String buildingName = edtBuildingName.getText().toString();
-                        String city = edtCity.getText().toString();
-                        String province = edtProvince.getText().toString();
-                        String postalCode = edtPostalCode.getText().toString();
-
-                        // Create a map to store post details
-                        Map<String, Object> postDetails = new HashMap<>();
-//                        postDetails.put("userId", userId);
-//                        postDetails.put("userEmail", userEmail);
-                        postDetails.put("typeOfUser", typeOfUser);
-                        postDetails.put("typeOfWaste", typeOfWaste);
-                        postDetails.put("weight", weight);
-                        postDetails.put("otherDetails", otherDetails);
-                        postDetails.put("building No,", buildingNumber);
-                        postDetails.put("building Name,", buildingName);
-                        postDetails.put("city", city);
-                        postDetails.put("province", province);
-                        postDetails.put("postalCode", postalCode);
-
-                        // Add current date and time
-                        postDetails.put("postDateTime", FieldValue.serverTimestamp());
-
-                        // Now, you can add this postDetails map to your Firebase Database or Firestore
-                        // For example, assuming you have a "posts" collection in Firestore
-                        db.collection("Publish")
-                                .add(postDetails)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
-                                        clearFormFields();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(requireContext(), "Failed to publish post", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-//                        }if(current user)
-                } //if(valid inputs)
-            } // on click
-        }); //set on click listener
+                publishData();
+            }
+        });
 
         return binding.getRoot();  // Make sure to return the root view
     }
 
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == getActivity().RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            uploadImage(imageUri);
+        }
+    }
+
+    private void uploadImage(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imagesRef = storageRef.child("WasteImages/" + imageUri.getLastPathSegment());
+
+        imagesRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String downloadUrl = uri.toString();
+                                uploadedImageUrls.add(downloadUrl);
+                                Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                                displayUploadedImages();
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void displayUploadedImages() {
+        RecyclerView rvWastePhotos = binding.rvWastePhotos;
+        PhotoAdapter adapter = new PhotoAdapter(requireContext(), uploadedImageUrls);
+        rvWastePhotos.setAdapter(adapter);
+        rvWastePhotos.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void publishData() {
+        if (validateInputs()) {
+            String typeOfUser = binding.edtTypeOfUser.getText().toString();
+            String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
+            String weight = binding.edtWeight.getText().toString();
+            String otherDetails = binding.edtOtherDetails.getText().toString();
+            String buildingNumber = binding.edtBuildingNumber.getText().toString();
+            String buildingName = binding.edtBuildingName.getText().toString();
+            String city = binding.edtCity.getText().toString();
+            String province = binding.edtProvince.getText().toString();
+            String postalCode = binding.edtPostalCode.getText().toString();
+
+            Map<String, Object> postDetails = new HashMap<>();
+            postDetails.put("typeOfUser", typeOfUser);
+            postDetails.put("typeOfWaste", typeOfWaste);
+            postDetails.put("weight", weight);
+            postDetails.put("otherDetails", otherDetails);
+            postDetails.put("building No,", buildingNumber);
+            postDetails.put("building Name,", buildingName);
+            postDetails.put("city", city);
+            postDetails.put("province", province);
+            postDetails.put("postalCode", postalCode);
+            postDetails.put("imageUrls", uploadedImageUrls);
+            postDetails.put("postDateTime", FieldValue.serverTimestamp());
+
+            db.collection("Publish")
+                    .add(postDetails)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
+                            clearFormFields();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(requireContext(), "Failed to publish post", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
 
 //    private void fillData() {
 //        userId = firebaseAuth.getCurrentUser().getUid();
@@ -303,5 +356,7 @@ public class PublishFragment extends Fragment {
         edtWeight.setText("");
         edtPrice.setText("");
         edtOtherDetails.setText("");
+        uploadedImageUrls.clear();
+        binding.rvWastePhotos.getAdapter().notifyDataSetChanged();
     }
 }
