@@ -165,7 +165,9 @@ public class PublishFragment extends Fragment {
     }
 
     private void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+
         startActivityForResult(intent, 100);
     }
 
@@ -181,7 +183,7 @@ public class PublishFragment extends Fragment {
     private void uploadImage(Uri imageUri) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference imagesRef = storageRef.child("WasteImages/" + imageUri.getLastPathSegment());
+        StorageReference imagesRef = storageRef.child("WasteImages/" + imageUri.getLastPathSegment().split("/")[1]);
 
         imagesRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -350,6 +352,7 @@ public class PublishFragment extends Fragment {
 
         return isValid;
     }
+
     private void clearFormFields() {
         edtTypeOfUser.setText("");
         edtTypeOfWaste.setText("");
