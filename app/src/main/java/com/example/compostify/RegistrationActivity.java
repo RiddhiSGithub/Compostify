@@ -1,6 +1,7 @@
 package com.example.compostify;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -16,6 +17,12 @@ import com.example.compostify.databinding.ActivityRegistrationBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +34,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Console;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,12 +77,23 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFireStore = FirebaseFirestore.getInstance();
 
+        Places.initialize(getApplicationContext(), "AIzaSyBTqCW_QQhBwo6hyVIsAGJ66jtZbtecyC0");
+
+        applyAutoComplete();
+
+
         setListeners();
+    }
+
+    private void applyAutoComplete() {
+        binding.edtStreetAddress.setFocusable(false);
+
     }
 
     private void setListeners() {
         binding.btnRegistration.setOnClickListener(this);
         binding.edtBusinessPhoneNumber.addTextChangedListener(new CanadianPhoneNumberTextWatcher(binding.edtBusinessPhoneNumber));
+        binding.edtStreetAddress.setOnClickListener(this);
     }
 
     @Override
@@ -82,6 +102,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
             getUserInput();
+            name = "Jay Patl";
+            email = "jupatel1104@gmail.com";
+            businessEmail = "kfc@dukestkitchener.ca";
+            businessName = "kfc";
+            contactNumber = "+1 (437) 599-2300";
+            street = "55 duke sTreet";
+            unitNo = null;
+            city = "Kitchener";
+            postalCode = "N2H 0C9";
+            province = "ON";
+            password = "123";
+            confirmPassword = "123";
 
 
             if (hasFieldError())
@@ -94,6 +126,40 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 }
 
+        } else if (binding.edtStreetAddress.getId() == v.getId()) {
+            List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(RegistrationActivity.this);
+            startActivityForResult(intent, 100);
+
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            binding.edtStreetAddress.setText(place.getAddress());
+
+            if (place.getAddressComponents() != null) {
+                for (AddressComponent component : place.getAddressComponents().asList()) {
+                    for (String type : component.getTypes()) {
+                        switch (type) {
+                            case "locality":
+                                binding.edtCity.setText(component.getName());
+                                break;
+                            case "administrative_area_level_1":
+                                binding.edtProvince.setText(component.getName());
+                                break;
+                            case "postal_code":
+                                binding.edtPostalCode.setText(component.getName());
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -177,24 +243,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                             userID = firebaseAuth.getCurrentUser().getUid();
 
-                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Email verification link has been sent", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Incorrect Email address", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            firebaseAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                }
-                            });
 
                             firebaseAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                 
+
                                     if (task.isSuccessful()) {
 
                                         DocumentReference documentReference = firebaseFireStore.collection("users").document(userID);
@@ -219,6 +272,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                                         finish();
                                                     }
                                                 });
+
+                                        
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         binding.progressBar.setVisibility(View.GONE);

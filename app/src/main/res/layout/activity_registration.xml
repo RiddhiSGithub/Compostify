@@ -136,7 +136,7 @@
                 android:paddingLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/street"
+                android:hint="@string/address"
                 android:textColorHint="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
