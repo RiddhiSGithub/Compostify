@@ -53,7 +53,8 @@
     <string name="sold_bought">Sold/Bought</string>
     <string name="log_out">Log Out</string>
     <string name="post_date">Post Date</string>
-    <string name="price">Price</string>
     <string name="photos">Photos</string>
+    <string name="natural_weight">Natural Waste Weight</string>
+    <string name="mix_weight">Mix Waste Weight</string>
 
 </resources>

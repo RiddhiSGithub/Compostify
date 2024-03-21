@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.compostify.R;
 
 import java.util.List;
@@ -34,9 +36,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     @Override
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
         String imageUrl = imageUrls.get(position);
+        RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
         Glide.with(context)
                 .load(imageUrl)
                 .placeholder(R.drawable.placeholder) // Placeholder image while loading
+                .apply(requestOptions)
                 .error(R.drawable.error) // Image to show if loading fails
                 .into(holder.imageView);
     }

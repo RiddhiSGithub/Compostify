@@ -3,10 +3,15 @@
     <style name="Base.Theme.Compostify" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/primaryDark</item>
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorAccent">@color/accent</item>
+
         <item name="android:textViewStyle">@style/TextAppearance.Compostify.Regular</item>
+
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
     </style>
+
 
     <style name="Theme.Compostify" parent="Base.Theme.Compostify" />
     <style name="TextAppearance.Compostify.Regular" parent="Widget.MaterialComponents.TextView">

@@ -220,6 +220,9 @@
                     android:text="@string/save_changes"
                     android:textColor="@color/secondary"
                     android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:background="@drawable/button_border"
                     android:textStyle="bold"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -228,9 +231,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/log_out"
                     android:textColor="@color/secondary"
                     android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:background="@drawable/button_border"
                     android:textStyle="bold"/>
             </LinearLayout>
 
