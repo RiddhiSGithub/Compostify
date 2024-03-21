@@ -18,7 +18,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="@string/app_name"
-            android:textColor="@color/secondary"
+            android:textColor="@color/primary"
             android:textSize="35sp"
             android:layout_marginTop="60dp"
             android:textStyle="bold" />
@@ -29,7 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:text="Registration"
-            android:textColor="@color/secondary"
+            android:textColor="@color/primary"
             android:textSize="25sp"
             android:layout_marginTop="30dp"
             android:textStyle="bold" />
@@ -42,13 +42,13 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:hint="User Name"
-            android:textColorHint="@color/secondary">
+            android:textColorHint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary" />
+                android:textColor="@color/primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,13 +59,13 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:hint="@string/email"
-            android:textColorHint="@color/secondary">
+            android:textColorHint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary" />
+                android:textColor="@color/primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -76,13 +76,13 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:hint="@string/password"
-            android:textColorHint="@color/secondary">
+            android:textColorHint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary"
+                android:textColor="@color/primary"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,14 +94,14 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:hint="Confirm password"
-            android:textColorHint="@color/secondary">
+            android:textColorHint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtCPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:textColor="@color/secondary" />
+                android:textColor="@color/primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
