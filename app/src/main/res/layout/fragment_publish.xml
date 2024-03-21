@@ -155,6 +155,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
+                    android:id="@+id/txtLayPhoto"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingStart="10dp"
@@ -164,11 +165,11 @@
                     android:text="@string/photos" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnUploadPhotos"
+                    android:id="@+id/btnSelectPhotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/upload"
+                    android:text="@string/select"
                     android:textColor="@color/secondary"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:background="@drawable/button_border"
@@ -196,7 +197,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginRight="10dp"
                 android:text="@string/post"
                 android:textColor="@color/secondary"
@@ -204,6 +204,19 @@
                 android:background="@drawable/button_border"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/clear"
+                android:textColor="@color/secondary"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:background="@drawable/button_border"
+                />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
