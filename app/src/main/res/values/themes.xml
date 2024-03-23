@@ -9,7 +9,10 @@
     </style>
 
     <style name="Theme.Compostify" parent="Base.Theme.Compostify" />
+
     <style name="TextAppearance.Compostify.Regular" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">18sp</item>
     </style>
+
+
 </resources>

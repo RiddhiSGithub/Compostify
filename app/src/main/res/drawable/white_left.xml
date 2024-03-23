@@ -1,0 +1,13 @@
+<!-- btn_buyer_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:topLeftRadius="120dp"
+        android:bottomLeftRadius="120dp"
+        android:topRightRadius="0dp"
+        android:bottomRightRadius="0dp" />
+    <stroke
+        android:width="7dp"
+        android:color="@color/primary" />
+
+    <solid android:color="@color/secondary" />
+</shape>

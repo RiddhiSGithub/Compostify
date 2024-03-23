@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/secondary"
+    android:orientation="vertical"
     android:padding="16sp">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -31,8 +30,35 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primary"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:background="@color/primary" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="10dp">
+
+
+        <Button
+            android:id="@+id/btnBuyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buyer"
+            android:background="@drawable/green_left"
+            android:textColor="@color/secondary" />
+
+        <Button
+            android:id="@+id/btnSeller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seller"
+            android:background="@drawable/white_right"
+            android:textColor="@color/primary"></Button>
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWasteList"
