@@ -1,60 +1,97 @@
 package com.example.compostify;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
+import com.google.firebase.Timestamp;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class User {
-    String name;
-    String email;
-    String businessEmail;
-    String businessName;
+    private List<String> imageUrls;
+    private String mixWasteWeight;
+    private String naturalWasteWeight;
+    private String otherDetails;
+    private Timestamp postDateTime; // Assuming this is a long representing Unix timestamp
+    private String totalWeight;
+    private String typeOfUser;
+    private String typeOfWaste;
 
-    String password;
-
-
-    String contactNumber;
-
-    String street;
-    String unitNo;
-    String city;
-    String province;
-    String postalCode;
-
-    FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFireStore;
-    private String userID;
-
-    public User(String name, String email, String businessEmail, String businessName, String password, String contactNumber, String street, String unitNo, String city, String province, String postalCode) {
-        this.name = name;
-        this.email = email;
-        this.businessEmail = businessEmail;
-        this.businessName = businessName;
-        this.password = password;
-        this.contactNumber = contactNumber;
-        this.street = street;
-        this.unitNo = unitNo;
-        this.city = city;
-        this.province = province;
-        this.postalCode = postalCode;
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFireStore = FirebaseFirestore.getInstance();
+    public User() {
+        // Required default constructor
     }
 
+    public User(List<String> imageUrls, String mixWasteWeight, String naturalWasteWeight, String otherDetails,
+                Timestamp postDateTime, String totalWeight, String typeOfUser, String typeOfWaste) {
+        this.imageUrls = imageUrls;
+        this.mixWasteWeight = mixWasteWeight;
+        this.naturalWasteWeight = naturalWasteWeight;
+        this.otherDetails = otherDetails;
+        this.postDateTime = postDateTime;
+        this.totalWeight = totalWeight;
+        this.typeOfUser = typeOfUser;
+        this.typeOfWaste = typeOfWaste;
+    }
 
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public String getMixWasteWeight() {
+        return mixWasteWeight;
+    }
+
+    public void setMixWasteWeight(String mixWasteWeight) {
+        this.mixWasteWeight = mixWasteWeight;
+    }
+
+    public String getNaturalWasteWeight() {
+        return naturalWasteWeight;
+    }
+
+    public void setNaturalWasteWeight(String naturalWasteWeight) {
+        this.naturalWasteWeight = naturalWasteWeight;
+    }
+
+    public String getOtherDetails() {
+        return otherDetails;
+    }
+
+    public void setOtherDetails(String otherDetails) {
+        this.otherDetails = otherDetails;
+    }
+
+    public Timestamp getPostDateTime() {
+        return postDateTime;
+    }
+
+    public void setPostDateTime(Timestamp postDateTime) {
+        this.postDateTime = postDateTime;
+    }
+
+    public String getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(String totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public String getTypeOfUser() {
+        return typeOfUser;
+    }
+
+    public void setTypeOfUser(String typeOfUser) {
+        this.typeOfUser = typeOfUser;
+    }
+
+    public String getTypeOfWaste() {
+        return typeOfWaste;
+    }
+
+    public void setTypeOfWaste(String typeOfWaste) {
+        this.typeOfWaste = typeOfWaste;
+    }
 }
+

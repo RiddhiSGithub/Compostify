@@ -33,70 +33,17 @@
         android:layout_marginTop="8dp"
         android:background="@color/primary" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_margin="10dp">
-
-
-        <Button
-            android:id="@+id/btnBuyer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buyer"
-            android:background="@drawable/green_left"
-            android:textColor="@color/secondary" />
-
-        <Button
-            android:id="@+id/btnSeller"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Seller"
-            android:background="@drawable/white_right"
-            android:textColor="@color/primary"></Button>
-
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWasteList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+
         android:layout_weight="1"
-        android:visibility="gone"
+        
         tools:itemCount="10"
         tools:listitem="@layout/item_waste_list_modal" />
 
-    <FrameLayout
-        android:id="@+id/layoutListLoader"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/primary" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/layoutEmptyList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/empty_waste_msg" />
-
-    </FrameLayout>
 
 </LinearLayout>

@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
                 binding.txtBusinessName.setText(value.getString("businessName"));
                 binding.txtAddress.setText(value.getString("address"));
                 binding.txtUserName.setText(value.getString("userName"));
-                Glide.with(getActivity()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
+                Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
                 Log.e("download url", value.getString("downloadUrl"));
             }
         });

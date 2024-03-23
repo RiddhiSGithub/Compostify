@@ -14,5 +14,13 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="ButtonStyle" parent="android:style/Widget.Button">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:colorPrimary">@color/secondary</item>
+        <item name="android:background">@drawable/white_right</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="color">@android:color/white</item>
 
+    </style>
 </resources>

@@ -265,7 +265,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         // If sign in fails, display a message to the user.
                                         binding.progressBar.setVisibility(View.GONE);
                                         Log.w("createUser", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(context, "Registration failed: " + task.getException().getCause(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Registration failed: " + task.getException().getCause(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -291,7 +291,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 downloadUrl = uri.toString();
                 Toast.makeText(RegistrationActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
-                createUser(getApplicationContext());
+                createUser(RegistrationActivity.this);
             });
         }).addOnFailureListener(e ->
                 Toast.makeText(RegistrationActivity.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show());

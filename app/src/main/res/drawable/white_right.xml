@@ -1,4 +1,3 @@
-<!-- btn_seller_background.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners
         android:topLeftRadius="0dp"
@@ -10,5 +9,5 @@
         android:width="7dp"
         android:color="@color/primary" />
 
-    <solid android:color="@color/secondary" />
+    <solid android:color="@android:color/white" />
 </shape>
