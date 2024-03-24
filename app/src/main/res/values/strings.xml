@@ -50,12 +50,13 @@
     <string name="request_a_pickup_from_your_local_host">Request a pickup from your local host</string>
     <string name="recent_activity">Recent activity</string>
     <string name="date">Date</string>
-    <string name="sold_bought">Sold/Bought</string>
     <string name="log_out">Log Out</string>
     <string name="post_date">Post Date</string>
     <string name="photos">Photos</string>
     <string name="natural_weight">Natural Waste Weight</string>
     <string name="mix_weight">Mix Waste Weight</string>
     <string name="clear">Clear</string>
+    <string name="time">Time</string>
+    <string name="view_more">View More</string>
 
 </resources>

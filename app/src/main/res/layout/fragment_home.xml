@@ -41,18 +41,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- Edit Profile button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/editProfileButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/edit_profile"
-        android:textColor="@color/secondary"
-        android:layout_marginBottom="10dp"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:background="@drawable/button_border"
-        android:layout_marginTop="16sp" />
+
 
 
     <!-- Recent activity header -->
