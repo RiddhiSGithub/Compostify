@@ -95,8 +95,6 @@ public class PublishFragment extends Fragment {
         binding.txtLayPhoto.setVisibility(View.GONE);
         binding.btnSelectPhotos.setVisibility(View.GONE);
 
-        //Fill data which were needed
-//        fillData();
         // Set up AutoCompleteTextView with predefined options
         ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
                 requireContext(),
@@ -184,38 +182,37 @@ public class PublishFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == getActivity().RESULT_OK && data != null) {
-            ClipData clipData = data.getClipData();
-            if (clipData != null) {
+            if (data.getClipData() != null) {
+                ClipData clipData = data.getClipData();
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri imageUri = clipData.getItemAt(i).getUri();
-                    // Add the selected image URI to the list
-                    uploadedImageUrls.add(imageUri.toString());
+                    uploadImage(imageUri);
                 }
-            } else if (data.getData() != null) { // Handle single image selection
+            } else if (data.getData() != null) {
                 Uri imageUri = data.getData();
-                uploadedImageUrls.add(imageUri.toString());
+                uploadImage(imageUri);
             }
-            displayUploadedImages();
         }
     }
-
 
     private void uploadImage(Uri imageUri) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference imagesRef = storageRef.child("WasteImages/" + imageUri.getLastPathSegment());
+        String imageName = "WasteImage_" + System.currentTimeMillis(); // Generate a unique name for each image
+        StorageReference imagesRef = storageRef.child("WasteImages").child(imageName);
 
         imagesRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get the download URL of the uploaded image
                         imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String downloadUrl = uri.toString();
                                 uploadedImageUrls.add(downloadUrl);
 //                                Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
-//                                displayUploadedImages();
+                                displayUploadedImages();
                             }
                         });
                     }
@@ -223,10 +220,12 @@ public class PublishFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        // Show a toast indicating the failure
                         Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
     private void displayUploadedImages() {
         RecyclerView rvWastePhotos = binding.rvWastePhotos;
@@ -241,16 +240,10 @@ public class PublishFragment extends Fragment {
             // Get logged-in user details
 //                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
 //                    if (currentUser != null) {
 //                        // Get user ID and email
 //                        String userId = currentUser.getUid();
 //                        String userEmail = currentUser.getEmail();
-
-            // Upload images only when the "Post" button is clicked
-            for (String imageUrl : uploadedImageUrls) {
-                uploadImage(Uri.parse(imageUrl));
-            }
 
                         String typeOfUser = binding.edtTypeOfUser.getText().toString();
                         String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
@@ -290,21 +283,6 @@ public class PublishFragment extends Fragment {
 //                    }//get user
         }//valid input
 }//publish data
-
-//    private void fillData() {
-//        userId = firebaseAuth.getCurrentUser().getUid();
-//        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
-//        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                binding.edtBuildingName.setText(value.getString("street"));
-//                binding.edtBuildingNumber.setText(value.getString("unitNo"));
-//                binding.edtCity.setText(value.getString("city"));
-//                binding.edtProvince.setText(value.getString("province"));
-//                binding.edtPostalCode.setText(value.getString("postalCode"));
-//            }
-//        });
-//    }
 
 
     private boolean validateInputs() {
