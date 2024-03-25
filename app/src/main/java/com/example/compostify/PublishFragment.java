@@ -163,12 +163,59 @@ public class PublishFragment extends Fragment {
                     // Show the "Natural weight and Mix weight" field
                     binding.txtLayNaturalWeight.setVisibility(View.VISIBLE);
                     binding.txtLayMixWeight.setVisibility(View.VISIBLE);
+
+                    // Add TextWatcher to edtNaturalWeight and edtMixWeight to calculate total weight
+                    binding.edtNaturalWeight.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            calculateTotalWeight();
+                        }
+                    });
+
+                    binding.edtMixWeight.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            calculateTotalWeight();
+                        }
+                    });
                 } else {
                     binding.txtLayNaturalWeight.setVisibility(View.GONE);
                     binding.txtLayMixWeight.setVisibility(View.GONE);
                 }
             }
         });
+    }
+
+    private void calculateTotalWeight() {
+        String naturalWeightStr = binding.edtNaturalWeight.getText().toString();
+        String mixWeightStr = binding.edtMixWeight.getText().toString();
+
+        // Remove the "Kg" suffix from the strings
+        String naturalWeight = naturalWeightStr.replaceAll("[^\\d.]", "");
+        String mixWeight = mixWeightStr.replaceAll("[^\\d.]", "");
+
+        if (!naturalWeight.isEmpty() && !mixWeight.isEmpty()) {
+            int naturalWeightValue = Integer.parseInt(naturalWeight);
+            int mixWeightValue = Integer.parseInt(mixWeight);
+            int totalWeight = naturalWeightValue + mixWeightValue;
+            binding.edtWeight.setText(String.valueOf(totalWeight) + " kg");
+        }
     }
 
     private void pickImage() {
@@ -306,6 +353,9 @@ public class PublishFragment extends Fragment {
             binding.txtLayWeight.setError("Weight is required");
             isValid = false;
         } else {
+            // Remove the "kg" suffix from the string
+            weight = weight.replaceAll("[^\\d.]", "");
+
             int totalWeight = Integer.parseInt(weight);
             if (totalWeight < 10) { // Minimum total weight requirement
                 binding.txtLayWeight.setError("Minimum total weight should be 10 kg");
@@ -323,10 +373,10 @@ public class PublishFragment extends Fragment {
             boolean isNaturalWeightValid = true;
             boolean isMixWeightValid = true;
 
-            if (naturalWeight.isEmpty()) {
-                binding.txtLayNaturalWeight.setError("Natural Waste Weight is required.");
-                isNaturalWeightValid = false;
-            } else {
+            if (!naturalWeight.isEmpty()) {
+                // Remove the "kg" suffix from the string
+                naturalWeight = naturalWeight.replaceAll("[^\\d.]", "");
+
                 int naturalWeightValue = Integer.parseInt(naturalWeight);
                 if (naturalWeightValue < 5) { // Minimum natural waste weight requirement
                     binding.txtLayNaturalWeight.setError("Minimum natural waste weight should be 5 kg");
@@ -336,10 +386,10 @@ public class PublishFragment extends Fragment {
                 }
             }
 
-            if (mixWeight.isEmpty()) {
-                binding.txtLayMixWeight.setError("Mix Waste Weight is required.");
-                isMixWeightValid = false;
-            } else {
+            if (!mixWeight.isEmpty()) {
+                // Remove the "kg" suffix from the string
+                mixWeight = mixWeight.replaceAll("[^\\d.]", "");
+
                 int mixWeightValue = Integer.parseInt(mixWeight);
                 if (mixWeightValue < 5) { // Minimum mix waste weight requirement
                     binding.txtLayMixWeight.setError("Minimum mix waste weight should be 5 kg");
