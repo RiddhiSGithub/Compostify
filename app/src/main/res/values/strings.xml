@@ -68,5 +68,6 @@
     <string name="upload_logo">Select logo</string>
     <string name="user_name">User Name</string>
     <string name="available_waste">Waste Quantity</string>
+    <string name="update_logo">Update Logo</string>
 
 </resources>

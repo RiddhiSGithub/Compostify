@@ -5,11 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideContext;
 import com.example.compostify.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,12 +55,27 @@ public class HomeFragment extends Fragment {
                 binding.txtBusinessName.setText(value.getString("businessName"));
                 binding.txtAddress.setText(value.getString("address"));
                 binding.txtUserName.setText(value.getString("userName"));
-                Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
-                Log.e("download url", value.getString("downloadUrl"));
+                try {
+
+                        Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
+
+
+
+                }catch (NullPointerException e)
+                {
+
+                }
+
+
+
+
+
             }
         });
 
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return binding.getRoot();
     }
+
+
 }
