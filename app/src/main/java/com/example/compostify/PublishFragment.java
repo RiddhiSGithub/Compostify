@@ -25,6 +25,8 @@ import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.FragmentPublishBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,10 +41,9 @@ import java.util.Map;
 
 public class PublishFragment extends Fragment {
 
-    private String userId;
     private FragmentPublishBinding binding;
     private FirebaseFirestore db;
-    //
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private List<String> uploadedImageUrls = new ArrayList<>();
 
     public PublishFragment() {
@@ -92,59 +93,50 @@ public class PublishFragment extends Fragment {
         //Natural and mix weight will only show when type of user will select typeof waste "both"
         binding.txtLayNaturalWeight.setVisibility(View.GONE);
         binding.txtLayMixWeight.setVisibility(View.GONE);
-        binding.txtLayPhoto.setVisibility(View.GONE);
-        binding.btnSelectPhotos.setVisibility(View.GONE);
 
-        // Set up AutoCompleteTextView with predefined options
-        ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
-        );
-        binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+//        // Set up AutoCompleteTextView with predefined options
+//        ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+//                requireContext(),
+//                android.R.layout.simple_dropdown_item_1line,
+//                new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
+//        );
+//        binding.edtTypeOfWaste.setAdapter(wasteAdapter);
 
-        ArrayAdapter<String> userAdapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                new String[]{"Buyer(Fertilizer Companies, etc.)", "Seller(Restaurants, cafe, Super Markets, etc.)"}
-        );
-        binding.edtTypeOfUser.setAdapter(userAdapter);
 
         visibilityOfContent();
 
         //changing background color of dropdown menus
         AutoCompleteTextView autoCompleteTOWaste = binding.edtTypeOfWaste;
         autoCompleteTOWaste.setDropDownBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.secondary)));
-        AutoCompleteTextView autoCompleteTOUser = binding.edtTypeOfUser;
-        autoCompleteTOUser.setDropDownBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.secondary)));
     }
 
     private void visibilityOfContent() {
-        // Add TextWatcher to edtTypeOfWaste
-        binding.edtTypeOfUser.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+//        if (currentUser != null) {
+//            String userType = currentUser.get("userType").toString(); // Assuming user type is stored in Firestore
+            String userType = "seller "; //for test
+            if ("seller".equals(userType)) {
+                binding.txtLayPhoto.setVisibility(View.VISIBLE);
+                binding.btnSelectPhotos.setVisibility(View.VISIBLE);
+                // Set up AutoCompleteTextView with predefined options
+                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                        requireContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
+                );
+                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+            } else {
+                binding.txtLayPhoto.setVisibility(View.GONE);
+                binding.btnSelectPhotos.setVisibility(View.GONE);
+                // Set up AutoCompleteTextView with predefined options
+                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                        requireContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
+                );
+                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
             }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Check the selected type of user
-                String userType = editable.toString();
-                if ("Seller(Restaurants, cafe, Super Markets, etc.)".equals(userType)) {
-                    // Show the "Natural weight and Mix weight" field
-                    binding.txtLayPhoto.setVisibility(View.VISIBLE);
-                    binding.btnSelectPhotos.setVisibility(View.VISIBLE);
-                }else {
-                    binding.txtLayPhoto.setVisibility(View.GONE);
-                    binding.btnSelectPhotos.setVisibility(View.GONE);
-
-                }
-            }
-        });
+//        }
 
         binding.edtTypeOfWaste.addTextChangedListener(new TextWatcher() {
             @Override
@@ -202,6 +194,7 @@ public class PublishFragment extends Fragment {
         });
     }
 
+    //calculate natural weight and mix weight
     private void calculateTotalWeight() {
         String naturalWeightStr = binding.edtNaturalWeight.getText().toString();
         String mixWeightStr = binding.edtMixWeight.getText().toString();
@@ -283,16 +276,13 @@ public class PublishFragment extends Fragment {
 
     private void publishData() {
         if (validateInputs()) {
-
-            // Get logged-in user details
-//                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+//
 //                    if (currentUser != null) {
-//                        // Get user ID and email
+//                        // Get user ID, email and user type;
 //                        String userId = currentUser.getUid();
 //                        String userEmail = currentUser.getEmail();
+//                        String userType = currentUser.getUserType();
 
-                        String typeOfUser = binding.edtTypeOfUser.getText().toString();
                         String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
                         String totalWeight = binding.edtWeight.getText().toString();
                         String naturalWeight = binding.edtNaturalWeight.getText().toString();
@@ -302,7 +292,7 @@ public class PublishFragment extends Fragment {
                         Map<String, Object> postDetails = new HashMap<>();
 //                        postDetails.put("userId", userId);
 //                        postDetails.put("userEmail", userEmail);
-                        postDetails.put("typeOfUser", typeOfUser);
+//                        postDetails.put("typeOfUser", userType);
                         postDetails.put("typeOfWaste", typeOfWaste);
                         postDetails.put("totalWeight", totalWeight);
                         postDetails.put("naturalWasteWeight", naturalWeight);
@@ -331,15 +321,8 @@ public class PublishFragment extends Fragment {
         }//valid input
 }//publish data
 
-
     private boolean validateInputs() {
         boolean isValid = true;
-
-        // Validation for Type of User
-        if (binding.edtTypeOfUser.getText().toString().isEmpty()) {
-            binding.edtTypeOfUser.setError("Type of User is required");
-            isValid = false;
-        }
 
         // Validation for Type of Waste
         if (binding.edtTypeOfWaste.getText().toString().isEmpty()) {
@@ -406,7 +389,6 @@ public class PublishFragment extends Fragment {
         return isValid;
     }
     private void clearFormFields() {
-        binding.edtTypeOfUser.setText("");
         binding.edtTypeOfWaste.setText("");
         binding.edtWeight.setText("");
         binding.edtNaturalWeight.setText("");

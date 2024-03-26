@@ -30,29 +30,6 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/type_of_user"
-                android:textColorHint="@color/primary"
-                app:boxStrokeColor="@color/primary"
-                app:boxBackgroundColor="@color/secondary"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                app:boxStrokeErrorColor="@color/red">
-
-                <AutoCompleteTextView
-                    android:id="@+id/edtTypeOfUser"
-                    style="@style/Animation.Design.BottomSheetDialog"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/type_of_waste"
                 android:textColorHint="@color/primary"
                 app:boxStrokeColor="@color/primary"

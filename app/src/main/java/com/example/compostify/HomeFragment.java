@@ -68,7 +68,17 @@ public class HomeFragment extends Fragment {
                             String typeOfUser = document.getString("typeOfUser");
                             String typeOfWaste = document.getString("typeOfWaste");
                             String weight = "Weight: "+ document.getString("totalWeight");
-                            String imageUrls = document.getString("imageUrl");//business logo
+//                            String imageUrls = document.getString("imageUrls");
+
+                            // Retrieve the image URLs array
+                            List<String> imageUrls = (List<String>) document.get("imageUrls");
+                            String firstImageUrl = "";
+
+                            // Check if the imageUrls array is not empty
+                            if (imageUrls != null && !imageUrls.isEmpty()) {
+                                // Get the first image URL from the array
+                                firstImageUrl = imageUrls.get(0);
+                            }
 
                             // Convert timestamp to date string
                             String date;
@@ -87,7 +97,7 @@ public class HomeFragment extends Fragment {
                                 time = "";
                             }
 
-                            UserRecentActivity recentActivity = new UserRecentActivity(typeOfUser, typeOfWaste, date, time, weight, imageUrls);
+                            UserRecentActivity recentActivity = new UserRecentActivity(typeOfUser, typeOfWaste, date, time, weight, firstImageUrl);
                             recentActivityList.add(recentActivity);
                         }
                         initializeRecyclerView(recentActivityList);
