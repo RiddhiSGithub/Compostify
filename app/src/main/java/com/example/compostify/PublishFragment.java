@@ -1,5 +1,6 @@
 package com.example.compostify;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +19,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.FragmentPublishBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -65,7 +74,10 @@ public class PublishFragment extends Fragment {
     private FirebaseFirestore db;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private List<String> uploadedImageUrls = new ArrayList<>();
-
+    private String userType;
+    private String userId;
+    private String userEmail;
+    FirebaseAuth firebaseAuth;
     public PublishFragment() {
         // Required empty public constructor
     }
@@ -76,7 +88,9 @@ public class PublishFragment extends Fragment {
         binding = FragmentPublishBinding.inflate(inflater, container, false);  // Initialize in onCreateView
 
         db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
+        getTypeOfUser();
         initView();
 
         //Adding image button
@@ -96,7 +110,7 @@ public class PublishFragment extends Fragment {
         });
 
         //reset the entire field
-        binding.btnClearPhotos.setOnClickListener(new  View.OnClickListener(){
+        binding.btnClearPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearFormFields();
@@ -107,6 +121,35 @@ public class PublishFragment extends Fragment {
 
         return binding.getRoot();  // Make sure to return the root view
     }
+
+    private void getTypeOfUser() {
+
+            userId = firebaseAuth.getCurrentUser().getUid();
+            DocumentReference documentReference = db.collection("users").document(userId);
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Fetching data...");
+        progressDialog.setCancelable(false); // Set whether the dialog can be canceled with the back key
+        progressDialog.show();
+
+            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                    userType = value.getString("typeOfUser");
+                    Log.e("User type", userType + "");
+                    progressDialog.dismiss();
+                    try {
+                        visibilityOfContent();
+                    }catch (NullPointerException e){
+
+                    }
+
+
+                }
+            });
+
+        }
+
 
     private void initView() {
 
@@ -123,7 +166,7 @@ public class PublishFragment extends Fragment {
 //        binding.edtTypeOfWaste.setAdapter(wasteAdapter);
 
 
-        visibilityOfContent();
+
 
         //changing background color of dropdown menus
         AutoCompleteTextView autoCompleteTOWaste = binding.edtTypeOfWaste;
@@ -134,28 +177,28 @@ public class PublishFragment extends Fragment {
 
 //        if (currentUser != null) {
 //            String userType = currentUser.get("userType").toString(); // Assuming user type is stored in Firestore
-            String userType = "seller "; //for test
-            if ("seller".equals(userType)) {
-                binding.txtLayPhoto.setVisibility(View.VISIBLE);
-                binding.btnSelectPhotos.setVisibility(View.VISIBLE);
-                // Set up AutoCompleteTextView with predefined options
-                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
-                );
-                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
-            } else {
-                binding.txtLayPhoto.setVisibility(View.GONE);
-                binding.btnSelectPhotos.setVisibility(View.GONE);
-                // Set up AutoCompleteTextView with predefined options
-                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
-                );
-                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
-            }
+         //for test
+        if (userType.equals("Seller")) {
+            binding.txtLayPhoto.setVisibility(View.VISIBLE);
+            binding.btnSelectPhotos.setVisibility(View.VISIBLE);
+            // Set up AutoCompleteTextView with predefined options
+            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
+            );
+            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+        } else {
+            binding.txtLayPhoto.setVisibility(View.GONE);
+            binding.btnSelectPhotos.setVisibility(View.GONE);
+            // Set up AutoCompleteTextView with predefined options
+            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
+            );
+            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+        }
 //        }
 
         binding.edtTypeOfWaste.addTextChangedListener(new TextWatcher() {
@@ -294,74 +337,66 @@ public class PublishFragment extends Fragment {
         rvWastePhotos.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
     }
 
+    private void clearFormFields() {
+        binding.edtTypeOfWaste.setText("");
+        binding.edtWeight.setText("");
+        binding.edtNaturalWeight.setText("");
+        binding.edtMixWeight.setText("");
+        binding.edtOtherDetails.setText("");
+
+        // Clear uploaded image URLs and notify adapter
+        uploadedImageUrls.clear();
+        RecyclerView.Adapter adapter = binding.rvWastePhotos.getAdapter();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private void publishData() {
         if (validateInputs()) {
 //
-//                    if (currentUser != null) {
-//                        // Get user ID, email and user type;
-//                        String userId = currentUser.getUid();
-//                        String userEmail = currentUser.getEmail();
-//                        String userType = currentUser.getUserType();
+                    if (currentUser != null) {
+                        // Get user ID, email and user type;
+                        userId = currentUser.getUid();
+                        userEmail = currentUser.getEmail();}
 
-                        String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
-                        String totalWeight = binding.edtWeight.getText().toString();
-                        String naturalWeight = binding.edtNaturalWeight.getText().toString();
-                        String mixWeight = binding.edtMixWeight.getText().toString();
-                        String otherDetails = binding.edtOtherDetails.getText().toString();
 
-                        Map<String, Object> postDetails = new HashMap<>();
-//                        postDetails.put("userId", userId);
-//                        postDetails.put("userEmail", userEmail);
-//                        postDetails.put("typeOfUser", userType);
-                        postDetails.put("typeOfWaste", typeOfWaste);
-                        postDetails.put("totalWeight", totalWeight);
-                        postDetails.put("naturalWasteWeight", naturalWeight);
-                        postDetails.put("mixWasteWeight", mixWeight);
-                        postDetails.put("otherDetails", otherDetails);
-                        postDetails.put("imageUrls", uploadedImageUrls);
-                        postDetails.put("postDateTime", FieldValue.serverTimestamp());
+            String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
+            String totalWeight = binding.edtWeight.getText().toString();
+            String naturalWeight = binding.edtNaturalWeight.getText().toString();
+            String mixWeight = binding.edtMixWeight.getText().toString();
+            String otherDetails = binding.edtOtherDetails.getText().toString();
 
-                        db.collection("Publish")
-                                .add(postDetails)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
-                                        clearFormFields();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(requireContext(), "Failed to publish post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                }
-            }
-        });
+            Map<String, Object> postDetails = new HashMap<>();
+                        postDetails.put("userId", userId);
+                        postDetails.put("userEmail", userEmail);
+                        postDetails.put("typeOfUser", userType);
+                        postDetails.put("typeOfUser", userType);
+            postDetails.put("typeOfWaste", typeOfWaste);
+            postDetails.put("totalWeight", totalWeight);
+            postDetails.put("naturalWasteWeight", naturalWeight);
+            postDetails.put("mixWasteWeight", mixWeight);
+            postDetails.put("otherDetails", otherDetails);
+            postDetails.put("imageUrls", uploadedImageUrls);
+            postDetails.put("postDateTime", FieldValue.serverTimestamp());
 
-        return binding.getRoot();  // Make sure to return the root view
+            db.collection("Publish")
+                    .add(postDetails)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
+                            clearFormFields();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(requireContext(), "Failed to publish post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
-
-    private void fillData() {
-        userId = firebaseAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.edtBuildingName.setText(value.getString("street"));
-                binding.edtBuildingNumber.setText(value.getString("unitNo"));
-                binding.edtCity.setText(value.getString("city"));
-                binding.edtProvince.setText(value.getString("province"));
-                binding.edtPostalCode.setText(value.getString("postalCode"));
-            }
-        });
-    }
-
-//                    }//get user
-        }//valid input
-}//publish data
 
     private boolean validateInputs() {
         boolean isValid = true;
@@ -430,18 +465,14 @@ public class PublishFragment extends Fragment {
 
         return isValid;
     }
-    private void clearFormFields() {
-        binding.edtTypeOfWaste.setText("");
-        binding.edtWeight.setText("");
-        binding.edtNaturalWeight.setText("");
-        binding.edtMixWeight.setText("");
-        binding.edtOtherDetails.setText("");
-
-        // Clear uploaded image URLs and notify adapter
-        uploadedImageUrls.clear();
-        RecyclerView.Adapter adapter = binding.rvWastePhotos.getAdapter();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-    }
 }
+
+
+
+
+
+
+
+
+
+

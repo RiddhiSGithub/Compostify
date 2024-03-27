@@ -121,71 +121,8 @@ public class HomeFragment extends Fragment {
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return binding.getRoot();
     }
-    private void fetchRecentActivityData() {
-        // Get the current user ID (assuming you are using Firebase Authentication)
-//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Fetch user's recent activity data from Firestore
-        db.collection("Publish")
-//                .whereEqualTo("userId", currentUserId) // Filter by current user ID
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<UserRecentActivity> recentActivityList = new ArrayList<>();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        SimpleDateFormat stf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String typeOfUser = document.getString("typeOfUser");
-                            String typeOfWaste = document.getString("typeOfWaste");
-                            String weight = "Weight: "+ document.getString("totalWeight");
-//                            String imageUrls = document.getString("imageUrls");
-
-                            // Retrieve the image URLs array
-                            List<String> imageUrls = (List<String>) document.get("imageUrls");
-                            String firstImageUrl = "";
-
-                            // Check if the imageUrls array is not empty
-                            if (imageUrls != null && !imageUrls.isEmpty()) {
-                                // Get the first image URL from the array
-                                firstImageUrl = imageUrls.get(0);
-                            }
-
-                            // Convert timestamp to date string
-                            String date;
-                            if (document.contains("postDateTime")) {
-                                long timestamp = document.getDate("postDateTime").getTime();
-                                date = "Date: "+sdf.format(timestamp);
-                            } else {
-                                date = "";
-                            }
-
-                            String time;
-                            if (document.contains("postDateTime")) {
-                                long timestamp = document.getDate("postDateTime").getTime();
-                                time = "Time: "+stf.format(timestamp);
-                            } else {
-                                time = "";
-                            }
-
-                            UserRecentActivity recentActivity = new UserRecentActivity(typeOfUser, typeOfWaste, date, time, weight, firstImageUrl);
-                            recentActivityList.add(recentActivity);
-                        }
-                        initializeRecyclerView(recentActivityList);
-                    }
-                });
-    }
-
-    private void initializeRecyclerView(List<UserRecentActivity> recentActivityList) {
-        // Initialize RecyclerView
-        // Initialize RecyclerView
-        RecyclerView recyclerView = requireView().findViewById(R.id.recentActivityRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context)); // Pass context here
-
-        // Set adapter for RecyclerView
-        UserRecentActivityAdapter adapter = new UserRecentActivityAdapter(context,recentActivityList);
-        recyclerView.setAdapter(adapter);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -196,11 +133,11 @@ public class HomeFragment extends Fragment {
 
     private void fetchRecentActivityData() {
         // Get the current user ID (assuming you are using Firebase Authentication)
-//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Fetch user's recent activity data from Firestore
         db.collection("Publish")
-//                .whereEqualTo("userId", currentUserId) // Filter by current user ID
+                .whereEqualTo("userId", currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

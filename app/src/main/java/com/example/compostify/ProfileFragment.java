@@ -63,8 +63,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     String downloadURL;
     private FirebaseAuth firebaseAuth;
     private String userID;
-    private DocumentReference documentReference;
-    private FirebaseFirestore firebaseFireStore;
+
 
     FragmentProfileBinding binding;
     private String userId;
