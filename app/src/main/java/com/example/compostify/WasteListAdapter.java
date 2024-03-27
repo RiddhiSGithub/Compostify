@@ -35,8 +35,8 @@ public class WasteListAdapter extends RecyclerView.Adapter<WasteListAdapter.wast
     @Override
     public void onBindViewHolder(@NonNull WasteListAdapter.wasteViewHolder holder, int position) {
         User user = userArrayList.get(position);
-        if (user.getImageUrls().size() > 0)
-            Glide.with(context).load(user.getImageUrls().get(1)).into(holder.imageView);
+        if (user.getImageUrls() != null && user.getImageUrls().size() > 0)
+            Glide.with(context).load(user.getImageUrls().get(0)).into(holder.imageView);
 
         holder.txtBusinessName.setText(user.getTypeOfUser());
         holder.txtAddress.setText(user.getTypeOfWaste());

@@ -122,8 +122,8 @@ public class PublishFragment extends Fragment {
 
     private void getTypeOfUser() {
 
-            userId = firebaseAuth.getCurrentUser().getUid();
-            DocumentReference documentReference = db.collection("users").document(userId);
+        userId = firebaseAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("users").document(userId);
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Fetching data...");
         progressDialog.setCancelable(false); // Set whether the dialog can be canceled with the back key
@@ -154,17 +154,6 @@ public class PublishFragment extends Fragment {
         //Natural and mix weight will only show when type of user will select typeof waste "both"
         binding.txtLayNaturalWeight.setVisibility(View.GONE);
         binding.txtLayMixWeight.setVisibility(View.GONE);
-
-//        // Set up AutoCompleteTextView with predefined options
-//        ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-//                requireContext(),
-//                android.R.layout.simple_dropdown_item_1line,
-//                new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
-//        );
-//        binding.edtTypeOfWaste.setAdapter(wasteAdapter);
-
-
-
 
         //changing background color of dropdown menus
         AutoCompleteTextView autoCompleteTOWaste = binding.edtTypeOfWaste;
@@ -354,46 +343,47 @@ public class PublishFragment extends Fragment {
     private void publishData() {
         if (validateInputs()) {
 //
-                    if (currentUser != null) {
-                        // Get user ID, email and user type;
-                        userId = currentUser.getUid();
-                        userEmail = currentUser.getEmail();}
+            if (currentUser != null) {
+                // Get user ID, email and user type;
+                userId = currentUser.getUid();
+                userEmail = currentUser.getEmail();
+//                userType = currentUser.getTypeOfUser();
+
+                String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
+                String totalWeight = binding.edtWeight.getText().toString();
+                String naturalWeight = binding.edtNaturalWeight.getText().toString();
+                String mixWeight = binding.edtMixWeight.getText().toString();
+                String otherDetails = binding.edtOtherDetails.getText().toString();
+
+                Map<String, Object> postDetails = new HashMap<>();
+                postDetails.put("userId", userId);
+                postDetails.put("userEmail", userEmail);
+                postDetails.put("typeOfUser", userType);
+                postDetails.put("typeOfWaste", typeOfWaste);
+                postDetails.put("totalWeight", totalWeight);
+                postDetails.put("naturalWasteWeight", naturalWeight);
+                postDetails.put("mixWasteWeight", mixWeight);
+                postDetails.put("otherDetails", otherDetails);
+                postDetails.put("imageUrls", uploadedImageUrls);
+                postDetails.put("postDateTime", FieldValue.serverTimestamp());
 
 
-            String typeOfWaste = binding.edtTypeOfWaste.getText().toString();
-            String totalWeight = binding.edtWeight.getText().toString();
-            String naturalWeight = binding.edtNaturalWeight.getText().toString();
-            String mixWeight = binding.edtMixWeight.getText().toString();
-            String otherDetails = binding.edtOtherDetails.getText().toString();
-
-            Map<String, Object> postDetails = new HashMap<>();
-                        postDetails.put("userId", userId);
-                        postDetails.put("userEmail", userEmail);
-                        postDetails.put("typeOfUser", userType);
-                        postDetails.put("typeOfUser", userType);
-            postDetails.put("typeOfWaste", typeOfWaste);
-            postDetails.put("totalWeight", totalWeight);
-            postDetails.put("naturalWasteWeight", naturalWeight);
-            postDetails.put("mixWasteWeight", mixWeight);
-            postDetails.put("otherDetails", otherDetails);
-            postDetails.put("imageUrls", uploadedImageUrls);
-            postDetails.put("postDateTime", FieldValue.serverTimestamp());
-
-            db.collection("Publish")
-                    .add(postDetails)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
-                            clearFormFields();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(requireContext(), "Failed to publish post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                db.collection("Publish")
+                        .add(postDetails)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(requireContext(), "Post published successfully", Toast.LENGTH_SHORT).show();
+                                clearFormFields();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(requireContext(), "Failed to publish post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                     });
+            }
         }
     }
 

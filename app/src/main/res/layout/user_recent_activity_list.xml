@@ -77,12 +77,12 @@
                 />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtViewMore"
+                android:id="@+id/txtEditPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="@string/view_more"
+                android:text="@string/edit_post"
                 android:textStyle="bold"
                 android:textColor="@color/primary"
                 style="@style/TextAppearance.MaterialComponents.Button"/>

@@ -14,10 +14,7 @@
         android:layout_height="100dp"
         android:layout_gravity="left"
         android:layout_marginTop="15sp"
-
-
         android:cropToPadding="true"
-
         android:layout_marginBottom="10sp"
         app:shapeAppearanceOverlay="@drawable/round_border"
         android:src="@drawable/baseline_account_circle_24"></com.google.android.material.imageview.ShapeableImageView>
@@ -71,4 +68,17 @@
         android:layout_weight="1"
         android:transitionGroup="true"
         tools:listitem="@layout/user_recent_activity_list" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtViewAllActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/view_all_activity"
+        android:textStyle="bold"
+        android:textColor="@color/primary"
+        style="@style/Widget.Material3.Button"
+        android:onClick="onViewMoreClicked"/>
+
 </LinearLayout>

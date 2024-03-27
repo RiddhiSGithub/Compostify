@@ -16,15 +16,6 @@
             android:background="@color/secondary"
             android:orientation="vertical">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:background="@color/primary"
-                android:backgroundTint="@color/secondary"
-                android:cropToPadding="true"
-                android:src="@drawable/dustbin"></com.google.android.material.imageview.ShapeableImageView>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"

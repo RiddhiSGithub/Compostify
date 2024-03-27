@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.compostify.Activities.EditPost;
 import com.example.compostify.R;
-import com.example.compostify.WasteDetailsActivity;
 import com.example.compostify.db.UserRecentActivity;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -52,7 +52,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
         public MaterialTextView txtDate;
         public MaterialTextView txtTime;
         public MaterialTextView txtWeight;
-        public MaterialTextView txtViewMore;
+        public MaterialTextView txtEditPost;
         public ImageView imgWasteImage;
 
         public ViewHolder(View itemView) {
@@ -61,7 +61,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             txtDate = itemView.findViewById(R.id.txtDate);
             txtTime = itemView.findViewById(R.id.txtTime);
             txtWeight = itemView.findViewById(R.id.txtWeight);
-            txtViewMore = itemView.findViewById(R.id.txtViewMore);
+            txtEditPost = itemView.findViewById(R.id.txtEditPost);
             imgWasteImage = itemView.findViewById(R.id.imgWasteImage);
         }
     }
@@ -84,33 +84,30 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
 
         // Check if imageUrl is not null or empty
         if (activity.getImageUrl() != null && !activity.getImageUrl().isEmpty()) {
-            // Split the imageUrl string by a delimiter to get individual URLs
             RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
             Glide.with(holder.itemView.getContext())
                     .load(activity.getImageUrl())
                     .apply(requestOptions)
                     .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.side_image)
+                    .error(R.drawable.side_image) // Set error image here
                     .into(holder.imgWasteImage);
         } else {
+            // If imageUrl is empty or null, load the error image
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.side_image)
+                    .apply(requestOptions)
+                    .into(holder.imgWasteImage);
             // Log a warning if imageUrl is null or empty
             Log.w(TAG, "Empty or null imageUrl for position: " + position);
-            // You can also set a default image here if needed
         }
 
 
 
 
         // Set click listener for "View More" TextView
-        holder.txtViewMore.setOnClickListener(v -> {
-            // Handle click event, for example, start a new activity
-//            Intent intent = new Intent(context, WasteDetailsActivity.class);
-            Intent intent = new Intent(v.getContext(), WasteDetailsActivity.class);
-            // Pass user ID and post date/time to the next activity
-//                intent.putExtra("userId", activity.getUserId());
-//                intent.putExtra("postDateTime", activity.getPostDateTime());
-//            context.startActivity(intent);
-            v.getContext().startActivity(intent);
+        holder.txtEditPost.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EditPost.class);
+            //pass postID code
         });
     }
 

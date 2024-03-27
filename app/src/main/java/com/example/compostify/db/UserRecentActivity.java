@@ -1,6 +1,7 @@
 package com.example.compostify.db;
 
 public class UserRecentActivity {
+    private String publishId;
     private String typeOfUser;
     private String typeOfWaste;
     private String date;
@@ -9,7 +10,8 @@ public class UserRecentActivity {
     private String imageUrls;
 
     // Constructor
-    public UserRecentActivity(String typeOfUser, String typeOfWaste, String date,String time, String weight,String imageUrls) {
+    public UserRecentActivity(String publishId,String typeOfUser, String typeOfWaste, String date,String time, String weight,String imageUrls) {
+        this.publishId = publishId;
         this.typeOfUser = typeOfUser;
         this.typeOfWaste = typeOfWaste;
         this.date = date;
@@ -19,6 +21,12 @@ public class UserRecentActivity {
     }
 
     // Getters and setters
+    public String getPublishId(){
+        return publishId;
+    }
+    public void setPublishId(String publishId){
+        this.publishId = publishId;
+    }
     public String getTypeOfUser() {
         return typeOfUser;
     }
