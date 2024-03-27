@@ -19,12 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.FragmentPublishBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -178,6 +176,7 @@ public class PublishFragment extends Fragment {
 //        if (currentUser != null) {
 //            String userType = currentUser.get("userType").toString(); // Assuming user type is stored in Firestore
          //for test
+        userType = "Seller";
         if (userType.equals("Seller")) {
             binding.txtLayPhoto.setVisibility(View.VISIBLE);
             binding.btnSelectPhotos.setVisibility(View.VISIBLE);
