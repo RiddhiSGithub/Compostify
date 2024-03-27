@@ -211,7 +211,6 @@
                     android:textColor="@color/secondary"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:background="@drawable/button_border"
-
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial

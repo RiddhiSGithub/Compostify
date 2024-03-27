@@ -342,7 +342,8 @@ public class PublishFragment extends Fragment {
 
     private void publishData() {
         if (validateInputs()) {
-//
+            String postStatus = "Active";
+
             if (currentUser != null) {
                 // Get user ID, email and user type;
                 userId = currentUser.getUid();
@@ -354,7 +355,6 @@ public class PublishFragment extends Fragment {
                 String naturalWeight = binding.edtNaturalWeight.getText().toString();
                 String mixWeight = binding.edtMixWeight.getText().toString();
                 String otherDetails = binding.edtOtherDetails.getText().toString();
-                String postStatus = "Active";
 
                 Map<String, Object> postDetails = new HashMap<>();
                 postDetails.put("userId", userId);
@@ -457,13 +457,3 @@ public class PublishFragment extends Fragment {
         return isValid;
     }
 }
-
-
-
-
-
-
-
-
-
-

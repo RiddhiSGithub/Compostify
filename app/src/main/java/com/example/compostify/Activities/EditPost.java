@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.compostify.R;
 import com.example.compostify.databinding.ActivityEditPostBinding;
@@ -76,9 +77,8 @@ public class EditPost extends AppCompatActivity {
                         switchActiveDeActive.setText("Active");
                     } else {
                         switchActiveDeActive.setChecked(false);
-                        switchActiveDeActive.setText("Deactive");
+                        switchActiveDeActive.setText("InActive");
                     }
-
                 }
             }
 
@@ -101,12 +101,15 @@ public class EditPost extends AppCompatActivity {
             }
         });
 
+        // Set the background tint color to red
+        binding.btnDelete.setBackgroundTintList(ContextCompat.getColorStateList(EditPost.this, R.color.red));
         // Set onClick listener for the delete button
         binding.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Call method to delete the post
                 deletePost();
+                //
             }
         });
 
