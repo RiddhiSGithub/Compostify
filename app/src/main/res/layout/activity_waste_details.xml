@@ -25,7 +25,7 @@
                 android:id="@+id/vpWasteImages"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/black_border" />
+                android:background="@drawable/green_border" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/layoutTabs"
@@ -105,38 +105,13 @@
                     app:barrierDirection="bottom"
                     app:constraint_referenced_ids="lblAddress,txtAddress" />
 
-                <!-- # Quantity  -->
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/lblQuantityOfBags"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/quantity"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierQuantityOfBags"
-                    app:layout_constraintEnd_toEndOf="@id/lblAddress"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrierAddress"
-                    app:layout_constraintVertical_bias="0" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtQuantityOfBags"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/quantity"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierQuantityOfBags"
-                    app:layout_constraintEnd_toEndOf="@id/txtAddress"
-                    app:layout_constraintStart_toEndOf="@id/lblQuantityOfBags"
-                    app:layout_constraintTop_toBottomOf="@id/barrierAddress"
-                    app:layout_constraintVertical_bias="0" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierQuantityOfBags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblQuantityOfBags,txtQuantityOfBags" />
+                    app:constraint_referenced_ids="lblAddress,txtAddress" />
 
                 <!-- # Weight -->
                 <com.google.android.material.textview.MaterialTextView
@@ -146,7 +121,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/weight"
                     app:layout_constraintBottom_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintEnd_toEndOf="@id/lblQuantityOfBags"
+                    app:layout_constraintEnd_toEndOf="@id/lblAddress"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/barrierQuantityOfBags"
                     app:layout_constraintVertical_bias="0" />
@@ -159,7 +134,7 @@
                     android:text="@string/weight"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintEnd_toEndOf="@id/txtQuantityOfBags"
+                    app:layout_constraintEnd_toEndOf="@id/txtAddress"
                     app:layout_constraintStart_toEndOf="@id/lblWeight"
                     app:layout_constraintTop_toBottomOf="@id/barrierQuantityOfBags"
                     app:layout_constraintVertical_bias="0" />

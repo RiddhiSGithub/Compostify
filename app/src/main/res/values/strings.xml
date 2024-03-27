@@ -18,7 +18,7 @@
     <string name="quantity">Quantity of Bags</string>
     <string name="weight">Total Weight</string>
     <string name="Add_Image">Add Image</string>
-    <string name="upload">Upload</string>
+    <string name="select">Select</string>
     <string name="other_details">Handling Instruction</string>
     <string name="Address">Address:</string>
     <string name="City">City</string>
@@ -69,5 +69,12 @@
     <string name="user_name">User Name</string>
     <string name="available_waste">Waste Quantity</string>
     <string name="update_logo">Update Logo</string>
+    <string name="photos">Photos</string>
+    <string name="natural_weight">Natural Waste Weight</string>
+    <string name="mix_weight">Mix Waste Weight</string>
+    <string name="clear">Clear</string>
+    <string name="time">Time</string>
+    <string name="view_more">View More</string>
+    <string name="_00kg">00Kg</string>
 
 </resources>

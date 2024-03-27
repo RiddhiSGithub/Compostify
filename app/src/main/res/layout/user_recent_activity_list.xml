@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="1dp"
     android:backgroundTint="@color/secondary"
     app:strokeColor="@color/primary"
     >
-
+<!--user_recent_activity_list-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,47 +23,70 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textSize="25sp"
-                android:textColor="@color/primary"
-                android:textStyle="bold"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtTypeOfWaste"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/type_of_waste" />
+                android:layout_marginTop="15dp"
+                android:text="@string/type_of_waste"
+                android:textSize="15sp"
+                style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/date" />
+                android:text="@string/date"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/time"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/weight" />
+                android:layout_marginBottom="15dp"
+                android:text="@string/weight"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
         </LinearLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/txtRent"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/sold_bought"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/primary"/>
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="right">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgWasteImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/green_border"
+                android:layout_gravity="center"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtViewMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/view_more"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                style="@style/TextAppearance.MaterialComponents.Button"/>
+        </LinearLayout>
 
     </LinearLayout>
 

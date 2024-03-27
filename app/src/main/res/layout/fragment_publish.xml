@@ -17,7 +17,6 @@
             android:orientation="vertical">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgProfilePic"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
                 android:layout_gravity="center_horizontal"
@@ -31,32 +30,13 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/type_of_user"
-                android:textColorHint="@color/primary"
-                app:boxStrokeColor="@color/primary"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/edtTypeOfUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/type_of_waste"
                 android:textColorHint="@color/primary"
                 app:boxStrokeColor="@color/primary"
                 android:paddingStart="5dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                app:boxStrokeErrorColor="@color/red">
 
                 <AutoCompleteTextView
                     android:id="@+id/edtTypeOfWaste"
@@ -68,22 +48,43 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayQuantity"
+                android:id="@+id/txtLayNaturalWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/quantity"
+                android:hint="@string/natural_weight"
                 android:textColorHint="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtQuantity"
+                    android:id="@+id/edtNaturalWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary"
+                    android:text="@string/_00kg"
                     android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLayMixWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/mix_weight"
+                android:textColorHint="@color/primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtMixWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:text="@string/_00kg"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtLayWeight"
@@ -100,25 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary"
+                    android:text="@string/_00kg"
                     android:inputType="numberDecimal"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/price"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -140,141 +124,53 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/primary"
-                android:text="@string/Address"
-                android:textStyle="bold"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayBuildingNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/Building_Number"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtBuildingNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayBuildingName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/Building_Name"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtBuildingName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/City"
-                android:textColorHint="@color/primary">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayProvince"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/province"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtProvince"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLayPostalCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/PostalCode"
-                android:textColorHint="@color/primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPostalCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
+                    android:id="@+id/txtLayPhoto"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/Add_Image"
+                    android:paddingStart="10dp"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/photos" />
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnUploadPhotos"
+                    android:id="@+id/btnSelectPhotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/upload"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/select"
+                    android:textColor="@color/secondary"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:background="@drawable/button_border"
+                    android:layout_marginBottom="10dp"
+                    />
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPropertyPhotos"
+                android:id="@+id/rvWastePhotos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                style="@style/Animation.Design.BottomSheetDialog"
                 tools:listitem="@layout/item_photo" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -283,8 +179,23 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/post"
                 android:textColor="@color/secondary"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:background="@drawable/button_border"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/clear"
+                android:textColor="@color/secondary"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:background="@drawable/button_border"
+                />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

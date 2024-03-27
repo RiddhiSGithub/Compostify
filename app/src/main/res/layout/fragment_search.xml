@@ -25,6 +25,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:background="@drawable/button_border"
+        android:textColor="@color/secondary"
+        android:layout_marginTop="10dp"
         android:text="@string/more_filters" />
 
     <View
