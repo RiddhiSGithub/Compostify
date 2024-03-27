@@ -104,10 +104,16 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
 
 
 
-        // Set click listener for "View More" TextView
+        // Set click listener for "Edit Post" TextView
         holder.txtEditPost.setOnClickListener(v -> {
+            // Create an Intent to start ActivityEditPost
             Intent intent = new Intent(v.getContext(), EditPost.class);
-            //pass postID code
+
+            // Assuming you need to pass the publishID to ActivityEditPost
+            intent.putExtra("publish_id", activity.getPublishId());
+
+            // Start the ActivityEditPost
+            v.getContext().startActivity(intent);
         });
     }
 

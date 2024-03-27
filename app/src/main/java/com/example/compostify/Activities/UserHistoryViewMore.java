@@ -56,6 +56,8 @@ public class UserHistoryViewMore extends AppCompatActivity {
                             String publishId = document.getId(); // Get the publishId
                             String typeOfUser = document.getString("typeOfUser");
                             String typeOfWaste = document.getString("typeOfWaste");
+                            String NaturalWasteWeight =document.getString("naturalWasteWeight");
+                            String MixWasteWeight =document.getString("mixWasteWeight");
                             String weight = "Weight: "+ document.getString("totalWeight");
 //                            String imageUrls = document.getString("imageUrls");
 
@@ -86,7 +88,8 @@ public class UserHistoryViewMore extends AppCompatActivity {
                                 time = "";
                             }
 
-                            UserRecentActivity recentActivity = new UserRecentActivity(publishId, typeOfUser, typeOfWaste, date, time, weight, firstImageUrl);
+                            String postStatus = document.getString("postStatus");
+                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId, typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, firstImageUrl, postStatus);
                             recentActivityList.add(recentActivity);
                         }
                         initializeRecyclerView(recentActivityList);

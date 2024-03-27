@@ -108,7 +108,7 @@ public class PublishFragment extends Fragment {
         });
 
         //reset the entire field
-        binding.btnClearPhotos.setOnClickListener(new View.OnClickListener() {
+        binding.btnClearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearFormFields();
@@ -354,6 +354,7 @@ public class PublishFragment extends Fragment {
                 String naturalWeight = binding.edtNaturalWeight.getText().toString();
                 String mixWeight = binding.edtMixWeight.getText().toString();
                 String otherDetails = binding.edtOtherDetails.getText().toString();
+                String postStatus = "Active";
 
                 Map<String, Object> postDetails = new HashMap<>();
                 postDetails.put("userId", userId);
@@ -366,6 +367,7 @@ public class PublishFragment extends Fragment {
                 postDetails.put("otherDetails", otherDetails);
                 postDetails.put("imageUrls", uploadedImageUrls);
                 postDetails.put("postDateTime", FieldValue.serverTimestamp());
+                postDetails.put("postStatus", postStatus);
 
 
                 db.collection("Publish")

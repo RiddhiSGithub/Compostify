@@ -76,5 +76,7 @@
     <string name="time">Time</string>
     <string name="edit_post">Edit Post</string>
     <string name="view_all_activity">View all Activity</string>
+    <string name="delete">Delete</string>
+    <string name="active">Active</string>
 
 </resources>
