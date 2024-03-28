@@ -10,6 +10,9 @@
     <string name="e_mail">E-Mail:</string>
     <string name="reset_password">Reset Password</string>
     <string name="add_to_cart">Your cart</string>
-    <string name="type_of_waste"> Waste </string>
-    <string name="quantity">Quantity </string>
+    <string name="type_of_waste">Waste</string>
+    <string name="quantity">Quantity</string>
+    <string name="price">Price</string>
+    <string name="total">Total</string>
+    <string name="checkout">Checkout</string>
 </resources>

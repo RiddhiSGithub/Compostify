@@ -39,8 +39,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/quantity"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/price"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/total"
                 style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
 
