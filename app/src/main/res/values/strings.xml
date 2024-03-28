@@ -78,5 +78,6 @@
     <string name="view_all_activity">View all Activity</string>
     <string name="delete">Delete</string>
     <string name="active">Active</string>
+    <string name="save_post">Save Post</string>
 
 </resources>

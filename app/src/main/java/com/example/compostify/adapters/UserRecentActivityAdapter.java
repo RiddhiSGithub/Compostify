@@ -2,7 +2,6 @@ package com.example.compostify.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentActivityAdapter.ViewHolder> {
-//    private static final String TAG = "UserActivityAdapter";
-//    private List<UserRecentActivity> recentActivityList;
-//    private Context context;
 
     private static final String TAG = "UserActivityAdapter";
     private List<UserRecentActivity> recentActivityList;
@@ -95,21 +91,30 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             // If imageUrl is empty or null, load the error image
             Glide.with(holder.itemView.getContext())
                     .load(R.drawable.side_image)
-                    .apply(requestOptions)
                     .into(holder.imgWasteImage);
-            // Log a warning if imageUrl is null or empty
-            Log.w(TAG, "Empty or null imageUrl for position: " + position);
         }
 
 
 
+        holder.imgWasteImage.setOnClickListener(v -> {
+            // Create an Intent to start ActivityEditPost
+            Intent intent = new Intent(v.getContext(), EditPost.class);
+
+            // Assuming you need to pass the publishID and userID to ActivityEditPost
+            intent.putExtra("user_id",activity.getUserId());
+            intent.putExtra("publish_id", activity.getPublishId());
+
+            // Start the ActivityEditPost
+            v.getContext().startActivity(intent);
+        });
 
         // Set click listener for "Edit Post" TextView
         holder.txtEditPost.setOnClickListener(v -> {
             // Create an Intent to start ActivityEditPost
             Intent intent = new Intent(v.getContext(), EditPost.class);
 
-            // Assuming you need to pass the publishID to ActivityEditPost
+            // Assuming you need to pass the publishID and userID to ActivityEditPost
+            intent.putExtra("user_id",activity.getUserId());
             intent.putExtra("publish_id", activity.getPublishId());
 
             // Start the ActivityEditPost

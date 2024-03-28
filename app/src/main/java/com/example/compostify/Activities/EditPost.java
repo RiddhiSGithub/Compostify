@@ -1,201 +1,188 @@
 package com.example.compostify.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compostify.R;
+import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.ActivityEditPostBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class EditPost extends AppCompatActivity {
 
     ActivityEditPostBinding binding;
-    private String postId; // Post ID to edit
-    private DatabaseReference postsRef;
-    // Assuming you have a reference to the switch
-    SwitchMaterial switchActiveDeActive = binding.switchActiveDeActive;
+    FirebaseFirestore db;
+    FirebaseAuth firebaseAuth;
+    // You can fetch post data similarly by using the post ID passed from the previous activity
+    String postId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_post);
         binding = ActivityEditPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Get the post ID from intent
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
         postId = getIntent().getStringExtra("publish_id");
 
-        // Initialize Firebase
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String userId = auth.getCurrentUser().getUid();
-        postsRef = database.getReference().child("Publish").child(userId).child(postId);
-
-
+//        checkData();
         loadData();
-        buttonListener();
+        buttonBinding();
     }
 
-    private void loadData() {
-        // Load post data and populate UI fields
-        postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Get post data from dataSnapshot
-                    String typeOfWaste = dataSnapshot.child("typeOfWaste").getValue(String.class);
-                    String naturalWeight = dataSnapshot.child("naturalWeight").getValue(String.class);
-                    String mixWeight = dataSnapshot.child("mixWeight").getValue(String.class);
-                    String weight = dataSnapshot.child("weight").getValue(String.class);
-                    String otherDetails = dataSnapshot.child("otherDetails").getValue(String.class);
-                    String postStatus = dataSnapshot.child("postStatus").getValue(String.class);
-
-                    // Populate UI fields with the existing data
-                    binding.edtTypeOfWaste.setText(typeOfWaste);
-                    binding.edtNaturalWeight.setText(naturalWeight);
-                    binding.edtMixWeight.setText(mixWeight);
-                    binding.edtWeight.setText(weight);
-                    binding.edtOtherDetails.setText(otherDetails);
-                    // Check the postStatus and set the switch accordingly
-                    if (postStatus != null && postStatus.equals("Active")) {
-                        switchActiveDeActive.setChecked(true);
-                        switchActiveDeActive.setText("Active");
-                    } else {
-                        switchActiveDeActive.setChecked(false);
-                        switchActiveDeActive.setText("InActive");
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle potential errors while loading data
-                Toast.makeText(EditPost.this, "Failed to load post data", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void buttonListener() {
-        // Set onClick listener for the update button
-        binding.btnPost.setOnClickListener(new View.OnClickListener() {
+    private void buttonBinding() {
+        binding.btnSavePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Call method to update the post
+                //update data on same postID in publish
                 updatePost();
             }
         });
-
-        // Set the background tint color to red
-        binding.btnDelete.setBackgroundTintList(ContextCompat.getColorStateList(EditPost.this, R.color.red));
-        // Set onClick listener for the delete button
-        binding.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call method to delete the post
-                deletePost();
-                //
-            }
-        });
-
-        // Set onClick listener for the clear photos button
-        binding.btnClearPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call method to clear photos
-                clearPhotos();
-            }
-        });
     }
 
-    // Method to update the post
     private void updatePost() {
-        // Get updated post data from UI fields
-        String updatedTypeOfWaste = binding.edtTypeOfWaste.getText().toString();
-        String updatedNaturalWeight = binding.edtNaturalWeight.getText().toString();
-        String updatedMixWeight = binding.edtMixWeight.getText().toString();
-        String updatedWeight = binding.edtWeight.getText().toString();
-        String updatedOtherDetails = binding.edtOtherDetails.getText().toString();
-        String postStatus = binding.switchActiveDeActive.toString();
+        String typeOfWaste = binding.edtTypeOfWaste.getText().toString().trim();
+        String naturalWasteWeight = binding.edtNaturalWeight.getText().toString().trim();
+        String mixWasteWeight = binding.edtMixWeight.getText().toString().trim();
+        String totalWeight = binding.edtWeight.getText().toString().trim();
+        String otherDetails = binding.edtOtherDetails.getText().toString().trim();
 
-
-        // Create a map to update the post in Firebase
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put("typeOfWaste", updatedTypeOfWaste);
-        updateMap.put("naturalWeight", updatedNaturalWeight);
-        updateMap.put("mixWeight", updatedMixWeight);
-        updateMap.put("weight", updatedWeight);
-        updateMap.put("otherDetails", updatedOtherDetails);
-        updateMap.put("postStatus",postStatus);
-
-        // Update the post in Firebase
-        postsRef.updateChildren(updateMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // Post updated successfully
-                            Toast.makeText(EditPost.this, "Post updated successfully", Toast.LENGTH_SHORT).show();
-                            // Finish the activity and navigate back
-                            finish();
-                        } else {
-                            // Error occurred while updating post
-                            Toast.makeText(EditPost.this, "Failed to update post", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        // Update post data in Firestore
+        DocumentReference postRef = db.collection("Publish").document(postId);
+        postRef.update("typeOfWaste", typeOfWaste,
+                        "naturalWasteWeight", naturalWasteWeight,
+                        "mixWasteWeight", mixWasteWeight,
+                        "totalWeight", totalWeight,
+                        "otherDetails", otherDetails)
+                .addOnSuccessListener(aVoid -> {
+                    // Data updated successfully
+                    Toast.makeText(EditPost.this, "Post updated successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // Finish the activity after successful update
+                })
+                .addOnFailureListener(e -> {
+                    // Failed to update data
+                    Toast.makeText(EditPost.this, "Failed to update post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+
     }
 
-    // Method to delete the post
-    private void deletePost() {
-        // Delete the post from Firebase
-        postsRef.removeValue()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // Post deleted successfully
-                            Toast.makeText(EditPost.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
-                            // Finish the activity and navigate back
-                            finish();
-                        } else {
-                            // Error occurred while deleting post
-                            Toast.makeText(EditPost.this, "Failed to delete post", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
+    private void checkData() {
+
     }
 
-    // Method to clear photos
-    private void clearPhotos() {
-        // Remove the photo data from the Firebase database
-        postsRef.child("photoUrls").removeValue()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // Photos cleared successfully
-                            Toast.makeText(EditPost.this, "Photos cleared successfully", Toast.LENGTH_SHORT).show();
+    private void loadData() {
+        if (postId != null) {
+            DocumentReference postRef = db.collection("Publish").document(postId);
+            postRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null && document.exists()) {
+                        // Retrieve post data and populate UI accordingly
+                        String typeOfWaste = document.getString("typeOfWaste");
+                        String NaturalWasteWeight = document.getString("naturalWasteWeight");
+                        String MixWasteWeight = document.getString("mixWasteWeight");
+                        String totalWeight = document.getString("totalWeight");
+                        String otherDetails = document.getString("otherDetails");
+
+                        // Use null check to handle potential null values
+                        typeOfWaste = typeOfWaste != null ? typeOfWaste : "";
+                        NaturalWasteWeight = NaturalWasteWeight != null ? NaturalWasteWeight : "";
+                        MixWasteWeight = MixWasteWeight != null ? MixWasteWeight : "";
+                        totalWeight = totalWeight != null ? totalWeight : "";
+                        otherDetails = otherDetails != null ? otherDetails : "";
+
+                        //retrieve array imageUrl from firebase
+                        List<String> imageUrls = (List<String>) document.get("imageUrl");
+
+                        // Populate UI fields with post data
+                        binding.edtTypeOfWaste.setText(typeOfWaste);
+                        binding.edtNaturalWeight.setText(NaturalWasteWeight);
+                        binding.edtMixWeight.setText(MixWasteWeight);
+                        binding.edtWeight.setText(totalWeight);
+                        binding.edtOtherDetails.setText(otherDetails);
+
+                        // Show images in RecyclerView
+                        if (imageUrls != null && !imageUrls.isEmpty()) {
+                            setupRecyclerView(imageUrls);
+                        }
+
+                        // Add null check for typeOfUser
+                        String typeOfUser = document.getString("typeOfUser");
+                        Log.e("typeOfUser","this is user type "+typeOfUser);
+                        if (typeOfUser != null && typeOfUser.equalsIgnoreCase("seller")) {
+                            binding.txtLayPhoto.setVisibility(View.VISIBLE);
+                            binding.rvWastePhotos.setVisibility(View.VISIBLE);
+                            binding.btnSelectPhotos.setVisibility(View.VISIBLE);
+                            binding.btnClearPhotos.setVisibility(View.VISIBLE);
+                            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                                    EditPost.this,
+                                    android.R.layout.simple_dropdown_item_1line,
+                                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
+                            );
+                            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
                         } else {
-                            // Error occurred while clearing photos
-                            Toast.makeText(EditPost.this, "Failed to clear photos", Toast.LENGTH_SHORT).show();
+                            binding.txtLayPhoto.setVisibility(View.GONE);
+                            binding.rvWastePhotos.setVisibility(View.GONE);
+                            binding.btnSelectPhotos.setVisibility(View.GONE);
+                            binding.btnClearPhotos.setVisibility(View.GONE);
+                            // Set up AutoCompleteTextView with predefined options
+                            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                                    EditPost.this,
+                                    android.R.layout.simple_dropdown_item_1line,
+                                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
+                            );
+                            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+                        }
+
+                        if (typeOfWaste.equalsIgnoreCase("both")) {
+                            binding.txtLayNaturalWeight.setVisibility(View.VISIBLE);
+                            binding.txtLayMixWeight.setVisibility(View.VISIBLE);
+                            calculateTotalWeight();
+                        } else {
+                            binding.txtLayNaturalWeight.setVisibility(View.GONE);
+                            binding.txtLayMixWeight.setVisibility(View.GONE);
                         }
                     }
-                });
+                }
+            });
+        }
+    }
+
+    private void setupRecyclerView(List<String> imageUrls) {
+        RecyclerView rvWastePhotos = binding.rvWastePhotos;
+        PhotoAdapter adapter = new PhotoAdapter(EditPost.this, imageUrls);
+        rvWastePhotos.setAdapter(adapter);
+        rvWastePhotos.setLayoutManager(new LinearLayoutManager(EditPost.this, LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    //calculate natural weight and mix weight
+    private void calculateTotalWeight() {
+        String naturalWeightStr = binding.edtNaturalWeight.getText().toString();
+        String mixWeightStr = binding.edtMixWeight.getText().toString();
+
+        // Remove the "Kg" suffix from the strings
+        String naturalWeight = naturalWeightStr.replaceAll("[^\\d.]", "");
+        String mixWeight = mixWeightStr.replaceAll("[^\\d.]", "");
+
+        if (!naturalWeight.isEmpty() && !mixWeight.isEmpty()) {
+            int naturalWeightValue = Integer.parseInt(naturalWeight);
+            int mixWeightValue = Integer.parseInt(mixWeight);
+            int totalWeight = naturalWeightValue + mixWeightValue;
+            binding.edtWeight.setText(String.valueOf(totalWeight) + " kg");
+        }
     }
 }
