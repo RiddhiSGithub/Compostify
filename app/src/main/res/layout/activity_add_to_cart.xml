@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddToCart">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/addToCartActivityTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_cart"
+        android:textSize="18sp"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:layout_marginTop="16sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recentActivityRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:transitionGroup="true" />
+
+</LinearLayout>
