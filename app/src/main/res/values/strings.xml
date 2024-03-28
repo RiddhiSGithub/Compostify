@@ -9,5 +9,7 @@
     <string name="donot_have_account">Do not have an account</string>
     <string name="e_mail">E-Mail:</string>
     <string name="reset_password">Reset Password</string>
-    <string name ="add_to_cart">Your cart</string>
+    <string name="add_to_cart">Your cart</string>
+    <string name="type_of_waste"> Waste </string>
+    <string name="quantity">Quantity </string>
 </resources>
