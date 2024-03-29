@@ -23,127 +23,121 @@
             android:padding="8dp"
             android:backgroundTint="@color/secondary">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpWasteImages"
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/placeholder"
+                android:layout_margin="10dp"
+                android:id="@+id/imgLogo"></ImageView>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lblBusinessName"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@drawable/green_border"
+                android:layout_height="wrap_content"
+                android:paddingEnd="12dp"
+                android:text="@string/BusinessName"
+                android:textSize="30dp"
+                tools:ignore="RtlSymmetry" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lblUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:text="@string/user_name"
+
+                tools:ignore="RtlSymmetry" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lblAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="20dp"
+                android:text="@string/address"
+                android:textColor="@color/black"
+                 />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lblContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/BusinessPhoneNumber"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp"
                 />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/layoutTabs"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWastePhotos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabBackground="@drawable/dot_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"
-                android:background="@color/secondary"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                style="@style/Animation.Design.BottomSheetDialog"
+                tools:listitem="@layout/item_photo" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
+
+
+          
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblTypeofWaste"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="12dp"
-                    android:text="@string/type_of_waste"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierWasteType"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0"
-                    tools:ignore="RtlSymmetry" />
+                  android:textSize="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/available_waste_type"
+                    />
 
                 <!-- Waste Type-->
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtTypeofWaste"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/waste_type"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierWasteType"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/lblTypeofWaste"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0" />
+               <TableLayout
+                   android:layout_height="wrap_content"
+                   android:layout_width="match_parent"
+                   android:stretchColumns="*"
+                   android:id="@+id/tblWasteTypes"></TableLayout>
+
+
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierWasteType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblTypeofWaste,txtTypeofWaste" />
 
-                <!-- address-->
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/lblAddress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/address"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierAddress"
-                    app:layout_constraintEnd_toEndOf="@id/lblTypeofWaste"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrierWasteType"
-                    app:layout_constraintVertical_bias="0" />
+                  />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtAddress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/address"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierAddress"
-                    app:layout_constraintEnd_toEndOf="@id/txtTypeofWaste"
-                    app:layout_constraintStart_toEndOf="@id/lblAddress"
-                    app:layout_constraintTop_toBottomOf="@id/barrierWasteType"
-                    app:layout_constraintVertical_bias="0" />
-
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrierAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblAddress,txtAddress" />
+               
 
 
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrierQuantityOfBags"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblAddress,txtAddress" />
+
+
+
+
+
 
                 <!-- # Weight -->
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblWeight"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textSize="25dp"
                     android:text="@string/weight"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintEnd_toEndOf="@id/lblAddress"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrierQuantityOfBags"
-                    app:layout_constraintVertical_bias="0.0" />
+                  />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtWeight"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/weight"
+                    android:textSize="20dp"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintEnd_toEndOf="@id/txtAddress"
-                    app:layout_constraintStart_toEndOf="@id/lblWeight"
-                    app:layout_constraintTop_toBottomOf="@id/barrierQuantityOfBags"
-                    app:layout_constraintVertical_bias="0" />
+                    />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierWeight"
@@ -155,85 +149,36 @@
                 <!--Rent -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblOtherDetail"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/other_details"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierOtherDetail"
-                    app:layout_constraintEnd_toEndOf="@id/lblWeight"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintVertical_bias="0" />
+                    android:textSize="25dp"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtOtherDetail"
-                    android:layout_width="0dp"
+                    android:id="@+id/txtHandlingInstruction"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textSize="20dp"
                     android:text="@string/other_details"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierOtherDetail"
-                    app:layout_constraintEnd_toEndOf="@id/txtWeight"
-                    app:layout_constraintStart_toEndOf="@id/lblOtherDetail"
-                    app:layout_constraintTop_toBottomOf="@id/barrierWeight"
-                    app:layout_constraintVertical_bias="0" />
+                     />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierOtherDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblOtherDetail,txtOtherDetail" />
+                  />
 
                 <!-- Contact -->
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/lblContact"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/BusinessPhoneNumber"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierContact"
-                    app:layout_constraintEnd_toEndOf="@id/lblOtherDetail"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/barrierOtherDetail"
-                    app:layout_constraintVertical_bias="0" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txtContact"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/BusinessPhoneNumber"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierContact"
-                    app:layout_constraintEnd_toStartOf="@id/btnCall"
-                    app:layout_constraintStart_toEndOf="@id/lblContact"
-                    app:layout_constraintTop_toBottomOf="@id/barrierOtherDetail"
-                    app:layout_constraintVertical_bias="0" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCall"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:contentDescription="@string/BusinessPhoneNumber"
-                    app:icon="@drawable/baseline_call_24"
-                    app:iconSize="25sp"
-                    app:layout_constraintBottom_toBottomOf="@id/barrierContact"
-                    app:layout_constraintEnd_toEndOf="@id/txtOtherDetail"
-                    app:layout_constraintStart_toEndOf="@id/txtContact"
-                    app:layout_constraintTop_toBottomOf="@id/barrierOtherDetail"
-                    app:layout_constraintVertical_bias="0" />
 
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrierContact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="lblContact,txtContact, btnCall" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        
         </LinearLayout>
     </ScrollView>
 

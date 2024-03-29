@@ -6,6 +6,7 @@
     android:layout_marginBottom="8dp"
     android:backgroundTint="@color/secondary"
     app:strokeColor="@color/primary"
+
     >
 
     <LinearLayout
@@ -13,7 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         style="@style/Animation.Design.BottomSheetDialog"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:id="@+id/itemCard">
 
         <ImageView
             android:layout_width="100dp"

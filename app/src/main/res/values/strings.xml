@@ -82,5 +82,6 @@
     <string name="save_post">Save Post</string>
     <string name="deactivate">Deactivate</string>
     <string name="my_orders">My Orders</string>
+    <string name="available_waste_type">Available Waste Varities</string>
 
 </resources>

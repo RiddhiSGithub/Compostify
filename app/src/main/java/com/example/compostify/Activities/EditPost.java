@@ -284,6 +284,7 @@ public class EditPost extends AppCompatActivity {
             // Show images in RecyclerView
             if (!imageUrls.isEmpty()) {
                 setupRecyclerView(imageUrls);
+
             }
             // Add null check for typeOfUser
 

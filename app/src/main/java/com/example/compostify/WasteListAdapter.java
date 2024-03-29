@@ -1,10 +1,12 @@
 package com.example.compostify;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,18 @@ public class WasteListAdapter extends RecyclerView.Adapter<WasteListAdapter.wast
         holder.txtBusinessName.setText(user.getBusinessName());
         holder.txtAddress.setText(user.getCityName());
         holder.txtAvailableWaste.setText(user.getTotalWeight());
+
+        holder.lytItemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WasteDetailsActivity.class);
+                intent.putExtra("publishId", user.getUserId());
+                intent.putExtra("fromSearch", true);
+                v.getContext().startActivity(intent);
+            }
+        });
+
+
     }
 
     public void setData(List<User> data) {
@@ -62,6 +76,8 @@ public class WasteListAdapter extends RecyclerView.Adapter<WasteListAdapter.wast
         TextView txtAddress;
         TextView txtAvailableWaste;
 
+        LinearLayout lytItemCard;
+
         public wasteViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -69,6 +85,7 @@ public class WasteListAdapter extends RecyclerView.Adapter<WasteListAdapter.wast
             txtBusinessName = itemView.findViewById(R.id.txtBusinessName);
             txtAddress = itemView.findViewById(R.id.txtAddress);
             txtAvailableWaste = itemView.findViewById(R.id.txtAvailableWaste);
+            lytItemCard = itemView.findViewById(R.id.itemCard);
         }
     }
 }
