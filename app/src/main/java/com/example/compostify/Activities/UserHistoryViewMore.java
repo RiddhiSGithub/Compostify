@@ -58,18 +58,10 @@ public class UserHistoryViewMore extends AppCompatActivity {
                             String typeOfWaste = document.getString("typeOfWaste");
                             String NaturalWasteWeight =document.getString("naturalWasteWeight");
                             String MixWasteWeight =document.getString("mixWasteWeight");
-                            String weight = "Weight: "+ document.getString("totalWeight");
-//                            String imageUrls = document.getString("imageUrls");
-
+                            String weight = document.getString("totalWeight");
+                            String OtherDetails = document.getString("otherDetails");
                             // Retrieve the image URLs array
                             List<String> imageUrls = (List<String>) document.get("imageUrls");
-                            String firstImageUrl = "";
-
-                            // Check if the imageUrls array is not empty
-                            if (imageUrls != null && !imageUrls.isEmpty()) {
-                                // Get the first image URL from the array
-                                firstImageUrl = imageUrls.get(0);
-                            }
 
                             // Convert timestamp to date string
                             String date;
@@ -89,7 +81,7 @@ public class UserHistoryViewMore extends AppCompatActivity {
                             }
 
                             String postStatus = document.getString("postStatus");
-                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId, typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, firstImageUrl, postStatus);
+                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId, typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, OtherDetails, imageUrls, postStatus);
                             recentActivityList.add(recentActivity);
                         }
                         initializeRecyclerView(recentActivityList);

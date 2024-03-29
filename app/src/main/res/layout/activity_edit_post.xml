@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PublishFragment">
+    tools:context=".PublishFragment"
+    android:background="@color/secondary">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/secondary"
             android:orientation="vertical">
 
@@ -146,7 +147,6 @@
                     android:id="@+id/btnSelectPhotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:text="@string/select"
                     android:textColor="@color/secondary"
                     style="@style/Widget.AppCompat.Button.Small"
@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/clear"
+                    android:text="@string/clear_images"
                     android:textColor="@color/secondary"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:background="@drawable/button_border"
@@ -216,11 +216,10 @@
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switchActiveDeActive"
+                    android:id="@+id/switchActiveDeActivate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/active"
                     android:textColor="@color/secondary"
                     android:checked="true"
                     android:paddingStart="10dp"

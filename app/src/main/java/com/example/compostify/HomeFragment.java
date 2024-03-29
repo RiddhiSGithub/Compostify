@@ -65,17 +65,15 @@ public class HomeFragment extends Fragment {
                 binding.txtAddress.setText(value.getString("address"));
                 binding.txtUserName.setText(value.getString("userName"));
                 try {
-
                         Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
-
-
-
                 }catch (NullPointerException e)
                 {
                 }
             }
         });
 
+        // Fetch recent activity data
+        fetchRecentActivityData();
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return binding.getRoot();
     }
@@ -117,18 +115,13 @@ public class HomeFragment extends Fragment {
                             String typeOfWaste = document.getString("typeOfWaste");
                             String NaturalWasteWeight =document.getString("naturalWasteWeight");
                             String MixWasteWeight =document.getString("mixWasteWeight");
-                            String weight = "Weight: "+ document.getString("totalWeight");
+                            String weight = document.getString("totalWeight");
+                            String OtherDetails = document.getString("otherDetails");
 //                            String imageUrls = document.getString("imageUrls");
 
                             // Retrieve the image URLs array
                             List<String> imageUrls = (List<String>) document.get("imageUrls");
-                            String firstImageUrl = "";
 
-                            // Check if the imageUrls array is not empty
-                            if (imageUrls != null && !imageUrls.isEmpty()) {
-                                // Get the first image URL from the array
-                                firstImageUrl = imageUrls.get(0);
-                            }
 
                             // Convert timestamp to date string
                             String date;
@@ -148,11 +141,12 @@ public class HomeFragment extends Fragment {
                             }
 
                             String postStatus = document.getString("postStatus");
-                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId,typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, firstImageUrl, postStatus);
+                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId,typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, OtherDetails, imageUrls, postStatus);
                             recentActivityList.add(recentActivity);
                         }
                         initializeRecyclerView(recentActivityList);
                     }
+
                 });
     }
 

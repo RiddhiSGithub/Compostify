@@ -82,7 +82,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
         if (activity.getImageUrl() != null && !activity.getImageUrl().isEmpty()) {
             RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
             Glide.with(holder.itemView.getContext())
-                    .load(activity.getImageUrl())
+                    .load(activity.getImageUrl().get(0))
                     .apply(requestOptions)
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.side_image) // Set error image here
@@ -114,8 +114,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             Intent intent = new Intent(v.getContext(), EditPost.class);
 
             // Assuming you need to pass the publishID and userID to ActivityEditPost
-            intent.putExtra("user_id",activity.getUserId());
-            intent.putExtra("publish_id", activity.getPublishId());
+            intent.putExtra("userPost", activity);
 
             // Start the ActivityEditPost
             v.getContext().startActivity(intent);

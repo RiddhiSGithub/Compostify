@@ -1,23 +1,44 @@
 package com.example.compostify.Activities;
 
+import android.content.ClipData;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.compostify.R;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.ActivityEditPostBinding;
+import com.example.compostify.db.UserRecentActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EditPost extends AppCompatActivity {
 
@@ -25,7 +46,14 @@ public class EditPost extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth firebaseAuth;
     // You can fetch post data similarly by using the post ID passed from the previous activity
-    String postId;
+    UserRecentActivity post;
+    private List<Uri> newImageUri = new ArrayList<>();
+
+    private SwitchMaterial switchActiveDeActivate;
+
+    private String postStatus;
+    private boolean isPostActive;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +64,46 @@ public class EditPost extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        postId = getIntent().getStringExtra("publish_id");
+        post = (UserRecentActivity) getIntent().getSerializableExtra("userPost");
 
-//        checkData();
+        //changing background color of dropdown menus
+        AutoCompleteTextView autoCompleteTOWaste = binding.edtTypeOfWaste;
+        autoCompleteTOWaste.setDropDownBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(EditPost.this, R.color.secondary)));
+
+        // Set up a listener for type of waste changes
+        autoCompleteTOWaste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedTypeOfWaste = (String) parent.getItemAtPosition(position);
+                handleTypeOfWasteChange(selectedTypeOfWaste);
+            }
+        });
+
+        //methods
+        setUpTextChangeListeners();
         loadData();
         buttonBinding();
     }
 
     private void buttonBinding() {
+        //select Image Button
+        binding.btnSelectPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //selectImages
+                pickImage();
+            }
+        });
+
+        //clear photo Button
+        binding.btnClearPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearImagesUrl();
+            }
+        });
+
+        //save button
         binding.btnSavePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +111,99 @@ public class EditPost extends AppCompatActivity {
                 updatePost();
             }
         });
+
+        //delete post button
+        binding.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePost();
+            }
+        });
     }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            // Check if postId is not null
+            String postId = post.getPublishId();
+            if (postId != null) {
+                List<String> imageUrls = post.getImageUrl();
+//                List<String> newImageUris = new ArrayList<>();
+
+                ClipData clipData = data.getClipData();
+
+                if (clipData != null) {
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        Uri imageUri = clipData.getItemAt(i).getUri();
+                        newImageUri.add(imageUri);
+                    }
+                    List<String> tempMergeUrls = new ArrayList<>();
+                    for (String url : imageUrls) {
+                        tempMergeUrls.add(url);
+                    }
+                    for (Uri uri: newImageUri){
+                        tempMergeUrls.add(uri.toString());
+                    }
+                    setupRecyclerView(tempMergeUrls);
+                } else if (data.getData() != null) {
+                    Uri imageUri = data.getData();
+                    List<String> tempMergeUrls = new ArrayList<>();
+                    for (String url : imageUrls) {
+                        tempMergeUrls.add(url);
+                    }
+                    tempMergeUrls.add(imageUri.toString());
+                    newImageUri.add(imageUri);
+                    setupRecyclerView(tempMergeUrls);
+                }
+            }
+        }
+    }
+
+
+    private String uploadImage(Uri imageUri) {
+        // Get a reference to the Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        final String[] uploadedUrls = {new String()};
+
+        String imageName = "WasteImage_" + System.currentTimeMillis(); // Generate a unique name for each image
+        StorageReference imagesRef = storageRef.child("WasteImages").child(imageName);
+
+        imagesRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get the download URL of the uploaded image
+                        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                uploadedUrls[0] = uri.toString();
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Show a toast indicating the failure
+                        Toast.makeText(EditPost.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        return uploadedUrls[0];
+    }
+
+    private void clearImagesUrl() {
+        //delete all Images from firebase database and storage of this post
+    }
+
 
     private void updatePost() {
         String typeOfWaste = binding.edtTypeOfWaste.getText().toString().trim();
@@ -59,14 +211,28 @@ public class EditPost extends AppCompatActivity {
         String mixWasteWeight = binding.edtMixWeight.getText().toString().trim();
         String totalWeight = binding.edtWeight.getText().toString().trim();
         String otherDetails = binding.edtOtherDetails.getText().toString().trim();
+        if(switchActiveDeActivate.isChecked()){
+            postStatus = "Active";
+        }else {
+            postStatus = "Deactivate";
+        }
+
+        List<String> uploadedUrls = new ArrayList<>();
+        for (Uri uri: newImageUri){
+            uploadedUrls.add(uploadImage(uri));
+        }
+        uploadedUrls.addAll(post.getImageUrl());
 
         // Update post data in Firestore
-        DocumentReference postRef = db.collection("Publish").document(postId);
+        DocumentReference postRef = db.collection("Publish").document(post.getPublishId());
         postRef.update("typeOfWaste", typeOfWaste,
                         "naturalWasteWeight", naturalWasteWeight,
                         "mixWasteWeight", mixWasteWeight,
                         "totalWeight", totalWeight,
-                        "otherDetails", otherDetails)
+                        "otherDetails", otherDetails,
+                        "imageUrls", uploadedUrls,
+                        "postStatus", postStatus,
+                        "postDateTime", FieldValue.serverTimestamp())
                 .addOnSuccessListener(aVoid -> {
                     // Data updated successfully
                     Toast.makeText(EditPost.this, "Post updated successfully", Toast.LENGTH_SHORT).show();
@@ -79,86 +245,98 @@ public class EditPost extends AppCompatActivity {
 
     }
 
-
-    private void checkData() {
-
+//    tims@reginastreet.ca
+    private void deletePost() {
+        // Reference to the post document
+        DocumentReference postRef = db.collection("Publish").document(post.getPublishId());
+        // Delete the post document
+        postRef.delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Post deleted successfully
+                    Toast.makeText(EditPost.this, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // Finish the activity after successful deletion
+                })
+                .addOnFailureListener(e -> {
+                    // Failed to delete post
+                    Toast.makeText(EditPost.this, "Failed to delete post: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void loadData() {
+        String postId = post.getPublishId();
+        String typeOfUser = post.getTypeOfUser();
+        String typeOfWaste = post.getTypeOfWaste();
+        String NaturalWasteWeight = post.getNaturalWasteWeight();
+        String MixWasteWeight = post.getMixWasteWeight();
+        String totalWeight = post.getWeight();
+        String otherDetails = post.getOtherDetails();
+        List<String> imageUrls = post.getImageUrl();
+        postStatus = post.getPostStatus();
+
         if (postId != null) {
-            DocumentReference postRef = db.collection("Publish").document(postId);
-            postRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        // Retrieve post data and populate UI accordingly
-                        String typeOfWaste = document.getString("typeOfWaste");
-                        String NaturalWasteWeight = document.getString("naturalWasteWeight");
-                        String MixWasteWeight = document.getString("mixWasteWeight");
-                        String totalWeight = document.getString("totalWeight");
-                        String otherDetails = document.getString("otherDetails");
+            // Populate UI fields with post data
+            binding.edtTypeOfWaste.setText(typeOfWaste);
+            binding.edtNaturalWeight.setText(NaturalWasteWeight);
+            binding.edtMixWeight.setText(MixWasteWeight);
+            binding.edtWeight.setText(totalWeight);
+            binding.edtOtherDetails.setText(otherDetails);
 
-                        // Use null check to handle potential null values
-                        typeOfWaste = typeOfWaste != null ? typeOfWaste : "";
-                        NaturalWasteWeight = NaturalWasteWeight != null ? NaturalWasteWeight : "";
-                        MixWasteWeight = MixWasteWeight != null ? MixWasteWeight : "";
-                        totalWeight = totalWeight != null ? totalWeight : "";
-                        otherDetails = otherDetails != null ? otherDetails : "";
+            // Show images in RecyclerView
+            if (!imageUrls.isEmpty()) {
+                setupRecyclerView(imageUrls);
+            }
+            // Add null check for typeOfUser
 
-                        //retrieve array imageUrl from firebase
-                        List<String> imageUrls = (List<String>) document.get("imageUrl");
+            if (typeOfUser != null && typeOfUser.equalsIgnoreCase("seller")) {
+                binding.txtLayPhoto.setVisibility(View.VISIBLE);
+                binding.rvWastePhotos.setVisibility(View.VISIBLE);
+                binding.btnSelectPhotos.setVisibility(View.VISIBLE);
+                binding.btnClearPhotos.setVisibility(View.VISIBLE);
+                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                        EditPost.this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
+                );
+                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+            } else {
+                binding.txtLayPhoto.setVisibility(View.GONE);
+                binding.rvWastePhotos.setVisibility(View.GONE);
+                binding.btnSelectPhotos.setVisibility(View.GONE);
+                binding.btnClearPhotos.setVisibility(View.GONE);
+                // Set up AutoCompleteTextView with predefined options
+                ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                        EditPost.this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
+                );
+                binding.edtTypeOfWaste.setAdapter(wasteAdapter);
+            }
 
-                        // Populate UI fields with post data
-                        binding.edtTypeOfWaste.setText(typeOfWaste);
-                        binding.edtNaturalWeight.setText(NaturalWasteWeight);
-                        binding.edtMixWeight.setText(MixWasteWeight);
-                        binding.edtWeight.setText(totalWeight);
-                        binding.edtOtherDetails.setText(otherDetails);
+            if (typeOfWaste.equalsIgnoreCase("both")) {
+                binding.txtLayNaturalWeight.setVisibility(View.VISIBLE);
+                binding.txtLayMixWeight.setVisibility(View.VISIBLE);
+                calculateTotalWeight();
+            } else {
+                binding.txtLayNaturalWeight.setVisibility(View.GONE);
+                binding.txtLayMixWeight.setVisibility(View.GONE);
+            }
 
-                        // Show images in RecyclerView
-                        if (imageUrls != null && !imageUrls.isEmpty()) {
-                            setupRecyclerView(imageUrls);
-                        }
 
-                        // Add null check for typeOfUser
-                        String typeOfUser = document.getString("typeOfUser");
-                        Log.e("typeOfUser","this is user type "+typeOfUser);
-                        if (typeOfUser != null && typeOfUser.equalsIgnoreCase("seller")) {
-                            binding.txtLayPhoto.setVisibility(View.VISIBLE);
-                            binding.rvWastePhotos.setVisibility(View.VISIBLE);
-                            binding.btnSelectPhotos.setVisibility(View.VISIBLE);
-                            binding.btnClearPhotos.setVisibility(View.VISIBLE);
-                            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-                                    EditPost.this,
-                                    android.R.layout.simple_dropdown_item_1line,
-                                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)", "Both"}
-                            );
-                            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
-                        } else {
-                            binding.txtLayPhoto.setVisibility(View.GONE);
-                            binding.rvWastePhotos.setVisibility(View.GONE);
-                            binding.btnSelectPhotos.setVisibility(View.GONE);
-                            binding.btnClearPhotos.setVisibility(View.GONE);
-                            // Set up AutoCompleteTextView with predefined options
-                            ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
-                                    EditPost.this,
-                                    android.R.layout.simple_dropdown_item_1line,
-                                    new String[]{"Natural Waste (5$ per 10Kg)", "Mix Waste (3$ per 10Kg)"}
-                            );
-                            binding.edtTypeOfWaste.setAdapter(wasteAdapter);
-                        }
-
-                        if (typeOfWaste.equalsIgnoreCase("both")) {
-                            binding.txtLayNaturalWeight.setVisibility(View.VISIBLE);
-                            binding.txtLayMixWeight.setVisibility(View.VISIBLE);
-                            calculateTotalWeight();
-                        } else {
-                            binding.txtLayNaturalWeight.setVisibility(View.GONE);
-                            binding.txtLayMixWeight.setVisibility(View.GONE);
-                        }
-                    }
+            switchActiveDeActivate = binding.switchActiveDeActivate;
+            switchActiveDeActivate.setChecked(postStatus.equalsIgnoreCase("Active"));
+//            switchActiveDeActivate.setText(isPostActive? R.string.active : R.string.deactivate);
+            switchActiveDeActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // Update post status based on switch state
+                    postStatus = isChecked ? "Active" : "Deactivate";
+                    switchActiveDeActivate.setText(isChecked ? R.string.active : R.string.deactivate);
                 }
             });
+        }else {
+            // Handle the case when post is null, perhaps by displaying an error message or finishing the activity
+            Toast.makeText(this, "Post data is null", Toast.LENGTH_SHORT).show();
+            finish(); // Finish the activity or handle it accordingly
         }
     }
 
@@ -169,10 +347,57 @@ public class EditPost extends AppCompatActivity {
         rvWastePhotos.setLayoutManager(new LinearLayoutManager(EditPost.this, LinearLayoutManager.HORIZONTAL, false));
     }
 
+
+    private void handleTypeOfWasteChange(String selectedTypeOfWaste) {
+        if (selectedTypeOfWaste.equalsIgnoreCase("both")) {
+            binding.txtLayNaturalWeight.setVisibility(View.VISIBLE);
+            binding.txtLayMixWeight.setVisibility(View.VISIBLE);
+            calculateTotalWeight();
+        } else {
+            binding.txtLayNaturalWeight.setVisibility(View.GONE);
+            binding.txtLayMixWeight.setVisibility(View.GONE);
+        }
+    }
+    private void setUpTextChangeListeners() {
+        // Set up text change listeners for natural weight and mix weight
+        binding.edtNaturalWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateTotalWeight();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not needed
+            }
+        });
+
+        binding.edtMixWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateTotalWeight();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not needed
+            }
+        });
+    }
     //calculate natural weight and mix weight
     private void calculateTotalWeight() {
-        String naturalWeightStr = binding.edtNaturalWeight.getText().toString();
-        String mixWeightStr = binding.edtMixWeight.getText().toString();
+        String naturalWeightStr = Objects.requireNonNull(binding.edtNaturalWeight.getText()).toString();
+        String mixWeightStr = Objects.requireNonNull(binding.edtMixWeight.getText()).toString();
 
         // Remove the "Kg" suffix from the strings
         String naturalWeight = naturalWeightStr.replaceAll("[^\\d.]", "");

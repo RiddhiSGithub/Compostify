@@ -73,11 +73,13 @@
     <string name="natural_weight">Natural Waste Weight(in Kg.)</string>
     <string name="mix_weight">Mix Waste Weight(in Kg.)</string>
     <string name="clear">Clear</string>
+    <string name="clear_images">Clear Images</string>
     <string name="time">Time</string>
     <string name="edit_post">Edit Post</string>
     <string name="view_all_activity">View all Activity</string>
     <string name="delete">Delete</string>
     <string name="active">Active</string>
     <string name="save_post">Save Post</string>
+    <string name="deactivate">Deactivate</string>
 
 </resources>
