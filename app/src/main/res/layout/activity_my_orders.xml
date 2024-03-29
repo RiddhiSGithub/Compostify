@@ -16,7 +16,7 @@
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:textColor="@color/primary"
         android:textStyle="bold"
-        android:layout_marginTop="16sp" />
+        android:layout_marginTop="16dp" />
 
     <!-- RecyclerView for User activity list -->
     <androidx.recyclerview.widget.RecyclerView

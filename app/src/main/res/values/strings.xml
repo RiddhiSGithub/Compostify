@@ -82,5 +82,12 @@
     <string name="save_post">Save Post</string>
     <string name="deactivate">Deactivate</string>
     <string name="my_orders">My Orders</string>
+    <string name="order_information">Order Information</string>
+    <string name="id_0000">ID:0000</string>
+    <string name="product_info">Product Info:</string>
+    <string name="payment_info">Payment Info:</string>
+    <string name="payment_id">PaymentID:</string>
+    <string name="payment_type">Payment Type:</string>
+    <string name="payment_time">Payment Time:</string>
 
 </resources>
