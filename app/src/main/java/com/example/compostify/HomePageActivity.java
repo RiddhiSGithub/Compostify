@@ -29,6 +29,7 @@ public class HomePageActivity extends AppCompatActivity {
         replaceFragment(new HomeFragment(), getString(R.string.app_name));
 
 
+
         // Set up bottom navigation item selected listener
         homePageBinding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
