@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.compostify.Activities.MyOrders;
 import com.example.compostify.Activities.UserHistoryViewMore;
 import com.example.compostify.adapters.UserRecentActivityAdapter;
 import com.example.compostify.databinding.FragmentHomeBinding;
@@ -89,71 +90,82 @@ public class HomeFragment extends Fragment {
         // Set click listener for "View More" TextView
         binding.txtViewAllActivity.setOnClickListener(v -> {
             // Navigate to the user history view more activity
-            Intent intent = new Intent(getContext(), UserHistoryViewMore.class);
+            Intent intent = new Intent(requireContext(), UserHistoryViewMore.class);
             startActivity(intent);
         });
+
+        //set click listener for "My Orders" button
+        binding.btnMyOrder.setOnClickListener(v -> {
+            // Navigate to the my orders activity
+            Intent intent = new Intent(requireContext(), MyOrders.class);
+            startActivity(intent);
+        });
+
     }
 
     private void fetchRecentActivityData() {
-        // Get the current user ID (assuming you are using Firebase Authentication)
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (firebaseAuth.getCurrentUser() != null) {
 
-        // Fetch user's recent activity data from Firestore
-        db.collection("Publish")
-                .whereEqualTo("userId", currentUserId)
-                .limit(3) // Limit to only 3 documents
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<UserRecentActivity> recentActivityList = new ArrayList<>();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        SimpleDateFormat stf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            // Get the current user ID (assuming you are using Firebase Authentication)
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String publishId = document.getId(); // Get the publishId
-                            String typeOfUser = document.getString("typeOfUser");
-                            String typeOfWaste = document.getString("typeOfWaste");
-                            String NaturalWasteWeight =document.getString("naturalWasteWeight");
-                            String MixWasteWeight =document.getString("mixWasteWeight");
-                            String weight = document.getString("totalWeight");
-                            String OtherDetails = document.getString("otherDetails");
+            // Fetch user's recent activity data from Firestore
+            db.collection("Publish")
+                    .whereEqualTo("userId", currentUserId)
+                    .limit(3) // Limit to only 3 documents
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<UserRecentActivity> recentActivityList = new ArrayList<>();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            SimpleDateFormat stf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String publishId = document.getId(); // Get the publishId
+                                String typeOfUser = document.getString("typeOfUser");
+                                String typeOfWaste = document.getString("typeOfWaste");
+                                String NaturalWasteWeight = document.getString("naturalWasteWeight");
+                                String MixWasteWeight = document.getString("mixWasteWeight");
+                                String weight = document.getString("totalWeight");
+                                String OtherDetails = document.getString("otherDetails");
 //                            String imageUrls = document.getString("imageUrls");
 
-                            // Retrieve the image URLs array
-                            List<String> imageUrls = (List<String>) document.get("imageUrls");
+                                // Retrieve the image URLs array
+                                List<String> imageUrls = (List<String>) document.get("imageUrls");
 
 
-                            // Convert timestamp to date string
-                            String date;
-                            if (document.contains("postDateTime")) {
-                                long timestamp = document.getDate("postDateTime").getTime();
-                                date = "Date: "+sdf.format(timestamp);
-                            } else {
-                                date = "";
+                                // Convert timestamp to date string
+                                String date;
+                                if (document.contains("postDateTime")) {
+                                    long timestamp = document.getDate("postDateTime").getTime();
+                                    date = "Date: " + sdf.format(timestamp);
+                                } else {
+                                    date = "";
+                                }
+
+                                String time;
+                                if (document.contains("postDateTime")) {
+                                    long timestamp = document.getDate("postDateTime").getTime();
+                                    time = "Time: " + stf.format(timestamp);
+                                } else {
+                                    time = "";
+                                }
+
+                                String postStatus = document.getString("postStatus");
+                                UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId, typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, OtherDetails, imageUrls, postStatus);
+                                recentActivityList.add(recentActivity);
                             }
-
-                            String time;
-                            if (document.contains("postDateTime")) {
-                                long timestamp = document.getDate("postDateTime").getTime();
-                                time = "Time: "+stf.format(timestamp);
-                            } else {
-                                time = "";
-                            }
-
-                            String postStatus = document.getString("postStatus");
-                            UserRecentActivity recentActivity = new UserRecentActivity(currentUserId, publishId,typeOfUser, typeOfWaste, date, time, NaturalWasteWeight, MixWasteWeight, weight, OtherDetails, imageUrls, postStatus);
-                            recentActivityList.add(recentActivity);
+                            initializeRecyclerView(recentActivityList);
                         }
-                        initializeRecyclerView(recentActivityList);
-                    }
 
-                });
+                    });
+        }
+
     }
 
     private void initializeRecyclerView(List<UserRecentActivity> recentActivityList) {
         // Initialize RecyclerView
-        // Initialize RecyclerView
-        RecyclerView recyclerView = requireView().findViewById(R.id.recentActivityRecyclerView);
+        RecyclerView recyclerView = binding.recentActivityRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context)); // Pass context here
 
         // Set adapter for RecyclerView

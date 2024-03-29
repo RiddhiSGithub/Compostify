@@ -100,9 +100,8 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             // Create an Intent to start ActivityEditPost
             Intent intent = new Intent(v.getContext(), EditPost.class);
 
-            // Assuming you need to pass the publishID and userID to ActivityEditPost
-            intent.putExtra("user_id",activity.getUserId());
-            intent.putExtra("publish_id", activity.getPublishId());
+            // pass user publish details to ActivityEditPost
+            intent.putExtra("userPost", activity);
 
             // Start the ActivityEditPost
             v.getContext().startActivity(intent);
@@ -113,7 +112,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             // Create an Intent to start ActivityEditPost
             Intent intent = new Intent(v.getContext(), EditPost.class);
 
-            // Assuming you need to pass the publishID and userID to ActivityEditPost
+            // pass user publish details to ActivityEditPost
             intent.putExtra("userPost", activity);
 
             // Start the ActivityEditPost

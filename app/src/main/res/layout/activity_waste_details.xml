@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".WasteDetailsActivity">
+    tools:context=".WasteDetailsActivity"
+    android:background="@color/secondary">
 
     <include
         android:id="@+id/actionBar"
@@ -19,13 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:backgroundTint="@color/secondary">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vpWasteImages"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/green_border" />
+                android:background="@drawable/green_border"
+                />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/layoutTabs"
@@ -33,7 +36,8 @@
                 android:layout_height="wrap_content"
                 app:tabBackground="@drawable/dot_selector"
                 app:tabGravity="center"
-                app:tabIndicatorHeight="0dp" />
+                app:tabIndicatorHeight="0dp"
+                android:background="@color/secondary"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -114,6 +118,7 @@
                     app:constraint_referenced_ids="lblAddress,txtAddress" />
 
                 <!-- # Weight -->
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblWeight"
                     android:layout_width="0dp"
@@ -122,9 +127,10 @@
                     android:text="@string/weight"
                     app:layout_constraintBottom_toBottomOf="@id/barrierWeight"
                     app:layout_constraintEnd_toEndOf="@id/lblAddress"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/barrierQuantityOfBags"
-                    app:layout_constraintVertical_bias="0" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtWeight"

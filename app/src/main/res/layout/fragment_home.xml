@@ -45,8 +45,20 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- Edit Profile button -->
-
+    <!-- My Order button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMyOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/my_orders"
+        android:textColor="@color/secondary"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:background="@drawable/button_border"
+        />
 
     <!-- Recent activity header -->
     <com.google.android.material.textview.MaterialTextView
@@ -57,7 +69,7 @@
         android:textSize="18sp"
         android:textColor="@color/primary"
         android:textStyle="bold"
-        android:layout_marginTop="16sp" />
+        android:layout_marginTop="10dp" />
 
     <!-- RecyclerView for recent activity list -->
     <androidx.recyclerview.widget.RecyclerView
