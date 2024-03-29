@@ -25,6 +25,9 @@
         android:theme="@style/Theme.Compostify"
         tools:targetApi="31">
         <activity
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
             android:name=".Activities.MyOrderDetails"
             android:exported="false" />
         <activity

@@ -108,7 +108,11 @@ public class EditPost extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //update data on same postID in publish
-                updatePost();
+                if(newImageUri.isEmpty()) {
+                    updatePostData(new ArrayList<String>());
+                } else {
+                    updatePost();
+                }
             }
         });
 
@@ -168,11 +172,10 @@ public class EditPost extends AppCompatActivity {
     }
 
 
-    private String uploadImage(Uri imageUri) {
+    private void uploadImage(Uri imageUri, OnSuccessListener<Uri> onSuccessListener) {
         // Get a reference to the Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        final String[] uploadedUrls = {new String()};
 
         String imageName = "WasteImage_" + System.currentTimeMillis(); // Generate a unique name for each image
         StorageReference imagesRef = storageRef.child("WasteImages").child(imageName);
@@ -182,12 +185,7 @@ public class EditPost extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get the download URL of the uploaded image
-                        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                uploadedUrls[0] = uri.toString();
-                            }
-                        });
+                        imagesRef.getDownloadUrl().addOnSuccessListener(onSuccessListener);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -197,15 +195,39 @@ public class EditPost extends AppCompatActivity {
                         Toast.makeText(EditPost.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
                     }
                 });
-        return uploadedUrls[0];
     }
 
     private void clearImagesUrl() {
         //delete all Images from firebase database and storage of this post
+        post.getImageUrl().clear();
+        newImageUri.clear();
+        DocumentReference postRef = db.collection("Publish").document(post.getPublishId());
+        postRef.update("imageUrls",post.getImageUrl())
+                .addOnSuccessListener(aVoid ->{
+                    Toast.makeText(EditPost.this, "Images Deleted successfully", Toast.LENGTH_SHORT).show();
+                });
     }
 
+    private void updatePost(){
+        List<String> uploadedUrls = new ArrayList<>();
+        for (Uri uri: newImageUri){
+            uploadImage(uri, new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Add the downloaded URL to the list
+                    uploadedUrls.add(uri.toString());
 
-    private void updatePost() {
+                    // If all images are uploaded, update the post
+                    if (uploadedUrls.size() == newImageUri.size()) {
+                        // Update post data in Firestore
+                        updatePostData(uploadedUrls);
+                    }
+                }
+            });
+        }
+    }
+
+    private void updatePostData(List<String> uploadedUrls) {
         String typeOfWaste = binding.edtTypeOfWaste.getText().toString().trim();
         String naturalWasteWeight = binding.edtNaturalWeight.getText().toString().trim();
         String mixWasteWeight = binding.edtMixWeight.getText().toString().trim();
@@ -216,23 +238,19 @@ public class EditPost extends AppCompatActivity {
         }else {
             postStatus = "Deactivate";
         }
-
-        List<String> uploadedUrls = new ArrayList<>();
-        for (Uri uri: newImageUri){
-            uploadedUrls.add(uploadImage(uri));
-        }
-        uploadedUrls.addAll(post.getImageUrl());
-
+        List<String> imageUrls = post.getImageUrl();
+        imageUrls.addAll(uploadedUrls);
         // Update post data in Firestore
         DocumentReference postRef = db.collection("Publish").document(post.getPublishId());
+        FieldValue postDateTime = FieldValue.serverTimestamp();
         postRef.update("typeOfWaste", typeOfWaste,
                         "naturalWasteWeight", naturalWasteWeight,
                         "mixWasteWeight", mixWasteWeight,
                         "totalWeight", totalWeight,
                         "otherDetails", otherDetails,
-                        "imageUrls", uploadedUrls,
+                        "imageUrls", imageUrls,
                         "postStatus", postStatus,
-                        "postDateTime", FieldValue.serverTimestamp())
+                        "postDateTime", postDateTime)
                 .addOnSuccessListener(aVoid -> {
                     // Data updated successfully
                     Toast.makeText(EditPost.this, "Post updated successfully", Toast.LENGTH_SHORT).show();

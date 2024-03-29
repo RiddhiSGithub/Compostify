@@ -84,5 +84,13 @@
     <string name="my_orders">My Orders</string>
     <string name="available_waste_type">Available Waste Varities</string>
     <string name="place_order">Place Order</string>
+    <string name="order_information">Order Information</string>
+    <string name="id_0000">ID:0000</string>
+    <string name="product_info">Product Info:</string>
+    <string name="payment_info">Payment Info:</string>
+    <string name="payment_id">PaymentID:</string>
+    <string name="payment_type">Payment Type:</string>
+    <string name="payment_time">Payment Time:</string>
+    <string name="our_mission">Our Mission</string>
 
 </resources>
