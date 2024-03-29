@@ -2,7 +2,6 @@ package com.example.compostify.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.compostify.Activities.EditPost;
 import com.example.compostify.R;
-import com.example.compostify.WasteDetailsActivity;
 import com.example.compostify.db.UserRecentActivity;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -23,9 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentActivityAdapter.ViewHolder> {
-//    private static final String TAG = "UserActivityAdapter";
-//    private List<UserRecentActivity> recentActivityList;
-//    private Context context;
 
     private static final String TAG = "UserActivityAdapter";
     private List<UserRecentActivity> recentActivityList;
@@ -52,7 +48,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
         public MaterialTextView txtDate;
         public MaterialTextView txtTime;
         public MaterialTextView txtWeight;
-        public MaterialTextView txtViewMore;
+        public MaterialTextView txtEditPost;
         public ImageView imgWasteImage;
 
         public ViewHolder(View itemView) {
@@ -61,7 +57,7 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
             txtDate = itemView.findViewById(R.id.txtDate);
             txtTime = itemView.findViewById(R.id.txtTime);
             txtWeight = itemView.findViewById(R.id.txtWeight);
-            txtViewMore = itemView.findViewById(R.id.txtViewMore);
+            txtEditPost = itemView.findViewById(R.id.txtEditPost);
             imgWasteImage = itemView.findViewById(R.id.imgWasteImage);
         }
     }
@@ -84,32 +80,42 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
 
         // Check if imageUrl is not null or empty
         if (activity.getImageUrl() != null && !activity.getImageUrl().isEmpty()) {
-            // Split the imageUrl string by a delimiter to get individual URLs
             RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
             Glide.with(holder.itemView.getContext())
-                    .load(activity.getImageUrl())
+                    .load(activity.getImageUrl().get(0))
                     .apply(requestOptions)
                     .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.side_image)
+                    .error(R.drawable.side_image) // Set error image here
                     .into(holder.imgWasteImage);
         } else {
-            // Log a warning if imageUrl is null or empty
-            Log.w(TAG, "Empty or null imageUrl for position: " + position);
-            // You can also set a default image here if needed
+            // If imageUrl is empty or null, load the error image
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.side_image)
+                    .into(holder.imgWasteImage);
         }
 
 
 
+        holder.imgWasteImage.setOnClickListener(v -> {
+            // Create an Intent to start ActivityEditPost
+            Intent intent = new Intent(v.getContext(), EditPost.class);
 
-        // Set click listener for "View More" TextView
-        holder.txtViewMore.setOnClickListener(v -> {
-            // Handle click event, for example, start a new activity
-//            Intent intent = new Intent(context, WasteDetailsActivity.class);
-            Intent intent = new Intent(v.getContext(), WasteDetailsActivity.class);
-            // Pass user ID and post date/time to the next activity
-//                intent.putExtra("userId", activity.getUserId());
-//                intent.putExtra("postDateTime", activity.getPostDateTime());
-//            context.startActivity(intent);
+            // pass user publish details to ActivityEditPost
+            intent.putExtra("userPost", activity);
+
+            // Start the ActivityEditPost
+            v.getContext().startActivity(intent);
+        });
+
+        // Set click listener for "Edit Post" TextView
+        holder.txtEditPost.setOnClickListener(v -> {
+            // Create an Intent to start ActivityEditPost
+            Intent intent = new Intent(v.getContext(), EditPost.class);
+
+            // pass user publish details to ActivityEditPost
+            intent.putExtra("userPost", activity);
+
+            // Start the ActivityEditPost
             v.getContext().startActivity(intent);
         });
     }

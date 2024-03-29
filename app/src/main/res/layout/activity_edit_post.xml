@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PublishFragment">
+    tools:context=".PublishFragment"
+    android:background="@color/secondary">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,15 +17,17 @@
             android:background="@color/secondary"
             android:orientation="vertical">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recentActivityHeaderTextView"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:background="@color/primary"
-                android:backgroundTint="@color/secondary"
-                android:cropToPadding="true"
-                android:src="@drawable/dustbin"></com.google.android.material.imageview.ShapeableImageView>
+                android:layout_height="wrap_content"
+                android:text="@string/edit_post"
+                android:textSize="30sp"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:textColor="@color/primary"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -144,8 +147,20 @@
                     android:id="@+id/btnSelectPhotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:text="@string/select"
+                    android:textColor="@color/secondary"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:background="@drawable/button_border"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearPhotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/clear_images"
                     android:textColor="@color/secondary"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:background="@drawable/button_border"
@@ -168,32 +183,51 @@
                 tools:listitem="@layout/item_photo" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPost"
+                android:id="@+id/btnSavePost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-                android:text="@string/post"
+                android:text="@string/save_post"
                 android:textColor="@color/secondary"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:background="@drawable/button_border"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClearAll"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/clear"
-                android:textColor="@color/secondary"
-                style="@style/Widget.AppCompat.Button.Small"
-                android:background="@drawable/button_border"
-                />
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:layout_marginBottom="15dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/delete"
+                    android:textColor="@color/secondary"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:background="@drawable/button_border"
+                    />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchActiveDeActivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/secondary"
+                    android:checked="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="5dp"
+                    android:background="@color/primary"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
