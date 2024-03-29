@@ -25,15 +25,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom = "10dp"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/txtOrderId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="@string/id_0000"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom = "10dp"
-            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
     </LinearLayout>
     <View
