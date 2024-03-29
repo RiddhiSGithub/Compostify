@@ -89,5 +89,6 @@
     <string name="payment_id">PaymentID:</string>
     <string name="payment_type">Payment Type:</string>
     <string name="payment_time">Payment Time:</string>
+    <string name="our_mission">Our Mission</string>
 
 </resources>

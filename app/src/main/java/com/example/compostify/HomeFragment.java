@@ -37,8 +37,6 @@ public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     String userId;
-    String imageURL;
-
     private FirebaseFirestore db;
     private Context context;
 
@@ -46,6 +44,12 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        fetchRecentActivityData();
     }
 
     @Nullable

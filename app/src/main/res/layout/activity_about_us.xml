@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/secondary"
+    android:padding="16sp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtaboutUs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_us"
+        style="@style/TextAppearance.AppCompat.SearchResult.Title"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom = "30dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txOurMission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/our_mission"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom = "30dp"/>
+
+
+
+</LinearLayout>
