@@ -49,5 +49,14 @@
         tools:itemCount="10"
         tools:listitem="@layout/item_waste_list_modal" />
 
+    <TextView
+        android:id="@+id/tvEmptyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No items to display, Check back later"
+        android:visibility="gone" />
+
+
 
 </LinearLayout>

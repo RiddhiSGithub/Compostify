@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 binding.edtBusinessEmail.setText(value.getString("businessEmail"));
                 binding.edtBusinessPhoneNumber.setText(value.getString("businessContactNumber"));
                 binding.edtStreet.setText(value.getString("address"));
-                binding.edtUnitNumber.setText(value.getString("unitNo"));
+                binding.edtUnitNumber.setText(value.getString("uni  tNo"));
 
                 try {
                     Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgLogo);

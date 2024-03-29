@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,9 +27,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -49,10 +50,13 @@ public class SearchFragment extends Fragment implements LocationListener {
     WasteListAdapter wasteListAdapter;
     FirebaseFirestore firebaseFirestore;
 
+    String userId;
     ProgressDialog progressDialog;
     LocationManager locationManager;
     private double longitude;
     private double latitude;
+    private FirebaseAuth firebaseAuth;
+    private String typeOfUser;
 
 
     public SearchFragment() {
@@ -82,6 +86,8 @@ public class SearchFragment extends Fragment implements LocationListener {
         wasteListAdapter = new WasteListAdapter(getContext(), userArrayList);
         recyclerView.setAdapter(wasteListAdapter);
         firebaseFirestore = FirebaseFirestore.getInstance();
+        TextView emptyView = view.findViewById(R.id.tvEmptyRecyclerView);
+        firebaseAuth = FirebaseAuth.getInstance();
         userArrayList = new ArrayList<User>();
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -90,7 +96,7 @@ public class SearchFragment extends Fragment implements LocationListener {
             },100);
         }
 
-        loadDataFromFirestore();
+        loadDataFromFirestore(emptyView);
         getCurrentLocationLatLng();
 
         return view;
@@ -110,7 +116,17 @@ public class SearchFragment extends Fragment implements LocationListener {
         }
     }
 
-    private void loadDataFromFirestore() {
+    private void loadDataFromFirestore(TextView emptyView) {
+        userId = firebaseAuth.getCurrentUser().getUid();
+        typeOfUser = "";
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                typeOfUser = value.getString("typeOfUser");
+            }
+        });
+
         List<User> dataList = new ArrayList<>();
         firebaseFirestore.collection("Publish")
                 .get()
@@ -118,26 +134,51 @@ public class SearchFragment extends Fragment implements LocationListener {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            User user = documentSnapshot.toObject(User.class);
-                            DocumentReference documentReference = firebaseFirestore.collection("users").document(user.getUserId());
-                            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                    user.setBusinessName(value.getString("businessName"));
-                                    user.setDownloadUrl(value.getString("downloadUrl"));
-                                    String[] address = value.getString("address").split(",");
-                                    String cityName = address[1] + ", "+address[2];
-                                    user.setCityName(cityName);
-                                }
-                            });
-                            Log.e("user", ""+user.getDownloadUrl());
-                            Log.e("user", ""+user.getBusinessName());
-                            dataList.add(user);
+
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                           emptyView.setVisibility(View.VISIBLE);
+                           progressDialog.dismiss();
+                           return;
                         }
 
-                        wasteListAdapter.setData(dataList);
-                        wasteListAdapter.notifyDataSetChanged();
+                            emptyView.setVisibility(View.GONE);
+
+
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                            Log.e("type of user", documentSnapshot.getString("typeOfUser"));
+                            if (documentSnapshot.getString("postStatus").toLowerCase().equals("active")
+                            && !documentSnapshot.getString("typeOfUser").toLowerCase().equals(typeOfUser.toLowerCase()))
+                            {
+
+                                    User user = documentSnapshot.toObject(User.class);
+                                    user.setUserId(documentSnapshot.getId());
+                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(user.getUserId());
+                                    documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            user.setBusinessName(value.getString("businessName"));
+                                            user.setDownloadUrl(value.getString("downloadUrl"));
+                                            String[] address = value.getString("address").split(",");
+                                            String cityName = address[1] + ", "+address[2];
+                                            user.setCityName(cityName);
+                                            dataList.add(user);
+                                            wasteListAdapter.setData(dataList);
+                                            wasteListAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                    Log.e("user", ""+user.getDownloadUrl());
+                                    Log.e("user", ""+user.getBusinessName());
+
+
+                            }
+
+
+
+                        }
+
+
                         progressDialog.dismiss();
                     }
                 })
