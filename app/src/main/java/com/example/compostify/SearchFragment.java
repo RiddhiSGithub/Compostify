@@ -154,15 +154,20 @@ public class SearchFragment extends Fragment implements LocationListener {
 
                                     User user = documentSnapshot.toObject(User.class);
                                     user.setUserId(documentSnapshot.getId());
-                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(user.getUserId());
+                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(documentSnapshot.getString("userId"));
                                     documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             user.setBusinessName(value.getString("businessName"));
                                             user.setDownloadUrl(value.getString("downloadUrl"));
-                                            String[] address = value.getString("address").split(",");
-                                            String cityName = address[1] + ", "+address[2];
-                                            user.setCityName(cityName);
+                                            try{
+                                                String[] address = value.getString("address").split(",");
+                                                String cityName = address[1] + ", " + address[2];
+                                                user.setCityName(cityName);
+                                            }catch (NullPointerException e){
+                                                    e.printStackTrace();
+                                            }
+
                                             dataList.add(user);
                                             wasteListAdapter.setData(dataList);
                                             wasteListAdapter.notifyDataSetChanged();
