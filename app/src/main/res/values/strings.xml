@@ -83,5 +83,6 @@
     <string name="deactivate">Deactivate</string>
     <string name="my_orders">My Orders</string>
     <string name="available_waste_type">Available Waste Varities</string>
+    <string name="place_order">Place Order</string>
 
 </resources>

@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 
 
-public class WasteDetailsActivity extends AppCompatActivity {
+public class WasteDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -50,6 +50,7 @@ public class WasteDetailsActivity extends AppCompatActivity {
             fillData(publishId);
 
         }
+        binding.btnPlaceOrder.setOnClickListener(this);
     }
 
     private void fillData(String publishId) {
@@ -136,5 +137,12 @@ public class WasteDetailsActivity extends AppCompatActivity {
         PhotoAdapter adapter = new PhotoAdapter(WasteDetailsActivity.this, imageUrls);
         rvWastePhotos.setAdapter(adapter);
         rvWastePhotos.setLayoutManager(new LinearLayoutManager(WasteDetailsActivity.this, LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (binding.btnPlaceOrder.getId() == v.getId()){
+
+        }
     }
 }
