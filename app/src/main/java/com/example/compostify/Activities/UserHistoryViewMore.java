@@ -33,7 +33,7 @@ public class UserHistoryViewMore extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         db = FirebaseFirestore.getInstance();
-        context = this; // Use 'this' context
+        context = this;
 
         fetchRecentActivityData();
     }

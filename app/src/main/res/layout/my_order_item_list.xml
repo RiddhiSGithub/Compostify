@@ -24,7 +24,7 @@
             android:orientation="vertical"
             android:layout_gravity="center">
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgWasteImage"
+                android:id="@+id/imgBusinessImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@drawable/green_border"
@@ -49,21 +49,6 @@
                 style="@style/TextAppearance.AppCompat.SearchResult.Title"
                 android:textColor="@color/primary"
                 android:textStyle="bold" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/date"
-                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/time"
-                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
         </LinearLayout>
     </LinearLayout>
 
