@@ -203,12 +203,5 @@
         style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
 
-    <Button
-        android:id="@+id/btnPlaceOrder"
-        android:text="Place Order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary"
-       />
+
 </LinearLayout>

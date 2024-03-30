@@ -43,7 +43,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-        PaymentConfiguration.init(getApplicationContext(), "pk_test_51OzmZfDIaLN1YyfY1mmha9m5vJoXuesGR8xQktRengYzSXQoukkuWqejP1UjMnsCIPK37Cjp82AWYNxesdNk3fHJ00Ssa6boOt");
+
 
         if(getIntent().getBooleanExtra("fromSearch",true))
         {
@@ -137,10 +137,6 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if (binding.btnPlaceOrder.getId() == v.getId()){
-            Intent intent = new Intent(WasteDetailsActivity.this, CheckoutActivity.class);
-            intent.putExtra("publishId",publishId);
-            startActivity(intent);
-        }
+
     }
 }

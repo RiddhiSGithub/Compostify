@@ -22,7 +22,7 @@
             android:layout_height="100dp"
             android:layout_marginRight="10dp"
             android:id="@+id/imageViewLogo"
-            android:background="@drawable/refs"></ImageView>
+            ></ImageView>
 
         <LinearLayout
             android:layout_width="0dp"

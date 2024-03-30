@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -77,6 +78,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private final int PICK_IMAGE_REQUEST = 1;
     private String address;
     private String downloadUrl;
+    private String typeOfUser;
 
 
     @Override
@@ -95,6 +97,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
         setListeners();
+
+        ArrayAdapter<String> wasteAdapter = new ArrayAdapter<>(
+                RegistrationActivity.this,
+                android.R.layout.simple_dropdown_item_1line,
+                new String[]{"Buyer", "Seller"}
+        );
+        binding.edtTypeOfUser.setAdapter(wasteAdapter);
 
 
     }
@@ -141,6 +150,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             startActivityForResult(intent, 100);
         } else if (binding.btnSelectImage.getId() == v.getId()) {
             openImageChooser();
+            binding.imgLogo.setBackground(null);
         }
 
 
@@ -150,6 +160,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Logo"), PICK_IMAGE_REQUEST);
+
     }
 
     @Override
@@ -183,7 +194,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else if (TextUtils.isEmpty(businessEmail)) {
             binding.edtBusinessEmail.setError("Business Email Cannot be empty");
             return false;
-        } else if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {   
             binding.edtPassword.setError("Password Cannot be empty");
             return false;
         } else if (TextUtils.isEmpty(contactNumber)) {
@@ -191,6 +202,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             return false;
         } else if (TextUtils.isEmpty(street)) {
             binding.edtStreetAddress.setError("Street Name Cannot be empty");
+            return false;
+        }else if(TextUtils.isEmpty(typeOfUser))
+        {
+            binding.edtTypeOfUser.setError("Please select atleast one user type");
             return false;
         }
 
@@ -221,7 +236,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         contactNumber = String.valueOf(binding.edtBusinessPhoneNumber.getText());
         street = String.valueOf(binding.edtStreetAddress.getText());
         unitNo = String.valueOf(binding.edtUnitNumber.getText());
-
+        typeOfUser = String.valueOf(binding.edtTypeOfUser.getText());
         password = String.valueOf(binding.edtPassword.getText());
         confirmPassword = String.valueOf(binding.edtCPassword.getText());
     }
@@ -310,6 +325,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             newUser.put("businessContactNumber", contactNumber);
                             newUser.put("address", address);
                             newUser.put("unitNo", unitNo);
+                            newUser.put("typeOfUser",typeOfUser);
                             newUser.put("latLng", latLng);
                             newUser.put("downloadUrl", downloadUrl);
                             documentReference.set(newUser)

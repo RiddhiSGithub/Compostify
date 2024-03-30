@@ -71,26 +71,10 @@ public class CheckoutActivity extends AppCompatActivity {
                     };
 
                     // Iterate over data and create TableRow for each row
-                    for (int i = 0; i < data.length; i++) {
-                        TableRow row = new TableRow(WasteDetailsActivity.this);
 
-                        // Iterate over columns for each row and add TextViews as cells
-                        for (int j = 0; j < data[i].length; j++) {
-                            TextView cell = new TextView(WasteDetailsActivity.this);
-                            cell.setText(data[i][j]);
-                            row.addView(cell);
-                        }
-
-                        // Add the row to the TableLayout
-                        binding.tblWasteTypes.addView(row);
-                    }
-                    binding.txtHandlingInstruction.setText(value.getString("otherDetails"));
+                    binding.txtOtherDetail.setText(value.getString("otherDetails"));
                     binding.txtWeight.setText(value.getString("totalWeight"));
 
-                }
-                else
-                {
-                    binding.rvWastePhotos.setVisibility(View.GONE);
                 }
 
             }

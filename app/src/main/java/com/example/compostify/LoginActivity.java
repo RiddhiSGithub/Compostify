@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void setListeners() {
         binding.btnSignUp.setOnClickListener(this);
+        binding.txtForgotPassword.setOnClickListener(this);
         binding.btnLogIn.setOnClickListener(this);
     }
 
@@ -76,7 +80,42 @@ public class LoginActivity extends AppCompatActivity
 
             }
 
+        }else if(binding.txtForgotPassword.getId() == v.getId()){
+            showForgotPasswordDialog();
         }
+
+    }
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.forget_password_dialog, null);
+        builder.setView(dialogView);
+
+        EditText emailEditText = dialogView.findViewById(R.id.emailEditText);
+        Button resetButton = dialogView.findViewById(R.id.resetButton);
+        Button cancelButton = dialogView.findViewById(R.id.cancelButton);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        resetButton.setOnClickListener(view -> {
+            String email = emailEditText.getText().toString().trim();
+            if (!TextUtils.isEmpty(email)) {
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(this, "Password reset email sent!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Failed to send reset email. Please check your email address.", Toast.LENGTH_SHORT).show();
+                            }
+                            alertDialog.dismiss();
+                        });
+            } else {
+                Toast.makeText(this, "Please enter your email address.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cancelButton.setOnClickListener(view -> alertDialog.dismiss());
     }
 
     private void createAlertErrorBox(String errorMessage, LoginActivity loginActivity) {

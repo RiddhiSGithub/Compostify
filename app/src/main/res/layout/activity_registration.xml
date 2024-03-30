@@ -149,6 +149,27 @@
                     android:maxLength="14" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/i_am_a"
+                android:textColorHint="@color/primary"
+                app:boxStrokeColor="@color/primary"
+                android:paddingStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                app:boxStrokeErrorColor="@color/red">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edtTypeOfUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtStreetAddress"
