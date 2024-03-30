@@ -23,13 +23,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Compostify"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <activity
             android:name=".CheckoutActivity"
             android:exported="false" />
-        <activity
-            android:name=".Checkout"
-            android:exported="false" />
+
         <activity
             android:name=".AboutUs"
             android:exported="false" />

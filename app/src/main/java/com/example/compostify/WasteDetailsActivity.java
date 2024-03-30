@@ -33,7 +33,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
     ActivityWasteDetailsBinding binding;
     private String userId;
 
-
+    String publishId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +41,9 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
         setContentView(binding.getRoot());
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        String publishId;
 
 
+        PaymentConfiguration.init(getApplicationContext(), "pk_test_51OzmZfDIaLN1YyfY1mmha9m5vJoXuesGR8xQktRengYzSXQoukkuWqejP1UjMnsCIPK37Cjp82AWYNxesdNk3fHJ00Ssa6boOt");
 
         if(getIntent().getBooleanExtra("fromSearch",true))
         {
@@ -119,16 +119,11 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
                 binding.lblContact.setText(value.getString("businessContactNumber"));
                 binding.lblAddress.setText(value.getString("address"));
 
-
-
-
                 try {
                     Glide.with(WasteDetailsActivity.this).load(value.getString("downloadUrl")).into(binding.imgLogo);
                 } catch (NullPointerException e) {
 
                 }
-
-
             }
         });
     }
@@ -143,7 +138,9 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (binding.btnPlaceOrder.getId() == v.getId()){
-            Intent intent = new Intent();
+            Intent intent = new Intent(WasteDetailsActivity.this, CheckoutActivity.class);
+            intent.putExtra("publishId",publishId);
+            startActivity(intent);
         }
     }
 }

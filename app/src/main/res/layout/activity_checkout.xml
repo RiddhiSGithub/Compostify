@@ -1,10 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckoutActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/secondary"
+    android:padding="16sp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/Animation.Design.BottomSheetDialog"
+        >
+        <!-- Order Information header -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recentActivityHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_information"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom = "10dp"/>
+
+        <!--        <com.google.android.material.textview.MaterialTextView-->
+        <!--            android:id="@+id/txtOrderId"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:gravity="right"-->
+        <!--            android:text="@string/id_0000"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_marginBottom = "10dp"-->
+        <!--            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>-->
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary"
+        android:paddingBottom="10dp"/>
+
+    <!--    user Info-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgBusinessLogo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/green_border"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtBusinessName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/BusinessName"
+                android:textSize="25sp"
+                style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTypeOfUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/type_of_user"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtBusinessAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/address"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--    ordered product Info-->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtProductInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/product_info"
+        android:textSize="25sp"
+        style="@style/TextAppearance.AppCompat.SearchResult.Title"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/primary"
+        android:paddingBottom="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/Animation.Design.BottomSheetDialog"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgWasteImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/green_border"
+                android:layout_gravity="center"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTypeOfWaste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/type_of_waste"
+                android:textSize="15sp"
+                style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/date"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/time"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/weight"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtNaturalWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/natural_weight"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtMixWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/weight"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtOtherDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/other_details"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+
+    <Button
+        android:id="@+id/btnPlaceOrder"
+        android:text="Place Order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/secondary"
+       />
+</LinearLayout>
