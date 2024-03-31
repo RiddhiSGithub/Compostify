@@ -7,7 +7,7 @@
     android:background="@color/secondary"
     android:padding="16sp">
 
-    <!-- Recent header -->
+    <!-- Order header -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/recentActivityHeaderTextView"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
 
-    <!-- RecyclerView for User activity list -->
+    <!-- RecyclerView for User order history list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentActivityRecyclerView"
         android:layout_width="match_parent"

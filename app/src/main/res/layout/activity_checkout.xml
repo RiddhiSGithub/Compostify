@@ -4,211 +4,250 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/secondary"
     android:padding="16sp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/Animation.Design.BottomSheetDialog"
-        >
-        <!-- Order Information header -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recentActivityHeaderTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/order_information"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:textColor="@color/primary"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom = "10dp"/>
-
-        <!--        <com.google.android.material.textview.MaterialTextView-->
-        <!--            android:id="@+id/txtOrderId"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:gravity="right"-->
-        <!--            android:text="@string/id_0000"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:layout_marginBottom = "10dp"-->
-        <!--            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>-->
-
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/primary"
-        android:paddingBottom="10dp"/>
-
-    <!--    user Info-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgBusinessLogo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/green_border"
-                android:layout_gravity="center"
-                />
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-
+            android:orientation="vertical">
+            <!-- Order Information header -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtBusinessName"
+                android:id="@+id/recentActivityHeaderTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkout"
+                style="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom = "10dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/primary"
+                android:paddingBottom="10dp"/>
+
+            <!--    user Info-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/BusinessName"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgSellerBusinessLogo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/green_border"
+                    android:layout_gravity="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtSellerBusinessName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/BusinessName"
+                        android:textSize="25sp"
+                        style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtSellerTypeOfUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/type_of_user"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtSellerBusinessAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/address"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtProductInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/product_info"
                 android:textSize="25sp"
                 style="@style/TextAppearance.AppCompat.SearchResult.Title"
                 android:textColor="@color/primary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/primary"
+                android:paddingBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/Animation.Design.BottomSheetDialog"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvWastePhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        style="@style/Animation.Design.BottomSheetDialog"
+                        tools:listitem="@layout/item_photo" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtTypeOfWaste"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/type_of_waste"
+                        android:textSize="15sp"
+                        style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTypeOfUser"
+                android:id="@+id/txtWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/type_of_user"
+                android:layout_marginBottom="15dp"
+                android:text="@string/weight"
                 style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtBusinessAddress"
+                android:id="@+id/txtNaturalWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/address"
+                android:layout_marginBottom="15dp"
+                android:text="@string/natural_weight"
                 style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!--    ordered product Info-->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txtProductInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/product_info"
-        android:textSize="25sp"
-        style="@style/TextAppearance.AppCompat.SearchResult.Title"
-        android:textColor="@color/primary"
-        android:textStyle="bold"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:background="@color/primary"
-        android:paddingBottom="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/Animation.Design.BottomSheetDialog"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgWasteImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/green_border"
-                android:layout_gravity="center"
-                />
-
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTypeOfWaste"
+                android:id="@+id/txtMixWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/mix_weight"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtOtherDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/other_details"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtTotalAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/total_amount"
+                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLayCardHolderName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
                 android:layout_marginTop="15dp"
-                android:text="@string/type_of_waste"
-                android:textSize="15sp"
-                style="@style/TextAppearance.AppCompat.SearchResult.Title"
-                android:textColor="@color/primary"
-                android:textStyle="bold" />
+                android:layout_marginEnd="10dp"
+                android:hint="@string/card_holder_name"
+                android:textColorHint="@color/primary">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtDate"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCardHolderName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLayCardNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/date"
-                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+                android:paddingStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/card_number"
+                android:textColorHint="@color/primary">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTime"
-                android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLayCardCVV"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/time"
-                style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+                android:paddingStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/cvv"
+                android:textColorHint="@color/primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCardCVV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnPlaceOrder"
+                android:text="@string/place_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/secondary"
+                />
         </LinearLayout>
-
-    </LinearLayout>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txtWeight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/weight"
-        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txtNaturalWeight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/natural_weight"
-        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txtMixWeight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/weight"
-        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txtOtherDetail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/other_details"
-        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
-
-
-    <Button
-        android:id="@+id/btnPlaceOrder"
-        android:text="Place Order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/secondary"
-       />
+    </ScrollView>
 </LinearLayout>

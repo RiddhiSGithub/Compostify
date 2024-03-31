@@ -28,14 +28,10 @@ public class UserRecentActivityAdapter extends RecyclerView.Adapter<UserRecentAc
     private final RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
     // Constructor to initialize the list and context
     public UserRecentActivityAdapter(Context context, List<UserRecentActivity> recentActivityList) {
-//        this.context = context;
         this.recentActivityList = recentActivityList;
-        // Sort the list by date and time in descending order
         Collections.sort(recentActivityList, (o1, o2) -> {
-            // Compare dates first
             int dateComparison = o2.getDate().compareTo(o1.getDate());
             if (dateComparison == 0) {
-                // If dates are the same, compare times
                 return o2.getTime().compareTo(o1.getTime());
             }
             return dateComparison;

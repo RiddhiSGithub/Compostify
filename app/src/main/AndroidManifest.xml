@@ -25,13 +25,17 @@
         android:theme="@style/Theme.Compostify"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.Checkout"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
-<!--        <activity-->
-<!--            android:name=".CheckoutActivity"-->
-<!--            android:exported="false" />-->
 
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="false" />
         <activity
             android:name=".AboutUs"
             android:exported="false" />
@@ -61,15 +65,7 @@
             android:label="WasteDetailsActivity" />
         <activity
             android:name=".HomePageActivity"
-            android:label="HomePageActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:label="HomePageActivity"></activity>
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

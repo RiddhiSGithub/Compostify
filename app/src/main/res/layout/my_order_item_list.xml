@@ -9,47 +9,141 @@
     android:backgroundTint="@color/secondary"
     app:strokeColor="@color/primary"
     >
-    <!--user_recent_activity_list-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         style="@style/Animation.Design.BottomSheetDialog"
         android:padding="12dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgSellerBusinessLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/green_border"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtSellerBusinessName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgBusinessImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/green_border"
-                android:layout_gravity="center"
-                />
-        </LinearLayout>
+            android:text="@string/BusinessName"
+            android:textSize="25sp"
+            style="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:textColor="@color/primary"
+            android:textStyle="bold" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtSellerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/user_name"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTypeOfSellerUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/type_of_user"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtSellerBusinessAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/address"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtOrderDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/date"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTypeOfWaste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/type_of_waste"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/weight"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtNaturalWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/natural_weight"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtMixWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/mix_weight"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
 
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtBusinessName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/BusinessName"
-                android:textSize="25sp"
-                style="@style/TextAppearance.AppCompat.SearchResult.Title"
-                android:textColor="@color/primary"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTotalAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/total_amount"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/primary"
+            android:paddingBottom="10dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPurchaserBusinessName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/BusinessName"
+            android:textSize="25sp"
+            style="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:textColor="@color/primary"
+            android:textStyle="bold" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPurchaserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/user_name"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtTypeOfPurchaserUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/type_of_user"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtPurchaserCardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/card_number"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

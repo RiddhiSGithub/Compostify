@@ -93,5 +93,9 @@
     <string name="payment_time">Payment Time:</string>
     <string name="our_mission">Our Mission</string>
     <string name="checkout">Checkout</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="cvv">CVV</string>
+    <string name="total_amount">Total Amount</string>
 
 </resources>

@@ -1,10 +1,10 @@
 package com.example.compostify;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.compostify.Activities.Checkout;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.ActivityWasteDetailsBinding;
-import com.example.compostify.db.Order;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -138,27 +137,12 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.btnPlaceOrder.getId()){
-//            String purchaserId = firebaseAuth.getCurrentUser().getUid();
-            Order order = new Order(
-                    publishId,
-                    sellerId,
-                    firebaseAuth.getCurrentUser().getUid()
-            );
-
-
-            firebaseFirestore.collection("Orders").add(order.toHashMap()).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    order.setOrderId(documentReference.getId());
-                    Toast.makeText(WasteDetailsActivity.this, "Your order has been placed successfully", Toast.LENGTH_SHORT).show();
-                }
-            });
-            firebaseFirestore.collection("Publish").document(publishId).update(
-                    "postStatus","Deactive"
-            );
-//            Intent intent = new Intent(v.getContext(), HomeFragment.class);
-//            // Start the ActivityEditPost
-//            v.getContext().startActivity(intent);
+            // Start CheckoutActivity and pass necessary data as intent extras
+            Intent intent = new Intent(WasteDetailsActivity.this, Checkout.class);
+            intent.putExtra("postId", publishId);
+            intent.putExtra("sellerId",sellerId);
+            startActivity(intent);
         }
     }
+
 }

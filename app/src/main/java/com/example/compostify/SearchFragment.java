@@ -2,6 +2,7 @@ package com.example.compostify;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
@@ -11,13 +12,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.Manifest;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -205,7 +204,7 @@ public class SearchFragment extends Fragment implements LocationListener {
             String address = addresses.get(0).getAddressLine(0);
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-            Toast.makeText(getContext(), address, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getContext(), address, Toast.LENGTH_LONG).show();
 
 
         }catch (Exception e){
