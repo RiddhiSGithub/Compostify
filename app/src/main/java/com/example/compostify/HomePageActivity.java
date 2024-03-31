@@ -1,11 +1,9 @@
 package com.example.compostify;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-
-import android.content.res.ColorStateList;
-import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,10 +23,15 @@ public class HomePageActivity extends AppCompatActivity {
         homePageBinding = ActivityHomePageBinding.inflate(getLayoutInflater());
         setContentView(homePageBinding.getRoot());
 
+        homePageBinding.actionBar.aboutUsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, AboutUs.class);
+                startActivity(intent);
+            }
+        });
         // Set up initial fragment
         replaceFragment(new HomeFragment(), getString(R.string.app_name));
-
-
 
         // Set up bottom navigation item selected listener
         homePageBinding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

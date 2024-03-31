@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.compostify.HomeFragment;
 import com.example.compostify.R;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.ActivityCheckoutBinding;
@@ -257,16 +256,13 @@ public class Checkout extends AppCompatActivity {
                                         public void onSuccess(DocumentReference orderDocumentReference) {
                                             // Order details successfully stored
                                             Toast.makeText(Checkout.this, "Order placed successfully", Toast.LENGTH_SHORT).show();
-
                                             // Clear form fields after placing order
                                             clearFormFields();
-
                                             // Update publish status to "Deactive"
                                             firebaseFirestore.collection("Publish").document(publishId).update(
                                                     "postStatus", "Deactive"
                                             );
-                                            Intent intent = new Intent(Checkout.this, HomeFragment.class);
-                                            startActivity(intent);
+                                            finish();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {

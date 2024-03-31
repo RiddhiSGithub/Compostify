@@ -51,6 +51,15 @@ public class MyOrderItemListAdapter extends RecyclerView.Adapter<MyOrderItemList
         holder.txtPurchaserTypeOfUser.setText(currentItem.getPurchaserTypeOfUser());
         holder.txtPurchaserCardNumber.setText(currentItem.getPurchaserCardNumber());
 
+        // Masking the card number
+        String cardNumber = currentItem.getPurchaserCardNumber();
+        if (cardNumber != null && cardNumber.length() >= 4) {
+            String maskedNumber = maskCardNumber(cardNumber);
+            holder.txtPurchaserCardNumber.setText(maskedNumber);
+        } else {
+            holder.txtPurchaserCardNumber.setText(cardNumber);
+        }
+
         if (currentItem.getTypeOfWaste() == null) {
             // Set a default value if type of waste is null
             holder.txtTypeOfWaste.setText("Default Waste Type");
@@ -73,6 +82,16 @@ public class MyOrderItemListAdapter extends RecyclerView.Adapter<MyOrderItemList
                 .error(R.drawable.logo_app) // Drawable to display if loading fails
                 .apply(requestOptions)
                 .into(holder.imageView);
+    }
+
+    private String maskCardNumber(String cardNumber) {
+        // Mask all digits except the last four
+        StringBuilder maskedNumber = new StringBuilder();
+        for (int i = 0; i < cardNumber.length() - 4; i++) {
+            maskedNumber.append("*");
+        }
+        maskedNumber.append(cardNumber.substring(cardNumber.length() - 4));
+        return maskedNumber.toString();
     }
 
     @Override
