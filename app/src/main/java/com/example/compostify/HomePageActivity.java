@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.compostify.Activities.AboutUs;
 import com.example.compostify.databinding.ActivityHomePageBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

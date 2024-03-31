@@ -34,10 +34,7 @@
             android:value="true" />
 
         <activity
-            android:name=".CheckoutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AboutUs"
+            android:name=".Activities.AboutUs"
             android:exported="false" />
         <activity
             android:name=".Activities.MyOrderDetails"
@@ -65,7 +62,7 @@
             android:label="WasteDetailsActivity" />
         <activity
             android:name=".HomePageActivity"
-            android:label="HomePageActivity"></activity>
+            android:label="HomePageActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
