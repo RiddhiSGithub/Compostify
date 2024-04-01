@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +53,11 @@ public class PublishFragment extends Fragment {
     private String userId;
     private String userEmail;
     FirebaseAuth firebaseAuth;
+
+    LatLng latLng;
+    private double latitude;
+    private double longitude;
+
     public PublishFragment() {
         // Required empty public constructor
     }
@@ -120,6 +126,12 @@ public class PublishFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
                         String typeOfUser = Objects.requireNonNull(document.getString("typeOfUser"));
+                        HashMap<String, Double> latLng1 = (HashMap<String, Double>) document.get("latLng");
+                        latitude = latLng1.get("latitude");
+                        longitude = latLng1.get("longitude");
+
+                        Log.e("lat lng", "" + latitude + longitude);
+
                         userType = typeOfUser;
                         if (typeOfUser.equalsIgnoreCase("Seller")) {
                             binding.txtLayPhoto.setVisibility(View.VISIBLE);
@@ -336,7 +348,8 @@ public class PublishFragment extends Fragment {
                 postDetails.put("imageUrls", uploadedImageUrls);
                 postDetails.put("postDateTime", FieldValue.serverTimestamp());
                 postDetails.put("postStatus", postStatus);
-
+                postDetails.put("latitude", latitude);
+                postDetails.put("longitude", longitude);
 
                 db.collection("Publish")
                         .add(postDetails)

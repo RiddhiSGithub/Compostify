@@ -1,6 +1,7 @@
 package com.example.compostify;
 
 import com.google.firebase.Timestamp;
+import com.google.type.LatLng;
 
 import java.util.List;
 
@@ -16,6 +17,15 @@ public class User {
     private String downloadUrl;
    private String cityName;
 
+ private LatLng latLng;
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
 
     private String totalWeight;
 

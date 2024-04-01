@@ -94,5 +94,10 @@
     <string name="our_mission">Our Mission</string>
     <string name="checkout">Checkout</string>
     <string name="i_am_a">I am a..</string>
+    <string name="GPSAlertDialogTitle">Permission</string>
+    <string name="GPSAlertDialogMessage">This application uses your GPS</string>
+    <string name="action_settings">Allow</string>
+    <string name="cancel">Don\'t Allow</string>
+    <string name="search_address">City Name</string>
 
 </resources>
