@@ -65,6 +65,7 @@ public class PublishFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
 
         initView();
+        visibilityOfContent();
 
         //Adding image button
         binding.btnSelectPhotos.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +88,6 @@ public class PublishFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 clearFormFields();
-                binding.txtLayPhoto.setVisibility(View.GONE);
-                binding.btnSelectPhotos.setVisibility(View.GONE);
             }
         });
 
@@ -102,8 +101,6 @@ public class PublishFragment extends Fragment {
         //Natural and mix weight will only show when type of user will select typeof waste "both"
         binding.txtLayNaturalWeight.setVisibility(View.GONE);
         binding.txtLayMixWeight.setVisibility(View.GONE);
-
-        visibilityOfContent();
 
         //changing background color of dropdown menus
         AutoCompleteTextView autoCompleteTOWaste = binding.edtTypeOfWaste;

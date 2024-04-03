@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary"
+    android:orientation="vertical"
+    android:padding="16sp">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWasteList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+
+        android:layout_weight="1"
+        
+        tools:itemCount="10"
+        tools:listitem="@layout/item_waste_list_modal" />
+
+    <TextView
+        android:id="@+id/tvEmptyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No items to display, Check back later"
+        android:visibility="gone" />
+
+
+
+</LinearLayout>

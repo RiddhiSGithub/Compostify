@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class SearchFragment extends Fragment implements LocationListener {
+public class PostsListFragment extends Fragment implements LocationListener {
 
     RecyclerView recyclerView;
     ArrayList<User> userArrayList;
@@ -57,23 +56,20 @@ public class SearchFragment extends Fragment implements LocationListener {
     private FirebaseAuth firebaseAuth;
     private String typeOfUser;
 
-
-    public SearchFragment() {
+    public PostsListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
@@ -85,37 +81,36 @@ public class SearchFragment extends Fragment implements LocationListener {
         wasteListAdapter = new WasteListAdapter(getContext(), userArrayList);
         recyclerView.setAdapter(wasteListAdapter);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        TextView emptyView = view.findViewById(R.id.tvEmptyRecyclerView);
         firebaseAuth = FirebaseAuth.getInstance();
         userArrayList = new ArrayList<User>();
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),new String[]{
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION
-            },100);
+            }, 100);
         }
 
-        loadDataFromFirestore(emptyView);
-        getCurrentLocationLatLng();
+        loadDataFromFirestore();
 
         return view;
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadDataFromFirestore();
+    }
     @SuppressLint("MissingPermission")
     private void getCurrentLocationLatLng() {
-
         try {
             locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
             Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void loadDataFromFirestore(TextView emptyView) {
+    private void loadDataFromFirestore() {
         userId = firebaseAuth.getCurrentUser().getUid();
         typeOfUser = "";
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
@@ -132,57 +127,35 @@ public class SearchFragment extends Fragment implements LocationListener {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-
-                        if(queryDocumentSnapshots.isEmpty())
-                        {
-                           emptyView.setVisibility(View.VISIBLE);
-                           progressDialog.dismiss();
-                           return;
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            progressDialog.dismiss();
+                            return;
                         }
-
-                            emptyView.setVisibility(View.GONE);
-
-
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-
-                            Log.e("type of user", documentSnapshot.getString("typeOfUser"));
                             if (documentSnapshot.getString("postStatus").toLowerCase().equals("active")
-                            && !documentSnapshot.getString("typeOfUser").toLowerCase().equals(typeOfUser.toLowerCase()))
-                            {
-
-                                    User user = documentSnapshot.toObject(User.class);
-                                    user.setUserId(documentSnapshot.getId());
-                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(documentSnapshot.getString("userId"));
-                                    documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            user.setBusinessName(value.getString("businessName"));
-                                            user.setDownloadUrl(value.getString("downloadUrl"));
-                                            try{
-                                                String[] address = value.getString("address").split(",");
-                                                String cityName = address[1] + ", " + address[2];
-                                                user.setCityName(cityName);
-                                            }catch (NullPointerException e){
-                                                    e.printStackTrace();
-                                            }
-
-                                            dataList.add(user);
-                                            wasteListAdapter.setData(dataList);
-                                            wasteListAdapter.notifyDataSetChanged();
+                                    && !documentSnapshot.getString("typeOfUser").toLowerCase().equals(typeOfUser.toLowerCase())) {
+                                User user = documentSnapshot.toObject(User.class);
+                                user.setUserId(documentSnapshot.getId());
+                                DocumentReference documentReference = firebaseFirestore.collection("users").document(documentSnapshot.getString("userId"));
+                                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                        user.setBusinessName(value.getString("businessName"));
+                                        user.setDownloadUrl(value.getString("downloadUrl"));
+                                        try {
+                                            String[] address = value.getString("address").split(",");
+                                            String cityName = address[1].trim() + ", " + address[2].trim();
+                                            user.setCityName(cityName);
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
                                         }
-                                    });
-                                    Log.e("user", ""+user.getDownloadUrl());
-                                    Log.e("user", ""+user.getBusinessName());
-
-
+                                        dataList.add(user);
+                                        wasteListAdapter.setData(dataList);
+                                        wasteListAdapter.notifyDataSetChanged();
+                                    }
+                                });
                             }
-
-
-
                         }
-
-
                         progressDialog.dismiss();
                     }
                 })
@@ -192,39 +165,28 @@ public class SearchFragment extends Fragment implements LocationListener {
                         Log.d("TAG", "Error getting documents: ", e);
                     }
                 });
-
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
         try {
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-//            Toast.makeText(getContext(), address, Toast.LENGTH_LONG).show();
-
-
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("current location error", "print stack tree");
             e.printStackTrace();
         }
-
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderEnabled(String provider) {}
 
-    }
+    @Override
+    public void onProviderDisabled(String provider) {}
 }

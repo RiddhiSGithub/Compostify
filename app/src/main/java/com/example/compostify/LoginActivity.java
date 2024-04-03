@@ -3,19 +3,19 @@ package com.example.compostify;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.compostify.databinding.ActivityLoginBinding;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -77,8 +77,27 @@ public class LoginActivity extends AppCompatActivity
             }
 
         }
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        // Store user authentication state locally (e.g., in SharedPreferences)
+                        saveUserAuthenticationState(true);
+                        startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+                        finish();
+                    } else {
+                        // Handle sign-in failures
+                        // Other error handling logic...
+                    }
+                });
     }
 
+    private void saveUserAuthenticationState(boolean isLoggedIn) {
+        SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
     private void createAlertErrorBox(String errorMessage, LoginActivity loginActivity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setMessage(errorMessage)
@@ -102,5 +121,16 @@ public class LoginActivity extends AppCompatActivity
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already signed in, navigate to HomePageActivity
+            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+            finish();
+        }
     }
 }
