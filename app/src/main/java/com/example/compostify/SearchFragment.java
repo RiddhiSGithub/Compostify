@@ -5,15 +5,17 @@ import static android.content.Context.LOCATION_SERVICE;
 
 
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.Manifest;
@@ -31,11 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,13 +57,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 
-public class SearchFragment extends Fragment implements LocationListener {
+public class SearchFragment extends Fragment {
 
     RecyclerView recyclerView;
     ArrayList<User> userArrayList;
@@ -79,6 +82,7 @@ public class SearchFragment extends Fragment implements LocationListener {
     EditText searchTxt;
     private String address;
     TextView emptyView;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -99,7 +103,7 @@ public class SearchFragment extends Fragment implements LocationListener {
 
          searchTxt = view.findViewById(R.id.edtAddress);
 
-        getLatLng(view);
+        getCurrentLocationLatLng();
         Places.initialize(getContext(), "AIzaSyBTqCW_QQhBwo6hyVIsAGJ66jtZbtecyC0");
         searchFetaure(searchTxt);
 
@@ -124,11 +128,60 @@ public class SearchFragment extends Fragment implements LocationListener {
             },100);
         }
 
-        loadDataFromFirestore(latitude, longitude);
-//        getCurrentLocationLatLng();
+
+
 
         return view;
     }
+
+    private void getCurrentLocationLatLng() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+
+
+                    Geocoder geocoder;
+                    List<Address> addresses;
+                    geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                    try {
+                        addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    String address = addresses.get(0).getAddressLine(0);
+                    searchTxt.setText(address);
+                    if (progressDialog.isShowing())
+                    {
+                        progressDialog.dismiss();
+                    }
+                    loadDataFromFirestore(latitude, longitude);
+                }
+
+            }
+        });
+
+    }
+
+
+
 
     private void searchFetaure(EditText searchTxt) {
         searchTxt.setOnClickListener(new View.OnClickListener() {
@@ -156,56 +209,9 @@ public class SearchFragment extends Fragment implements LocationListener {
             loadDataFromFirestore(latitude,longitude);
         }
     }
-    private void getLatLng(View view) {
-        GPSTracker gpsTracker = new GPSTracker(getContext());
-
-        if (gpsTracker.getIsGPSTrackingEnabled())
-        {
-            latitude = gpsTracker.latitude;
-
-            longitude = gpsTracker.longitude;
 
 
 
-
-            String country = gpsTracker.getCountryName(getContext());
-
-
-
-            String city = gpsTracker.getLocality(getContext());
-
-
-            String postalCode = gpsTracker.getPostalCode(getContext());
-
-
-            String addressLine = gpsTracker.getAddressLine(getContext());
-
-
-            EditText searchTxt = view.findViewById(R.id.edtAddress);
-            searchTxt.setText("" + addressLine );
-        }
-        else
-        {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gpsTracker.showSettingsAlert();
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocationLatLng() {
-
-        try {
-            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,this);
-            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     private void loadDataFromFirestore( double latitude, double longitude) {
         userId = firebaseAuth.getCurrentUser().getUid();
@@ -221,7 +227,11 @@ public class SearchFragment extends Fragment implements LocationListener {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                typeOfUser = value.getString("typeOfUser");
+                try{
+                    typeOfUser = value.getString("typeOfUser");
+                }catch (Exception e){
+
+                }
             }
         });
 
@@ -308,36 +318,5 @@ public class SearchFragment extends Fragment implements LocationListener {
 
     }
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
 
-        try {
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            String address = addresses.get(0).getAddressLine(0);
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            Toast.makeText(getContext(), address, Toast.LENGTH_LONG).show();
-
-
-        }catch (Exception e){
-            Log.e("current location error", "print stack tree");
-            e.printStackTrace();
-        }
-
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }
