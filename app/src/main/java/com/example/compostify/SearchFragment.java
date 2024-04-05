@@ -193,19 +193,7 @@ public class SearchFragment extends Fragment  {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocationLatLng() {
-
-        try {
-            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,this);
-            Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+ 
 
     private void loadDataFromFirestore( double latitude, double longitude) {
         userId = firebaseAuth.getCurrentUser().getUid();
