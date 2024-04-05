@@ -62,13 +62,20 @@ public class HomeFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
+
+
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.txtBusinessName.setText(value.getString("businessName"));
-                binding.txtAddress.setText(value.getString("address"));
-                binding.txtUserName.setText(value.getString("userName"));
+                try{
+                    binding.txtBusinessName.setText(value.getString("businessName"));
+                    binding.txtAddress.setText(value.getString("address"));
+                    binding.txtUserName.setText(value.getString("userName"));
+                }catch(NullPointerException e)
+                {
+
+                }
                 try {
                         Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgProfilePic);
                 }catch (NullPointerException e)

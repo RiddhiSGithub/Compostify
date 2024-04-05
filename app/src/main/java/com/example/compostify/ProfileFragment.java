@@ -110,13 +110,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                binding.edtUserName.setText(value.getString("userName"));
-                binding.edtUserEmail.setText(value.getString("userEmail"));
-                binding.edtBusinessName.setText(value.getString("businessName"));
-                binding.edtBusinessEmail.setText(value.getString("businessEmail"));
-                binding.edtBusinessPhoneNumber.setText(value.getString("businessContactNumber"));
-                binding.edtStreet.setText(value.getString("address"));
-                binding.edtUnitNumber.setText(value.getString("uni  tNo"));
+                try{
+                    binding.edtUserName.setText(value.getString("userName"));
+                    binding.edtUserEmail.setText(value.getString("userEmail"));
+                    binding.edtBusinessName.setText(value.getString("businessName"));
+                    binding.edtBusinessEmail.setText(value.getString("businessEmail"));
+                    binding.edtBusinessPhoneNumber.setText(value.getString("businessContactNumber"));
+                    binding.edtStreet.setText(value.getString("address"));
+                    binding.edtUnitNumber.setText(value.getString("unitNo"));
+                    downloadURL = value.getString("downloadUrl");
+                }catch (NullPointerException e){
+
+                }
 
                 try {
                     Glide.with(getContext()).load(value.getString("downloadUrl")).into(binding.imgLogo);
@@ -125,7 +130,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 }
 
-                downloadURL = value.getString("downloadUrl");
+
 
             }
         });
