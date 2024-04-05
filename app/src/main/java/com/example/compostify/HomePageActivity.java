@@ -41,7 +41,7 @@ public class HomePageActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.home) {
                     replaceFragment(new HomeFragment(), getString(R.string.app_name));
                 } else if (item.getItemId() == R.id.List) {
-                    replaceFragment(new PostsListFragment(),getString(R.string.posts_list));
+                    replaceFragment(new SearchFragment(),getString(R.string.posts_list));
                 } else if (item.getItemId() == R.id.publish) {
                     replaceFragment(new PublishFragment(), getString(R.string.publish_title));
                 } else if (item.getItemId() == R.id.profile) {
