@@ -29,6 +29,7 @@
                 android:background="@drawable/placeholder"
                 android:layout_margin="10dp"
                 android:id="@+id/imgLogo"></ImageView>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/lblBusinessName"
                 android:layout_width="match_parent"
@@ -80,10 +81,6 @@
                 style="@style/Animation.Design.BottomSheetDialog"
                 tools:listitem="@layout/item_photo" />
 
-
-
-          
-
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblTypeofWaste"
                     android:layout_width="match_parent"
@@ -98,7 +95,8 @@
                    android:layout_height="wrap_content"
                    android:layout_width="match_parent"
                    android:stretchColumns="*"
-                   android:id="@+id/tblWasteTypes"></TableLayout>
+                   android:id="@+id/tblWasteTypes">
+               </TableLayout>
 
 
 
@@ -108,14 +106,6 @@
                     android:layout_height="wrap_content"
 
                   />
-
-               
-
-
-
-
-
-
 
 
                 <!-- # Weight -->
@@ -184,11 +174,8 @@
                 android:textColor="@color/secondary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_gravity="center"/>
-
-
-
-
+                android:layout_gravity="center"
+                />
         
         </LinearLayout>
     </ScrollView>

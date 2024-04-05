@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.bumptech.glide.Glide;
+import com.example.compostify.Activities.Checkout;
 import com.example.compostify.adapters.PhotoAdapter;
 import com.example.compostify.databinding.ActivityWasteDetailsBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +31,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     ActivityWasteDetailsBinding binding;
-    private String userId;
-
+    private String sellerId;
     String publishId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-
+        PaymentConfiguration.init(getApplicationContext(), "pk_test_51OzmZfDIaLN1YyfY1mmha9m5vJoXuesGR8xQktRengYzSXQoukkuWqejP1UjMnsCIPK37Cjp82AWYNxesdNk3fHJ00Ssa6boOt");
 
         if(getIntent().getBooleanExtra("fromSearch",true))
         {
@@ -60,7 +59,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-               userId = value.getString("userId");
+               sellerId = value.getString("userId");
 
                getUsersInfo();
 
@@ -108,7 +107,7 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
 
     }
     void getUsersInfo(){
-        DocumentReference documentReference1 = firebaseFirestore.collection("users").document(userId);
+        DocumentReference documentReference1 = firebaseFirestore.collection("users").document(sellerId);
         documentReference1.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -137,6 +136,13 @@ public class WasteDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-
+        if (v.getId() == binding.btnPlaceOrder.getId()){
+            // Start CheckoutActivity and pass necessary data as intent extras
+            Intent intent = new Intent(WasteDetailsActivity.this, Checkout.class);
+            intent.putExtra("postId", publishId);
+            intent.putExtra("sellerId",sellerId);
+            startActivity(intent);
+        }
     }
+
 }

@@ -5,9 +5,9 @@
         android:title="@string/home"
         android:icon="@drawable/baseline_bungalow_24"/>
     <item
-        android:id="@+id/Search"
-        android:title="@string/search_title"
-        android:icon="@drawable/search"/>
+        android:id="@+id/List"
+        android:title="@string/posts_list"
+        android:icon="@drawable/list"/>
     <item
         android:id="@+id/publish"
         android:title="@string/publish_title"
