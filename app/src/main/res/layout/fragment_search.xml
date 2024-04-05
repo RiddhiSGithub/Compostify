@@ -32,16 +32,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMoreFilters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:background="@drawable/button_border"
-        android:textColor="@color/secondary"
-        android:layout_marginTop="10dp"
-        android:text="@string/more_filters" />
 
     <View
         android:layout_width="match_parent"
